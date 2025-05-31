@@ -7,14 +7,14 @@ typer.
 
 ## Features
 
-- Tries to auto detects user name and email from .gitconfig or environment
-- Creates a virtual environment in the project root [.venv]
+- Auto detects user name and email from .gitconfig or environment.
+- Creates a virtual environment in the project root.
 - Exposes a command line interface built with typer.
 - Package is callable via "python -m <package>" 
 - Automatically activated virtual environments via .envrc and direnv
 - Automatically syncs deps and project into virtual environment
 - Automatically initializes a git repository with a main branch
-- [poethepoet][poe] tasks integrated into pyproject.toml:
+- [Poe the Poet][poe] tasks integrated into pyproject.toml:
   - Test with pytest.
   - Generate HTML code coverage reports.
   - Run code quality checks: mypy/ruff/ty
@@ -32,7 +32,6 @@ Presuming you have uv installed, you get uvx for free!
 ```console
 uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 ```
-
 
 
 [cookiecutter]: https://cookiecutter.readthedocs.io/en/stable/index.html
