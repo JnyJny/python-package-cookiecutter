@@ -30,7 +30,7 @@ typer.
 Presuming you have uv installed, you get uvx for free!
 
 ```console
-uvx cookiecutter hg:JnyJny/python-package-cookiecutter
+uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 ```
 
 
