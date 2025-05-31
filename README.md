@@ -22,15 +22,19 @@ typer.
 
 ## Prerequisites
 - [uv][uv]
+- [cookiecutter][cookiecutter]
 - [direnv][direnv] _optional_
 
 ## Usage
 
-### UV & UVX
+Presuming you have uv installed, you get uvx for free!
+
 ```console
 $ uvx cookiecutter hg:JnyJny/python-package-cookiecutter
 ...
 ```
+
+
 
 [cookiecutter]: https://cookiecutter.readthedocs.io/en/stable/index.html
 [templates]: https://www.cookiecutter.io/templates
