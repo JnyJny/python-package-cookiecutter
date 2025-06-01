@@ -7,7 +7,7 @@ environment named "pypi" which must agree with the environment named
 when adding the trusted publisher. It doesn't have to be named `pypi`
 it just needs to match in both places. Additionally, the project name
 on PyPI should match `cookiecutter.package_name` or modify release.yml
-to ensure environment.url matches the PyPI project URL.
+to ensure `environment.url` matches the PyPI project URL.
 
 ## Testing
 
@@ -20,8 +20,9 @@ of operating systems and python versions. This is likely more testing
 than you might require, reduce the `os` and `python_versions` lists
 to suit your needs.
 
-Tests are initiated when a tag formatted as a semantic version is
-detected or with the suffix `-test` is detected.
+Tests are initiated when a tag formatted as a [semantic
+version][semantic-version] is detected or with the suffix `-test` is
+detected.
 
 The publish stage depends on all the tests finishing successfully
 before continuing. The package will be built in a Linux container
@@ -51,6 +52,12 @@ opening and closing curly brackets:
 <!-- {% endraw %} -->
 It's ugly but it works. 
 
+Checkout [this post][jinja-tricks] for a great breakdown of all the
+different ways this problem can be addressed.
+
+<!-- End Links -->
 [pypi]: https://pypi.org
 [trusted-publisher]: https://docs.pypi.org/trusted-publishers/
 [uv]: https://docs.astral.sh/uv/
+[semantic-version]: https://semver.org
+[jinja-tricks]: https://github.com/cookiecutter/cookiecutter/issues/1624#issuecomment-2031117503)

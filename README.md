@@ -5,25 +5,31 @@
 There are many [cookiecutter][cookiecutter] [templates][templates],
 but this one is mine. With it, you can quickly create a full-featured
 Python package designed to be managed with [uv][uv], a default
-[typer][typer] command-line interface, and logging using my favorite
-logger, [loguru][loguru].
+[typer][typer] command-line interface, optional settings using
+[pydantic-settings][pydantic-settings] and logging using my favorite
+logger, [loguru][loguru]. Best of all, testing, code quality checks,
+and publishing to PyPI are all baked in and ready to go.
 
-## Features
-
-- Python project designed to be managed with [uv][uv].
-- Auto detects user name and email from .gitconfig or environment.
+## Pacakage Generation Features
+- Auto detects user name and email from .gitconfig.
 - Creates a virtual environment in the project directory.
-- Exposes a command line interface built with [typer][typer].
-- Package is callable via `python -m <package>`.
+- Enables direnv for this subdirectory if direnv available.
 - Automatically syncs deps and project into virtual environment.
 - Automatically initializes a git repository with a main branch.
-- Automatically activated virtual environments via .envrc.
+- Automatically creates initial commit.
+- Optionally creates upstream repository and pushes (GitHub only, requires [gh][gh]).
+
+## Package Features
+- Python project designed to be managed with [uv][uv].
+- Exposes a command line interface built with [typer][typer].
+- Settings optionally managed vi [pydantic-settings][pydantic-settings].
+- Package is callable via `python -m <package>`.
 - [Poe the Poet][poe] tasks integrated into pyproject.toml:
   - Test with pytest.
   - Generate HTML code coverage reports.
   - Run code quality checks using mypy, ruff, and ty
   - Publish to PyPI via GitHub Actions with `poe publish`
-- Tool options integrated into pyproject.toml.
+- Development tool options integrated into pyproject.toml.
 - Optionally configured badges in README.md.
 
 ## Prerequisites
@@ -53,15 +59,32 @@ uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 
 ### Example Package Tree
 ```console
-
+$ tree -a -I .venv -I .git
+.
+├── .envrc
+├── .github
+│   └── workflows
+│       ├── README.md
+│       └── release.yaml
+├── .gitignore
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── src
+│   └── thing
+│       ├── __init__.py
+│       └── __main__.py
+├── tests
+│   └── __init__.py
+└── uv.lock
 ```
 
 ### Post Install
 
 If you have [direnv][direnv] installed, your project's virtual
-environment will be activated when you enter the project directory
-or sub-directories. Without direnv, you can activate the project
-virtual environment manually with `source .venv/bin/activate`.
+environment will be activated when you enter the project directory or
+sub-directories. Without direnv, you can activate the project virtual
+environment manually with `source .venv/bin/activate`.
 
 Once your venv is activated, all the dev tools are available for use
 without having to use `uv run` to preface the command.
@@ -70,7 +93,39 @@ without having to use `uv run` to preface the command.
 #### Default Poe Tasks 
 
 ```console
+$ poe
+Poe the Poet - A task runner that works well with poetry.
+version 0.34.0
 
+Result: No task specified.
+
+Usage:
+  poe [global options] task [task arguments]
+
+Global options:
+  -h, --help [TASK]     Show this help page and exit, optionally supply a task.
+  --version             Print the version and exit
+  -v, --verbose         Increase command output (repeatable)
+  -q, --quiet           Decrease command output (repeatable)
+  -d, --dry-run         Print the task contents but don't actually run it
+  -C, --directory PATH  Specify where to find the pyproject.toml
+  -e, --executor EXECUTOR
+                        Override the default task executor
+  --ansi                Force enable ANSI output
+  --no-ansi             Force disable ANSI output
+
+Configured tasks:
+  coverage              Generate HTML code coverage report and open it in a browser. [Code Quality]
+  mypy                  Run mypy type checker on source. [Code Quality]
+  ty                    Run ty type checker on source. [Code Quality]
+  ruff                  Run ruff linter on source. [Code Quality]
+  check                 Run all code quality tools on source.
+  test                  Runs testing suites using pytest.
+  publish_patch         Publish a patch release.
+  publish_minor         Publish a minor release.
+  publish_major         Publish a major release.
+  publish               Publish a minor release.
+  clean                 Clean up the project directory.
 ```
 
 #### Example Workflow
@@ -85,8 +140,9 @@ without having to use `uv run` to preface the command.
 #### .github/workflows/release.yml
 
 The `release.yaml` workflow defines a matrix of operating systems and
-Python versions to test against. Tests are run when a semantic
-versioning tag or a tag with the suffix "-test" is pushed to a branch.
+Python versions to test against. Tests are run when a [semantic
+versioning][semantic-version] tag or a tag with the suffix "-test" is
+pushed to a branch.
 
 In it's initial state, tests are run against Linux, MacOS, and Windows
 for Python versions 3.9, 3.10, 3.11, 3.12 and 3.13. This will
@@ -97,19 +153,14 @@ trim the os and python-version lists to fit your needs.
 
 
 ## TODO
-- Automatic github repo creation [optional]
 - Automatic GitHub release creation in release workflow.
 - Automatic release notes generator
 - Integration with readthedocs.io
-- 
-
-
 
 
 <!-- End Links -->
-[python-package-cookiecutter-badge]: https://img.shields.io/badge/Cookiecutter-gh%3AJnyJny%2Fpython-package-cookiecutter
+[python-package-cookiecutter-badge]: https://img.shields.io/badge/Made_With_Cookiecutter-python--package--cookiecutter-green?style=for-the-badge
 [python-package-cookiecutter]: https://github.com/JnyJny/python-package-cookiecutter
-
 [cookiecutter]: https://cookiecutter.readthedocs.io/en/stable/index.html
 [templates]: https://www.cookiecutter.io/templates
 [poe]: https://poethepoet.natn.io
@@ -118,4 +169,5 @@ trim the os and python-version lists to fit your needs.
 [direnv]: https://direnv.net
 [typer]: https://typer.tiangolo.com
 [loguru]: https://loguru.readthedocs.io/en/stable/
-
+[pydantic-settings]: https://docs.pydantic.dev/latest/api/pydantic_settings/
+[semantic-version]: https://semver.org

@@ -1,4 +1,6 @@
 {
+    "name": "First Last",
+    "year": "YYYY",
     "email": "your.email@somewhere.com",
     "github_username": "your_github_username",
     "project_name": "Descriptive short name",
@@ -7,11 +9,13 @@
     "cli_name": "{{ cookiecutter.package_name }}",
     "project_version": "0.1.0",
     "python_version_min": "3.9",
-    "python_version_max": "4.0",    
-    "github_repo": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}",
-    "readme_badges": {"yes": true, "no": false}
-    "create_github_repo": {"yes": true, "no": false}
-    "license": ["Apache-2.0", "MIT", "Other"]
+    "python_version_max": "4.0",
+    "repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}",
+    "readme_badges": ["yes", "no"],
+    "create_github_repo": ["yes", "no"],
+    "license": ["Apache-2.0", "MIT", "Other"],
+    "use_pydantic_settings": ["yes", "no"],
+    "log_to_file": ["yes", "no"]
 }
 
 
