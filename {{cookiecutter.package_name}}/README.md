@@ -52,7 +52,7 @@ this repo.
 
 ### Clone
 ```console
-git clone {{ cookiecutter.respository }}
+git clone {{ cookiecutter.repository }}
 cd {{ cookiecutter.package_name }}
 ```
 ### Allow Direnv _optional_ but recommended
