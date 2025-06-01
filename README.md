@@ -133,7 +133,7 @@ Configured tasks:
 1. Create project from template
 1. Edit package to suit yourself.
 1. Commit and push changes to your repo.
-1. Publish a patch release using `poe publish`.
+1. Publish a minor release using `poe publish`.
 
 ### Things You Will Want to Change
 
