@@ -53,8 +53,29 @@ and publishing to PyPI are all baked in and ready to go.
 
 Once you have uv installed, you get uvx for free!
 
+If you haven't authenticated to GitHub with gh yet, you should do that now:
+```console
+gh auth login
+```
+
+All done? Now you are ready to create your project:
+
 ```console
 uvx cookiecutter gh:JnyJny/python-package-cookiecutter
+```
+Follow the prompts and you should see something like:
+
+```console
+...
+Task [Create .venv        ]: succeeded.
+Task [Enable Direnv       ]: succeeded.
+Task [Sync Project Deps   ]: succeeded.
+Task [Initialize Git      ]: succeeded.
+Task [Add Files           ]: succeeded.
+Task [Initial Commit      ]: succeeded.
+Task [Create Upstream Repo]: succeeded.
+Task [Push To Upstream    ]: succeeded.
+$
 ```
 
 ### Example Package Tree
