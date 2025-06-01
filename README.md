@@ -19,6 +19,7 @@ typer.
   - Generate HTML code coverage reports.
   - Run code quality checks: mypy/ruff/ty
   - Publish to PyPI via GitHub Actions.
+- Automatically configure badges in README.md
 
 ## Prerequisites
 
