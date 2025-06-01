@@ -1,4 +1,4 @@
-""" {{ cookiecutter.project_slug }}
+""" {{ cookiecutter.package_name }}
 
 {{ cookiecutter.project_short_description }}
 """
@@ -21,7 +21,7 @@ def global_callback(
 ) -> None:
     """{{ cookiecutter.project_short_description }}
     """
-    (logger.enable if debug else logger.disable)("{{ cookiecutter.project_slug }}")
+    (logger.enable if debug else logger.disable)("{{ cookiecutter.package_name }}")
     logger.info(f"{debug=}")
 
 

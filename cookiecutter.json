@@ -2,13 +2,16 @@
     "email": "your.email@somewhere.com",
     "github_username": "your_github_username",
     "project_name": "Descriptive short name",
-    "project_slug": "package_name",
+    "package_name": "package_name",
     "project_short_description": "A Python package structured like I like it.",
-    "cli_name": "{{ cookiecutter.project_slug }}",
+    "cli_name": "{{ cookiecutter.package_name }}",
     "project_version": "0.1.0",
     "python_version_min": "3.9",
     "python_version_max": "4.0",    
-    "repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+    "github_repo": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}",
+    "readme_badges": {"yes": true, "no": false}
+    "create_github_repo": {"yes": true, "no": false}
+    "license": ["Apache-2.0", "MIT", "Other"]
 }
 
 
