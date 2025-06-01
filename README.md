@@ -167,6 +167,7 @@ trim the os and python-version lists to fit your needs.
 [git]: https://git-scm.com/downloads
 [uv]: https://docs.astral.sh/uv/
 [direnv]: https://direnv.net
+[gh]: https://github.com/cli/cli
 [typer]: https://typer.tiangolo.com
 [loguru]: https://loguru.readthedocs.io/en/stable/
 [pydantic-settings]: https://docs.pydantic.dev/latest/api/pydantic_settings/
