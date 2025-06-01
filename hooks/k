@@ -1,4 +1,0 @@
-error: cannot format -: Cannot parse: 65:1: {% if cookiecutter.create_github_repo %}
-
-Oh no! 💥 💔 💥
-1 file failed to reformat.
