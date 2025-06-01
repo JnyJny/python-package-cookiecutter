@@ -70,16 +70,17 @@ check.sequence = [ "ruff", "ty", "mypy" ]
 check.help = "Run all code quality tools on source."
 
 test.cmd = "pytest"
-test.help = "Runs testing suites using pytest"
+test.help = "Runs testing suites using pytest. [Code Quality]"
 
-# update version in pyproject
+
+# Publish tasks
+
+## update version in pyproject
 
 _patch_bump = "uv version --bump patch"
 _minor_bump = "uv version --bump minor"
 _major_bump = "uv version --bump major"
 
-
-# Publish tasks
 
 ## add, commit, tag and commit pyproject updated by bump
 
@@ -97,13 +98,23 @@ publish_patch.sequence = ["_patch_bump", "_update_pyproject"]
 publish_patch.help = "Publish a patch release."
 
 publish_minor.sequence = ["_minor_bump", "_update_pyproject"]
-publish_minor.help = "Publish a minor release"
+publish_minor.help = "Publish a minor release."
 
 publish_major.sequence = ["_major_bump", "_update_pyproject"]
-publish_major.help = "Publish a major release"
+publish_major.help = "Publish a major release."
 
 publish.ref =  "publish_patch"
 publish.help = "Publish a minor release."
 
 # clean
 clean.cmd = "rm -rf htmlcov dist {{ cookiecutter.project_slug }}.egg-info *.log"
+clean.help = "Clean up the project directory."
+
+[tool.pytest.ini_options]
+add_opts = ["-x"]
+
+[mypy]
+[mypy-loguru]
+ignore_missing_imports = true
+[mypy-typer]
+ignore_missing_imports = true
