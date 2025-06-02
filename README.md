@@ -27,8 +27,8 @@ and publishing to PyPI are all baked in and ready to go.
 - [Poe the Poet][poe] tasks integrated into pyproject.toml:
   - Test with pytest.
   - Generate HTML code coverage reports.
-  - Run code quality checks using mypy, ruff, and ty
-  - Publish to PyPI via GitHub Actions with `poe publish`
+  - Run code quality checks using mypy, ruff, and ty.
+  - Publish to PyPI via GitHub Actions with `poe publish`.
 - Development tool options integrated into pyproject.toml.
 - Optionally configured badges in README.md.
 
@@ -167,17 +167,17 @@ suits you best. It won't hurt my feelings at all.
 
 ```mermaid
 flowchart TD
-    A((Create Project)) --> B[Edit Files]
-    B --> C((Commit))
-    C -->|Not Done| B
-    C --> M[poe publish_major]
-    C --> m[poe publish_minor]
-    C --> P[poe publish_patch]
-    m --> p[.github/workflows/release.yaml]
-    M --> p
-    P --> p
-    p --> test[test package]
-    test --> |succcess| pypi[uv publish project to PyPI]
+    Create((Create Project)) --> Edit[Edit Files]
+    Edit --> Commit((Commit))
+    Commit -->|Not Done| Edit
+    Commit --> Major[poe publish_major]
+    Commit --> Minor[poe publish_minor]
+    Commit --> Patch[poe publish_patch]
+    Major --> workflow[.github/workflows/release.yaml]
+    Minor --> workflow
+    Patch --> workflow
+    workflow --> test[test package with pytest]
+    test --> |succcess| publish[uv publishes project to PyPI]
 ```
 
 1. Create project from template
@@ -195,11 +195,11 @@ versioning][semantic-version] tag or a tag with the suffix "-test" is
 pushed to a branch.
 
 In it's initial state, tests are run against Linux, MacOS, and Windows
-for Python versions 3.9, 3.10, 3.11, 3.12 and 3.13. This will
-result in 15 seperate test instances that need to succeed before
-the publish stage of release will start. Chances are very good
-you don't need that sort of rigor in testing, so feel free to
-trim the os and python-version lists to fit your needs.
+for Python versions 3.9, 3.10, 3.11, 3.12 and 3.13. This will result
+in 15 seperate test instances that need to succeed before the publish
+stage of release will start. Chances are very good you don't need that
+sort of rigor in testing, so feel free to trim the os and
+python-version lists to fit your needs.
 
 
 ## TODO
