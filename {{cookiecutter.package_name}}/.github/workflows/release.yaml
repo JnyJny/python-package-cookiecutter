@@ -16,7 +16,9 @@ permissions:
 jobs:
   test:
     name: Test
-    runs-on: ${{ '{{' }}  matrix.os {{ '}}' }}
+{%- raw %}
+    runs-on: ${{ matrix.os }}
+{%- endraw %}
     strategy:
       fail-fast: false
       matrix:
@@ -29,9 +31,12 @@ jobs:
       - name: Install uv and set Python version.
         uses: astral-sh/setup-uv@v5
         with:
-          python-version: ${{ '{{' }} matrix.python-version {{ '}}' }}
-
-      - name: Run tests - ${{'{{' }} matrix.python-version {{ '}}' }} - ${{ '{{' }} matrix.os {{ '}}' }}
+{%- raw %}          
+          python-version: ${{ matrix.python-version }}
+{%- endraw %}
+{% raw %}
+      - name: Run tests - ${{ matrix.python-version }} - ${{ matrix.os }}
+{%- endraw %}        
         run: |
           uv run --all-extras pytest
 
