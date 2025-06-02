@@ -169,9 +169,9 @@ flowchart TD
     Create((Create Project)) --> Edit[Edit Files]
     Edit --> Commit((Commit))
     Commit -->|Not Done| Edit
-    Commit --> Major[poe publish_major]
-    Commit --> Minor[poe publish_minor]
-    Commit --> Patch[poe publish_patch]
+    Commit --> |Breaking Features| Major[poe publish_major]
+    Commit --> |Non-breaking Features| Minor[poe publish_minor]
+    Commit --> |Bug Fixes| Patch[poe publish_patch]
     Major --> workflow[.github/workflows/release.yaml]
     Minor --> workflow
     Patch --> workflow
