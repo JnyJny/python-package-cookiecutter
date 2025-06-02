@@ -1,4 +1,4 @@
-[![gh:JnyJny/python-package-cookiecutter][python-package-cookiecutter-badge]][python-package-cookiecutter]
+[![gh:JnyJny/python-package-cookiecutter][python-package-cookiecutter-badge]][python-package-cookiecutter] [release][release-badge]
 
 # Python Package Cookiecutter Template
 
@@ -214,6 +214,8 @@ python-version lists to fit your needs.
 <!-- End Links -->
 [python-package-cookiecutter-badge]: https://img.shields.io/badge/Made_With_Cookiecutter-python--package--cookiecutter-green?style=for-the-badge
 [python-package-cookiecutter]: https://github.com/JnyJny/python-package-cookiecutter
+[release-badge]: https://img.shields.io/github/v/release/JnyJny/python-package-cookiecutter?sort=semver&display_name=release&style=for-the-badge&color=green
+
 [cookiecutter]: https://cookiecutter.readthedocs.io/en/stable/index.html
 [templates]: https://www.cookiecutter.io/templates
 [poe]: https://poethepoet.natn.io
