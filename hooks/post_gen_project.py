@@ -41,18 +41,6 @@ class Task(NamedTuple):
             return ""
 
 
-def pick_license(license: str) -> None:
-    """Given a target license, rearrange the deckchairs."""
-
-    try:
-        Path(f"LICENSE.{license}").rename("LICENSE")
-    except FileNotFoundError:
-        raise ValueError(f"Unknown license {license}") from None
-
-    for loser in Path.cwd().glob("LICENSE.*"):
-        loser.unlink()
-
-
 def post_generation_tasks() -> int:
     """Things to do after cookiecutter has rendered the template."""
 
@@ -77,14 +65,6 @@ def post_generation_tasks() -> int:
             required=False,
         )
         tasks.extend([create_repo, push_initial_commit])
-
-    if "{{ cookiecutter.use_pydantic_settings }}" != "yes":
-        Path("src/{{ cookiecutter.package_name }}/settings.py").unlink()
-
-    try:
-        pick_license("{{ cookiecutter.license }}")
-    except ValueError as error:
-        print(f"Failed to configure license: {error}")
 
     try:
         for task in tasks:
