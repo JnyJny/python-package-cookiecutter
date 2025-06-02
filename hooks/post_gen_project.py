@@ -25,6 +25,7 @@ class Task(NamedTuple):
                 check=True,
                 capture_output=True,
                 universal_newlines=True,
+                shell=False,
             )
             if verbose:
                 print("succeeded.")
