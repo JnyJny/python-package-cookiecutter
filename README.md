@@ -115,9 +115,9 @@ $ tree -a -I .venv -I .git
 
 If you have [direnv][direnv] installed, your project's virtual
 environment will be activated when you enter the project directory or
-sub-directories. Without `direnv`, you can activate the project virtual
-environment manually with `source .venv/bin/activate`, but it's less
-cool.
+sub-directories. You can activate the project virtual environment
+manually without `direnv` using `source .venv/bin/activate`, but it's
+less cool.
 
 Once your venv is activated, all the dev tools are available for use
 without having to use `uv run` to preface the command. Check out `poe`!
