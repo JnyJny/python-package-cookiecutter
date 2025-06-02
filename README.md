@@ -1,4 +1,4 @@
-[![gh:JnyJny/python-package-cookiecutter][python-package-cookiecutter-badge]][python-package-cookiecutter] [release][release-badge]
+[![gh:JnyJny/python-package-cookiecutter][python-package-cookiecutter-badge]][python-package-cookiecutter] ![release][release-badge]
 
 # Python Package Cookiecutter Template
 
