@@ -47,9 +47,7 @@ and publishing to PyPI are all baked in and ready to go.
 - [direnv][direnv]
 - [gh][gh]
 
-## Usage
-
-### Initial Project Creation
+## Initial Project Creation
 
 Once you have uv installed, you get uvx for free!
 
@@ -67,8 +65,8 @@ All done? Now you are ready to create your project:
 uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 ```
 
-After following the cookiecutter prompts, you should see something
-like:
+After following the cookiecutter prompts, you should see the
+following:
 
 ```console
 ...
@@ -88,7 +86,8 @@ be run. If you don't have gh installed or you aren't authenticated,
 those last two tasks will fail but the template generation will
 complete successfully.
 
-### Example Package Tree
+
+### Example Generated Package Tree
 ```console
 $ tree -a -I .venv -I .git
 .
@@ -163,7 +162,7 @@ Configured tasks:
 These are the tasks that I like. Feel free to hack them up however it
 suits you best. It won't hurt my feelings at all.
 
-#### Example Workflow
+## Example Development Workflow
 
 ```mermaid
 flowchart TD
@@ -192,7 +191,10 @@ flowchart TD
 The `release.yaml` workflow defines a matrix of operating systems and
 Python versions to test against. Tests are run when a [semantic
 versioning][semantic-version] tag or a tag with the suffix "-test" is
-pushed to a branch.
+pushed to a branch. If and when the requested tests complete
+successfully, the package will be built and published to PyPI, unless
+the triggering tag has a "-test" suffix in which case the workflow
+skips publishing.
 
 In it's initial state, tests are run against Linux, MacOS, and Windows
 for Python versions 3.9, 3.10, 3.11, 3.12 and 3.13. This will result
@@ -203,9 +205,10 @@ python-version lists to fit your needs.
 
 
 ## TODO
-- Automatic GitHub release creation in release workflow.
-- Automatic release notes generator
-- Integration with readthedocs.io
+- Automatic [GitHub release][github-release] creation in release workflow.
+- Automatic [release notes generator][release-drafter] in release workflow.
+- Integration with [readthedocs.io][readthedocs].
+- Add [GitHub templates][github-templates] to .github directory.
 
 
 <!-- End Links -->
@@ -222,3 +225,10 @@ python-version lists to fit your needs.
 [loguru]: https://loguru.readthedocs.io/en/stable/
 [pydantic-settings]: https://docs.pydantic.dev/latest/api/pydantic_settings/
 [semantic-version]: https://semver.org
+
+<!-- TODO References -->
+[readthedocs]: https://docs.readthedocs.com/platform/latest/tutorial/index.html
+[release-drafter]: https://github.com/marketplace/actions/release-drafter
+[github-release]: https://github.com/marketplace/actions/create-a-release-in-a-github-action
+[github-templates]: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates
+
