@@ -78,6 +78,9 @@ def post_generation_tasks() -> int:
         )
         tasks.extend([create_repo, push_initial_commit])
 
+    if "{{ cookiecutter.use_pydantic_settings }}" != "yes":
+        Path("src/{{ cookiecutter.package_name }}/settings.py").unlink()
+
     try:
         pick_license("{{ cookiecutter.license }}")
     except ValueError as error:
