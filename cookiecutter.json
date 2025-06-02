@@ -1,6 +1,6 @@
 {
     "name": "First Last",
-    "year": "YYYY",
+    "year": "{% now 'utc', '%Y' %}",
     "email": "your.email@somewhere.com",
     "github_username": "your_github_username",
     "project_name": "Descriptive short name",

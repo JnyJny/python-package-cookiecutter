@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 import json
-import os
 import sys
-from datetime import datetime
 from pathlib import Path
 
 from post_gen_project import Task
@@ -35,8 +33,6 @@ def pre_prompt_tasks(config_file: str | Path = None) -> int:
 
     try:
         cookiecutter = json.load(config_file.open())
-
-        cookiecutter["year"] = datetime.now().year
 
         for key, task in tasks:
             try:
