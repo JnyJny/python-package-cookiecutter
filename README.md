@@ -10,7 +10,7 @@ Python package designed to be managed with [uv][uv], a default
 logger, [loguru][loguru]. Best of all, testing, code quality checks,
 and publishing to PyPI are all baked in and ready to go.
 
-## Pacakage Generation Features
+## Package Generation Features
 - Auto detects user name and email from .gitconfig.
 - Creates a virtual environment in the project directory.
 - Enables direnv for this subdirectory if direnv available.
@@ -35,8 +35,8 @@ and publishing to PyPI are all baked in and ready to go.
 ## Prerequisites
 
 ### User Accounts
-- GitHub account
-- PyPI account
+- GitHub account _optional_ but recommended
+- PyPI account _optional_ but recommended
 
 ### Required Tools
 - [git][git]
@@ -53,7 +53,10 @@ and publishing to PyPI are all baked in and ready to go.
 
 Once you have uv installed, you get uvx for free!
 
-If you haven't authenticated to GitHub with gh yet, you should do that now:
+If you haven't authenticated to GitHub with gh yet and you've asked
+cookiecutter to create the upstream repository, you should do that
+now:
+
 ```console
 gh auth login
 ```
@@ -63,7 +66,9 @@ All done? Now you are ready to create your project:
 ```console
 uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 ```
-Follow the prompts and you should see something like:
+
+After following the cookiecutter prompts, you should see something
+like:
 
 ```console
 ...
@@ -77,6 +82,11 @@ Task [Create Upstream Repo]: succeeded.
 Task [Push To Upstream    ]: succeeded.
 $
 ```
+
+If you didn't ask for the upstream repo, the last two tasks will not
+be run. If you don't have gh installed or you aren't authenticated,
+those last two tasks will fail but the template generation will
+complete successfully.
 
 ### Example Package Tree
 ```console
@@ -105,10 +115,11 @@ $ tree -a -I .venv -I .git
 If you have [direnv][direnv] installed, your project's virtual
 environment will be activated when you enter the project directory or
 sub-directories. Without direnv, you can activate the project virtual
-environment manually with `source .venv/bin/activate`.
+environment manually with `source .venv/bin/activate`, but it's less
+cool.
 
 Once your venv is activated, all the dev tools are available for use
-without having to use `uv run` to preface the command.
+without having to use `uv run` to preface the command. Check out `poe`!
 
 
 #### Default Poe Tasks 
@@ -149,7 +160,25 @@ Configured tasks:
   clean                 Clean up the project directory.
 ```
 
+These are the tasks that I like. Feel free to hack them up however it
+suits you best. It won't hurt my feelings at all.
+
 #### Example Workflow
+
+```mermaid
+flowchart TD
+    A((Create Project)) --> B[Edit Files]
+    B --> C((Commit))
+    C -->|Not Done| B
+    C --> M[poe publish_major]
+    C --> m[poe publish_minor]
+    C --> P[poe publish_patch]
+    m --> p[.github/workflows/release.yaml]
+    M --> p
+    P --> p
+    p --> test[test package]
+    test --> |succcess| pypi[uv publish project to PyPI]
+```
 
 1. Create project from template
 1. Edit package to suit yourself.
