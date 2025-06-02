@@ -15,3 +15,5 @@ wheels/
 # direnv 
 .envrc
 
+# ruff
+.ruff_cache
