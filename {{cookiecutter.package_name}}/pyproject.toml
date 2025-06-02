@@ -12,10 +12,17 @@ requires-python = ">={{ cookiecutter.python_version_min }},<{{ cookiecutter.pyth
 dependencies = [
     "loguru",
     "typer",
-{% if cookiecutter.use_pydantic_settings == "yes" %}    "pydantic_settings",{% endif %}
+{% if cookiecutter.use_pydantic_settings == "yes" -%}
+    "pydantic_settings",
+{%- endif %}
 ]
 classifiers = [
-{% if cookiecutter.license == "Apache-2.0" %}  "License :: OSI Approved :: Apache Software License",{% endif %}{% if cookiecutter.license == "MIT" %}  "License :: OSI Approved :: MIT License",{% endif %}
+{%- if cookiecutter.license == "Apache-2.0" %}
+  "License :: OSI Approved :: Apache Software License",
+{%- endif %}
+{%- if cookiecutter.license == "MIT" %}
+  "License :: OSI Approved :: MIT License",
+{%- endif %}
   "Development Status :: 4 - Beta",
   "Operating System :: OS Independent",
   "Intended Audience :: Developers",
@@ -131,5 +138,7 @@ ignore_missing_imports = true
 [mypy-typer]
 ignore_missing_imports = true
 
-{% if cookiecutter.use_pydantic_settings == "yes" %}[mypy-pydantic_settings]
-ignore_missing_imports = true{% endif %}
+{% if cookiecutter.use_pydantic_settings == "yes" -%}
+[mypy-pydantic_settings]
+ignore_missing_imports = true
+{% endif -%}
