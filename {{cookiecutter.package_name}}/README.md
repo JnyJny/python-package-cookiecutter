@@ -1,11 +1,11 @@
-{% if cookiecutter.readme_badges == "yes" %}
+{%- if cookiecutter.readme_badges == "yes" %}
 [![Release][badge-release]][release]
 ![Version][badge-pypi-version]
 ![Release Date][badge-release-date]
 ![Python Version][badge-python-version]
 ![License][badge-license]
 ![Monthly Downloads][badge-monthly-downloads]
-{% endif %}
+{% endif -%}
 # {{ cookiecutter.package_name }} - {{ cookiecutter.project_name }}
 
 > {{ cookiecutter.project_short_description }}
@@ -81,8 +81,7 @@ poe --help
 
 [python-package-cookiecutter-badge]: https://img.shields.io/badge/Made_With_Cookiecutter-python--package--cookiecutter-green?style=for-the-badge
 [python-package-cookiecutter]: https://github.com/JnyJny/python-package-cookiecutter
-
-{% if cookiecutter.readme_badges == "yes" %}
+{% if cookiecutter.readme_badges == "yes" -%}
 [badge-release]: {{ cookiecutter.repository }}/actions/workflows/release.yaml/badge.svg
 [release]: {{ cookiecutter.repository }}/actions/workflows/release.yaml
 [badge-pypi-version]: https://img.shields.io/pypi/v/{{ cookiecutter.package_name }}
@@ -90,7 +89,7 @@ poe --help
 [badge-python-version]: https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2F{{cookiecutter.github_username }}%2F{{ cookiecutter.package_name }}%2Fmain%2Fpyproject.toml
 [badge-license]: https://img.shields.io/github/license/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}
 [badge-monthly-downloads]: https://img.shields.io/pypi/dm/{{ cookiecutter.package_name }}
-{% endif %}
+{% endif -%}
 [poe]: https://poethepoet.natn.io
 [uv]: https://docs.astral.sh/uv/
 [direnv]: https://direnv.net
