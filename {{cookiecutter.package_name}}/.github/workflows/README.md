@@ -60,4 +60,4 @@ different ways this problem can be addressed.
 [trusted-publisher]: https://docs.pypi.org/trusted-publishers/
 [uv]: https://docs.astral.sh/uv/
 [semantic-version]: https://semver.org
-[jinja-tricks]: https://github.com/cookiecutter/cookiecutter/issues/1624#issuecomment-2031117503)
+[jinja-tricks]: https://github.com/cookiecutter/cookiecutter/issues/1624#issuecomment-2031117503
