@@ -56,15 +56,10 @@ def post_generation_tasks() -> int:
     if "{{ cookiecutter.create_github_repo }}".lower() == "yes":
         create_repo = Task(
             "Create Upstream Repo",
-            f"gh repo create {{ cookiecutter.package_name }} --private --source=. --remote=upstream",
+            f"gh repo create {{ cookiecutter.package_name }} --public --push --source=. --remote=upstream",
             required=False,
         )
-        push_initial_commit = Task(
-            "Push To Upstream",
-            "git push --set-upstream upstream main",
-            required=False,
-        )
-        tasks.extend([create_repo, push_initial_commit])
+        tasks.append(create_repo)
 
     try:
         for task in tasks:
