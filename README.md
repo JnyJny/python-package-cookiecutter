@@ -51,9 +51,9 @@ and publishing to PyPI are all baked in and ready to go.
 
 Once you have uv installed, you get uvx for free!
 
-If you haven't authenticated to GitHub with gh yet and you've asked
-cookiecutter to create the upstream repository, you should do that
-now:
+If you haven't authenticated to GitHub with gh yet and you plan to
+ask cookiecutter to create the upstream repository, you should do
+that now:
 
 ```console
 gh auth login
