@@ -17,3 +17,9 @@ wheels/
 
 # ruff
 .ruff_cache
+
+# pytest-cov
+.coverage
+
+# logging
+*.log
