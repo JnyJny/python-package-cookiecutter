@@ -12,26 +12,26 @@ testing, code quality checks, and publishing to PyPI are all baked in
 and ready to go.
 
 ## Package Generation Features
-- Auto detects user name and email from .gitconfig.
+- Automatically detects GitHub user name and email (if configured).
 - Creates a virtual environment in the project directory.
-- Enables direnv for this subdirectory if direnv available.
-- Automatically syncs deps and project into virtual environment.
+- Enables `direnv` for this subdirectory if `direnv` available.
+- Automatically syncs dependencies and the project into virtual environment.
 - Automatically initializes a git repository with a main branch.
 - Automatically creates initial commit.
-- Optionally creates upstream repository and pushes (GitHub only, requires [gh][gh]).
+- Optionally creates an upstream repository and pushes (GitHub only, requires [gh][gh]).
 
 ## Package Features
 - Python project designed to be managed with [uv][uv].
 - Exposes a command line interface built with [typer][typer].
-- Settings optionally managed vi [pydantic-settings][pydantic-settings].
+- Settings optionally managed via [pydantic-settings][pydantic-settings].
 - Package is callable via `python -m <package>`.
 - [Poe the Poet][poe] tasks integrated into pyproject.toml:
   - Test with pytest.
   - Generate HTML code coverage reports.
-  - Run code quality checks using mypy, ruff, and ty.
+  - Run code quality checks using `mypy`, `ruff`, and `ty`.
   - Publish to PyPI via GitHub Actions with `poe publish`.
 - Development tool options integrated into pyproject.toml.
-- Optionally configured badges in README.md.
+- Optionally configured badges in README.md for cool points.
 
 ## Prerequisites
 
@@ -50,10 +50,10 @@ and ready to go.
 
 ## Initial Project Creation
 
-Once you have uv installed, you get uvx for free!
+Once you have `uv` installed, you get `uvx` for free!
 
-If you haven't authenticated to GitHub with gh yet and you plan to
-ask cookiecutter to create the upstream repository, you should do
+If you haven't authenticated to GitHub with `gh` yet and you plan to
+ask `cookiecutter` to create the upstream repository, you should do
 that now:
 
 ```console
@@ -66,7 +66,7 @@ All done? Now you are ready to create your project:
 uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 ```
 
-After following the cookiecutter prompts, you should see the
+After following the `cookiecutter` prompts, you should see the
 following:
 
 ```console
@@ -83,7 +83,7 @@ $
 ```
 
 If you didn't ask for the upstream repo, the last two tasks will not
-be run. If you don't have gh installed or you aren't authenticated,
+be run. If you don't have `gh` installed or you aren't authenticated,
 those last two tasks will fail but the template generation will
 complete successfully.
 
@@ -115,7 +115,7 @@ $ tree -a -I .venv -I .git
 
 If you have [direnv][direnv] installed, your project's virtual
 environment will be activated when you enter the project directory or
-sub-directories. Without direnv, you can activate the project virtual
+sub-directories. Without `direnv`, you can activate the project virtual
 environment manually with `source .venv/bin/activate`, but it's less
 cool.
 
