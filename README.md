@@ -3,12 +3,13 @@
 # Python Package Cookiecutter Template
 
 There are many [cookiecutter][cookiecutter] [templates][templates],
-but this one is mine. With it, you can quickly create a full-featured
-Python package designed to be managed with [uv][uv], a default
-[typer][typer] command-line interface, optional settings using
-[pydantic-settings][pydantic-settings] and logging using my favorite
-logger, [loguru][loguru]. Best of all, testing, code quality checks,
-and publishing to PyPI are all baked in and ready to go.
+but this one is mine and I'm sharing it with you. With it, you can
+quickly create a full-featured Python package designed to be managed
+with [uv][uv], a default [typer][typer] command-line interface,
+optional settings using [pydantic-settings][pydantic-settings] and
+logging using my favorite logger, [loguru][loguru]. Best of all,
+testing, code quality checks, and publishing to PyPI are all baked in
+and ready to go.
 
 ## Package Generation Features
 - Auto detects user name and email from .gitconfig.
@@ -91,6 +92,7 @@ complete successfully.
 ```console
 $ tree -a -I .venv -I .git
 .
+├── .cookiecutter.json
 ├── .envrc
 ├── .github
 │   └── workflows
