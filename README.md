@@ -39,14 +39,16 @@ and ready to go.
 - GitHub account _optional_ but recommended
 - PyPI account _optional_ but recommended
 
-### Required Tools
-- [git][git]
-- [uv][uv]
-- [cookiecutter][cookiecutter] via uvx
+### Tools You Need To Make This Work
 
-### _Optional_ but Recommended Tools
-- [direnv][direnv]
-- [gh][gh]
+| Tool | Required | Optional | Use |
+|------|----------|----------|-----|
+|[cookiecutter][cookiecutter]| ✅ | |Creates projects from templates.|
+|[git][git]| ✅ | | Version control system. |
+|[uv][uv]| ✅ | | Manage python, virtual environments and your project!|
+|[direnv][direnv]| |✅ |Automatically activate and deactivate virtual environments.|
+|[gh][gh]| | ✅ | GitHub CLI tool for working with repositories.|
+
 
 ## Initial Project Creation
 
@@ -83,8 +85,8 @@ $
 
 If you didn't ask for the upstream repo, the last two tasks will not
 be run. If you don't have `gh` installed or you aren't authenticated,
-those last two tasks will fail but the template generation will
-complete successfully.
+those last task will fail but the template generation will complete
+successfully.
 
 
 ### Example Generated Package Tree
@@ -168,7 +170,8 @@ suits you best. It won't hurt my feelings at all.
 ```mermaid
 flowchart TD
     Create((Create Project)) --> Edit[Edit Files]
-    Edit --> Commit((Commit))
+    Edit --> |Add Bugs| Commit((Commit))
+    Edit --> |Remove Bugs| Commit
     Commit -->|Not Done| Edit
     Commit --> |Breaking Features| Major[poe publish_major]
     Commit --> |Non-breaking Features| Minor[poe publish_minor]
@@ -179,11 +182,6 @@ flowchart TD
     workflow --> test[test package with pytest]
     test --> |succcess| publish[uv publishes project to PyPI]
 ```
-
-1. Create project from template
-1. Edit package to suit yourself.
-1. Commit and push changes to your repo.
-1. Publish a minor release using `poe publish`.
 
 ### Things You Will Want to Change
 
