@@ -83,9 +83,9 @@ Task [Create Upstream Repo..........] 🟢
 $
 ```
 
-If you didn't ask for the upstream repo, the last two tasks will not
-be run. If you don't have `gh` installed or you aren't authenticated,
-those last task will fail but the template generation will complete
+If you didn't ask for the upstream repo, the last task will not run.
+If you don't have `gh` installed or you aren't authenticated,
+the last task will fail but the template generation will complete
 successfully.
 
 
