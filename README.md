@@ -71,14 +71,13 @@ following:
 
 ```console
 ...
-Task [Create .venv        ]: succeeded.
-Task [Enable Direnv       ]: succeeded.
-Task [Sync Project Deps   ]: succeeded.
-Task [Initialize Git      ]: succeeded.
-Task [Add Files           ]: succeeded.
-Task [Initial Commit      ]: succeeded.
-Task [Create Upstream Repo]: succeeded.
-Task [Push To Upstream    ]: succeeded.
+Task [Create .venv..................] 🟢
+Task [Enable Direnv.................] 🟢
+Task [Sync Project Deps.............] 🟢
+Task [Initialize Git................] 🟢
+Task [Add Files.....................] 🟢
+Task [Initial Commit................] 🟢
+Task [Create Upstream Repo..........] 🟢
 $
 ```
 
