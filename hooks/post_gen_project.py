@@ -6,11 +6,18 @@ import sys
 from pathlib import Path
 from typing import NamedTuple
 
+_SUCCESS = "🟢"
+_FAILED_NOTREQUIRED = "🟡"
+_FAILURE = "🔴"
+
 
 class Task(NamedTuple):
     name: str
     task: str
     required: bool
+
+    def __str__(self) -> str:
+        return f"Task [{self.name.ljust(30, '.')}]"
 
     @property
     def cmd(self) -> list[str]:
@@ -18,8 +25,6 @@ class Task(NamedTuple):
 
     def __call__(self, verbose: bool = True) -> str:
         try:
-            if verbose:
-                print(f"Task [{self.name:20}]: ", end="", flush=True)
             results = subprocess.run(
                 self.cmd,
                 check=True,
@@ -28,17 +33,19 @@ class Task(NamedTuple):
                 shell=False,
             )
             if verbose:
-                print("succeeded.")
+                print(self, _SUCCESS)
             return results.stdout.strip()
-        except Exception as error:
-            if verbose:
-                print(f"failed: {error}")
+        except subprocess.CalledProcessError as error:
+            if not self.required:
+                print(self, _FAILED_NOTREQUIRED)
+            else:
+                print(self, _FAILURE)
+                print(f"\tCommand: {self.task}")
+                print(f"\tstdout:  {error.stdout}")
+                print(f"\tstderr:  {error.stderr}")
 
-            if self.required:
-                print(f"Command: {self.task}")
-                print(f"stdout:  {error.stdout}")
-                print(f"stderr:  {error.stderr}")
                 raise
+
             return ""
 
 
@@ -66,7 +73,8 @@ def post_generation_tasks() -> int:
         for task in tasks:
             task()
         return 0
-    except:
+    except Exception as error:
+        print(f"{task} {task.task} {error}")
         return -1
 
 
