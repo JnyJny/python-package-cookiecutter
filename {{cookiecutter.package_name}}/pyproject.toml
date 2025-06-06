@@ -71,8 +71,14 @@ mypy.help = "Run mypy type checker on source. [Code Quality]"
 ty.cmd = "ty check src/{{ cookiecutter.package_name }}"
 ty.help = "Run ty type checker on source. [Code Quality]"
 
-ruff.cmd = "ruff check src/{{ cookiecutter.package_name }}"
-ruff.help = "Run ruff linter on source. [Code Quality]"
+ruff-check.cmd = "ruff check src/{{ cookiecutter.package_name }} tests"
+ruff-check.help = "Run ruff check on source. [Code Quality]"
+
+ruff-format.cmd = "ruff format src tests"
+ruff-format.help = "Run ruff format on source. [Code Quality]"
+
+ruff.sequence = ["ruff-check", "ruff-format"]
+ruff.help = "Run Ruff check and format on source. [Code Quality]"
 
 check.sequence = [ "ruff", "ty", "mypy" ]
 check.help = "Run all code quality tools on source."
@@ -127,6 +133,8 @@ clean.help = "Clean up the project directory."
 [tool.isort]
 
 [tool.ruff]
+fix = true
+lint.select = [ "I" ]
 
 [tool.ty]
 
