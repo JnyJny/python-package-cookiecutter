@@ -34,6 +34,12 @@ classifiers = [
   "Programming Language :: Python :: {{ cookiecutter.python_version_min }}",
 ]
 
+[project.urls]
+Documentation = "https://github.com/{{ cookiecutter.github_user }}/{{ cookiecutter.repository }}#readme"
+Issues = "https://github.com/{{ cookiecutter.github_user }}/{{ cookiecutter.repository }}/issues"
+Source = "https://github.com/{{ cookiecutter.github_user }}/{{ cookiecutter.repository }}"
+
+
 [project.scripts]
 {{cookiecutter.cli_name}} = "{{ cookiecutter.package_name }}.__main__:cli"
 
