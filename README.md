@@ -11,7 +11,7 @@ logging using my favorite logger, [loguru][loguru]. Best of all,
 testing, code quality checks, and publishing to PyPI are all baked in
 and ready to go.
 
-## Package Generation Features
+## Build Features
 - Automatically detects GitHub user name and email (if configured).
 - Creates a virtual environment in the project directory.
 - Enables `direnv` for this subdirectory if `direnv` available.
@@ -50,7 +50,7 @@ and ready to go.
 |[gh][gh]| | ✅ | GitHub CLI tool for working with repositories.|
 
 
-## Initial Project Creation
+## Creating Your Project
 
 Once you have `uv` installed, you get `uvx` for free!
 
@@ -89,7 +89,8 @@ the last task will fail but the template generation will complete
 successfully.
 
 
-### Example Generated Package Tree
+### Example Package Tree
+
 ```console
 $ tree -a -I .venv -I .git
 .
@@ -112,7 +113,7 @@ $ tree -a -I .venv -I .git
 └── uv.lock
 ```
 
-### Post Install
+## Post Install
 
 If you have [direnv][direnv] installed, your project's virtual
 environment will be activated when you enter the project directory or
@@ -124,7 +125,7 @@ Once your venv is activated, all the dev tools are available for use
 without having to use `uv run` to preface the command. Check out `poe`!
 
 
-#### Default Poe Tasks 
+## Default Poe Tasks 
 
 ```console
 $ poe
@@ -167,6 +168,8 @@ suits you best. It won't hurt my feelings at all.
 
 ## Example Development Workflow
 
+This is roughly how I write code and how I would use the generated package.
+
 ```mermaid
 flowchart TD
     Create((Create Project)) --> Edit[Edit Files]
@@ -183,9 +186,9 @@ flowchart TD
     test --> |succcess| publish[uv publishes project to PyPI]
 ```
 
-### Things You Will Want to Change
+## Things You Will Want to Change
 
-#### .github/workflows/release.yml
+### .github/workflows/release.yml
 
 The `release.yaml` workflow defines a matrix of operating systems and
 Python versions to test against. Tests are run when a [semantic
