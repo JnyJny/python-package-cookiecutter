@@ -1,0 +1,9 @@
+---
+# https://docs.github.com/en/code-security/dependabot/
+
+version: 2
+updates:
+  - package-ecosystem: "uv" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "daily"
