@@ -52,8 +52,6 @@ packages = ["src/{{ cookiecutter.package_name }}"]
 
 [dependency-groups]
 dev = [
-    "black",
-    "isort",
     "mypy",
     "poethepoet",
     "pytest",
@@ -133,10 +131,6 @@ clean.help = "Clean up the project directory."
 # Tool Options
 
 [tool.pytest.ini_options]
-
-[tool.black]
-
-[tool.isort]
 
 [tool.ruff]
 fix = true
