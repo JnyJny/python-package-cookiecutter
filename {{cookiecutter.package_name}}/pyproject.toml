@@ -35,9 +35,9 @@ classifiers = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/{{ cookiecutter.github_user }}/{{ cookiecutter.repository }}#readme"
-Issues = "https://github.com/{{ cookiecutter.github_user }}/{{ cookiecutter.repository }}/issues"
-Source = "https://github.com/{{ cookiecutter.github_user }}/{{ cookiecutter.repository }}"
+Documentation = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.repository }}#readme"
+Issues = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.repository }}/issues"
+Source = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.repository }}"
 
 
 [project.scripts]
