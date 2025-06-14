@@ -8,12 +8,15 @@ quickly create a full-featured Python package designed to be managed
 with [uv][uv] and [direnv][direnv], a default [typer][typer]
 command-line interface, optional settings using
 [pydantic-settings][pydantic-settings] and logging using my favorite
-logger, [loguru][loguru]. Best of all development activities like:
-testing, code quality checks, and publishing to PyPI are all baked in
-and ready to go thanks to [Poe The Poet][poe].
+logger, [loguru][loguru]. Development activities like testing, code
+quality checks, and publishing to PyPI are all baked in and ready to
+go thanks to [Poe The Poet][poe]. Best of all, I've added all sorts of
+templates and base files to help provide a great GitHub experience for
+you and people that interact with your project repository.
 
 ## Build Features
 
+- Choose from a [plethora][plethora] of Open Source licenses.
 - Automatically detects GitHub user name and email address (if configured).
 - Creates a virtual environment in the project directory.
 - Enables `direnv` for this subdirectory if `direnv` available.
@@ -38,7 +41,6 @@ and ready to go thanks to [Poe The Poet][poe].
 - Optionally configured badges in README.md for cool points.
 - Optionally configured [dependabot][dependabot] dependency checker.
 - Optionally managed CLI settings using [pydantic-settings][pydantic-settings].
-
 
 
 ## Prerequisites
@@ -216,7 +218,9 @@ flowchart TD
 ## Things You Will Want to Change
 
 This package is how I like things and it would be an unimaginable
-coincidence if this was exactly how you like things. 
+coincidence if this was exactly how you like things. I've listed some
+files here that you will definitely want to consider changing to suit
+your needs.
 
 ### LICENSE
 
@@ -237,6 +241,17 @@ I supply a couple of [Trove classifiers][trove-classifiers] in the
 project `pyproject.toml` file, however you should update them to
 match the specific details of your project. It will help people
 connect with your project.
+
+### pyproject.toml - ruff rules
+
+You may not want to check again ALL of the rules.
+
+
+### pyproject.toml - tool.poe.tasks.qc
+
+The `qc` poe task runs all the of the code quality tasks which could
+be called "a lot". Pare those down or add the checks that make sense
+for your project.
 
 
 ### .github/ISSUE_TEMPLATE/*.yaml
@@ -289,4 +304,4 @@ python-version lists to fit your needs.
 [release-drafter]: https://github.com/marketplace/actions/release-drafter
 [github-release]: https://github.com/marketplace/actions/create-a-release-in-a-github-action
 [github-templates]: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates
-
+[plethora]: https://youtu.be/P8ROhP_3-Qk?si=Qlt6RAERwT1VbEbw&t=24
