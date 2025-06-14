@@ -243,13 +243,8 @@ connect with your project.
 
 This directory holds a set of YAML files describing GitHub [Issue
 templates][github-templates]. You should edit them to reflect your
-projects needs and personality. You'll specifically want to edit
-`config.yaml` as it has entries for issue links that would take the
-user _offsite_ rather than open an issue. The default (broken) links
-are cookiecutter.repository/docs and a bogus Discord channel
-invite. Maybe, I don't know much about Discord.  You should definitely
-change those things.
-
+projects needs and personality. You may want to uncomment and edit
+issue links in `config.yaml` if it suits your needs.
 
 ### .github/workflows/release.yml
 
