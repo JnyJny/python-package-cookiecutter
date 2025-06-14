@@ -59,27 +59,27 @@ dev = [
 _generate_coverage = "pytest --cov=./src/{{ cookiecutter.package_name }} --cov-report=html"
 _open_report = "open htmlcov/index.html"
 coverage.sequence = [ "_generate_coverage", "_open_report"]
-coverage.help = "Generate HTML code coverage report and open it in a browser. [Code Quality]"
+coverage.help = "[Code Quality] Generate HTML code coverage report and open it in a browser."
 
 mypy.cmd = "mypy --config-file pyproject.toml src/{{ cookiecutter.package_name }}"
-mypy.help = "Run mypy type checker on source. [Code Quality]"
+mypy.help = "[Code Quaility]Run mypy type checker on source."
 
 ty.cmd = "ty check src/{{ cookiecutter.package_name }}"
-ty.help = "Run ty type checker on source. [Code Quality]"
+ty.help = "[Code Quality] Run ty type checker on source."
 
 ruff-check.cmd = "ruff check --select ALL src/{{ cookiecutter.package_name }} tests"
-ruff-check.help = "Run ruff check on source. [Code Quality]"
+ruff-check.help = "[Code Quality] Run ruff check on source."
 
 ruff-format.cmd = "ruff format src tests"
-ruff-format.help = "Run ruff format on source. [Code Quality]"
+ruff-format.help = "[Code Quality] Run ruff format on source."
 
 ruff.sequence = ["ruff-check", "ruff-format"]
-ruff.help = "Run Ruff check and format on source. [Code Quality]"
+ruff.help = "[Code Quality] Run Ruff check and format on source."
 
 check.sequence = [ "ruff", "ty", "mypy" ]
-check.help = "Run all code quality tools on source."
+check.help = "[Code Quality] Run all code quality tools on source."
 
-test.cmd = "pytest"
+test.cmd = "[Tests] pytest"
 test.help = "Runs testing suites using pytest."
 
 # Publish tasks
@@ -104,13 +104,13 @@ _update_pyproject = ["_add", "_commit", "_tag", "_push_tags", "_push"]
 ## See .github/workflows/release.yaml
 
 publish_patch.sequence = ["_patch_bump", "_update_pyproject"]
-publish_patch.help = "Publish a patch release."
+publish_patch.help = "[Publish] Patch release."
 
 publish_minor.sequence = ["_minor_bump", "_update_pyproject"]
-publish_minor.help = "Publish a minor release."
+publish_minor.help = "[Publish] Minor release."
 
 publish_major.sequence = ["_major_bump", "_update_pyproject"]
-publish_major.help = "Publish a major release."
+publish_major.help = "[Publish] Major release."
 
 publish.ref =  "publish_patch"
 publish.help = "Publish a minor release."
@@ -118,7 +118,7 @@ publish.help = "Publish a minor release."
 # Clean
 
 clean.cmd = "rm -rf htmlcov dist {{ cookiecutter.package_name }}.egg-info *.log"
-clean.help = "Clean up the project directory."
+clean.help = "[Clean] Remove testing, build and code quality artifacts."
 
 # Tool Options
 
