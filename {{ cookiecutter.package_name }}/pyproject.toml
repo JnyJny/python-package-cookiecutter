@@ -6,9 +6,7 @@ readme = "README.md"
 license = "{{ cookiecutter.license }}"
 authors = [{name = "{{ cookiecutter.github_username }}", email = "{{ cookiecutter.email }}"}]
 repository = "{{ cookiecutter.repository }}"
-
 requires-python = ">={{ cookiecutter.python_version_min }},<{{ cookiecutter.python_version_max }}"
-
 dependencies = [
     "loguru",
     "typer",
@@ -69,7 +67,7 @@ mypy.help = "Run mypy type checker on source. [Code Quality]"
 ty.cmd = "ty check src/{{ cookiecutter.package_name }}"
 ty.help = "Run ty type checker on source. [Code Quality]"
 
-ruff-check.cmd = "ruff check src/{{ cookiecutter.package_name }} tests"
+ruff-check.cmd = "ruff check --select ALL src/{{ cookiecutter.package_name }} tests"
 ruff-check.help = "Run ruff check on source. [Code Quality]"
 
 ruff-format.cmd = "ruff format src tests"
