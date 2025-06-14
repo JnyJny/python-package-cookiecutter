@@ -1,4 +1,8 @@
-"""
+"""{{ cookiecutter.package_name }} Self Command-Line Interface
+
+This module provides a command-line interface to interact with
+internals of the {{ cookiecutter.package_name }} package (if
+desired).
 """
 
 from importlib.metadata import version
@@ -10,7 +14,7 @@ cli = typer.Typer()
 
 @cli.command(name="version")
 def version_subcommand() -> None:
-    """Show the version of the package."""
+    """Retrieve the package version."""
     try:
         pkg_version = version("{{ cookiecutter.package_name }}")
         logger.info(f"Package version: {pkg_version}")
