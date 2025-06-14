@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Pre-generation tasks for cookiecutter templates."""
+
 import sys
 
 

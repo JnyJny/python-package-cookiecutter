@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+"""Pre-prompt tasks for cookiecutter templates."""
+
+from __future__ import annotations
 
 import json
 import sys
@@ -7,9 +10,8 @@ from pathlib import Path
 from post_gen_project import Task
 
 
-def pre_prompt_tasks(config_file: str | Path = None) -> int:
+def pre_prompt_tasks(config_file: str | Path | None = None) -> int:
     """Things to do before prompting the user."""
-
     config_file = Path(config_file or "cookiecutter.json")
 
     tasks = [
@@ -35,15 +37,14 @@ def pre_prompt_tasks(config_file: str | Path = None) -> int:
         cookiecutter = json.load(config_file.open())
 
         for key, task in tasks:
-            try:
-                cookiecutter[key] = task(verbose=False)
-            except:
-                pass
+            cookiecutter[key] = task(verbose=True)
 
         json.dump(cookiecutter, config_file.open("w"), indent=4)
+
     except Exception as error:
-        print(f"Pre-Prompt Tasks failed: {error}")
-        return -1
+        print(f"Pre-Prompt Tasks failed: {error}")  # noqa: T201
+        raise
+
     return 0
 
 
