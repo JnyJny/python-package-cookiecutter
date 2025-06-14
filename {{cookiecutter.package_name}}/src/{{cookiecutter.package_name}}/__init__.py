@@ -1,4 +1,4 @@
-""" {{ cookiecutter.package_name }}
+"""{{ cookiecutter.package_name }}
 
 {{ cookiecutter.project_short_description }}
 """

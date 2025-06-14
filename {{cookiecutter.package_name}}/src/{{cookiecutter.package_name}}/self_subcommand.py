@@ -1,8 +1,7 @@
-"""{{ cookiecutter.package_name }} Self Command-Line Interface
+"""{{ cookiecutter.cli_name }} Self Command-Line Interface
 
 This module provides a command-line interface to interact with
-internals of the {{ cookiecutter.package_name }} package (if
-desired).
+internals of the {{ cookiecutter.cli_name }} CLI.
 """
 
 from importlib.metadata import version
@@ -11,6 +10,7 @@ import typer
 from loguru import logger
 
 cli = typer.Typer()
+
 
 @cli.command(name="version")
 def version_subcommand() -> None:
