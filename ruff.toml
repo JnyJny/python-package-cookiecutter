@@ -1,3 +1,4 @@
 fix = true
-lint.select = [ "I", "ALL" ]
-lint.ignore = [ "T201", "D203", "D211", "D212", "D213", "COM812" ]
+lint.select = [ "ALL" ]
+lint.ignore = [ "D203", "D211", "D212", "D213", "COM812" ]
+
