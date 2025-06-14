@@ -17,12 +17,6 @@ dependencies = [
 {%- endif %}
 ]
 classifiers = [
-{%- if cookiecutter.license == "Apache-2.0" %}
-  "License :: OSI Approved :: Apache Software License",
-{%- endif %}
-{%- if cookiecutter.license == "MIT" %}
-  "License :: OSI Approved :: MIT License",
-{%- endif %}
   "Development Status :: 4 - Beta",
   "Operating System :: OS Independent",
   "Intended Audience :: Developers",
