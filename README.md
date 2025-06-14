@@ -5,14 +5,16 @@
 There are many [cookiecutter][cookiecutter] [templates][templates],
 but this one is mine and I'm sharing it with you. With it, you can
 quickly create a full-featured Python package designed to be managed
-with [uv][uv], a default [typer][typer] command-line interface,
-optional settings using [pydantic-settings][pydantic-settings] and
-logging using my favorite logger, [loguru][loguru]. Best of all,
+with [uv][uv] and [direnv][direnv], a default [typer][typer]
+command-line interface, optional settings using
+[pydantic-settings][pydantic-settings] and logging using my favorite
+logger, [loguru][loguru]. Best of all development activities like:
 testing, code quality checks, and publishing to PyPI are all baked in
-and ready to go.
+and ready to go thanks to [Poe The Poet][poe].
 
 ## Build Features
-- Automatically detects GitHub user name and email (if configured).
+
+- Automatically detects GitHub user name and email address (if configured).
 - Creates a virtual environment in the project directory.
 - Enables `direnv` for this subdirectory if `direnv` available.
 - Automatically syncs dependencies and the project into virtual environment.
@@ -21,9 +23,9 @@ and ready to go.
 - Optionally creates an upstream repository and pushes (GitHub only, requires [gh][gh]).
 
 ## Package Features
+
 - Python project designed to be managed with [uv][uv].
 - Exposes a command line interface built with [typer][typer].
-- Settings optionally managed via [pydantic-settings][pydantic-settings].
 - Package is callable via `python -m <package>`.
 - [Poe the Poet][poe] tasks integrated into pyproject.toml:
   - Test with pytest.
@@ -31,7 +33,13 @@ and ready to go.
   - Run code quality checks using `mypy`, `ruff`, and `ty`.
   - Publish to PyPI via GitHub Actions with `poe publish`.
 - Development tool options integrated into pyproject.toml.
+- Generic GitHub Issue and Pull Request templates.
+- Configured to use [direnv][direnv] to automatically activate & deactivate venvs.
 - Optionally configured badges in README.md for cool points.
+- Optionally configured [dependabot][dependabot] dependency checker.
+- Optionally managed CLI settings using [pydantic-settings][pydantic-settings].
+
+
 
 ## Prerequisites
 
@@ -68,11 +76,13 @@ All done? Now you are ready to create your project:
 uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 ```
 
-After following the `cookiecutter` prompts, you should see the
+After answering the `cookiecutter` prompts, you should see the
 following:
 
 ```console
 ...
+Task [GitHub Username...............] 🟢
+Task [GitHub Email..................] 🟢
 Task [Create .venv..................] 🟢
 Task [Enable Direnv.................] 🟢
 Task [Sync Project Deps.............] 🟢
@@ -80,14 +90,13 @@ Task [Initialize Git................] 🟢
 Task [Add Files.....................] 🟢
 Task [Initial Commit................] 🟢
 Task [Create Upstream Repo..........] 🟢
-$
+$ 
 ```
 
-If you didn't ask for the upstream repo, the last task will not run.
-If you don't have `gh` installed or you aren't authenticated,
-the last task will fail but the template generation will complete
-successfully.
-
+If you didn't ask to have the upstream GitHub repository created, the
+last task will not run.  If you don't have `gh` installed or you
+aren't authenticated, the last task will fail but the template
+generation will complete successfully.
 
 ### Example Package Tree
 
@@ -97,21 +106,35 @@ $ tree -a -I .venv -I .git
 ├── .cookiecutter.json
 ├── .envrc
 ├── .github
+│   ├── dependabot.yml
+│   ├── ISSUE_TEMPLATE
+│   │   ├── 1_bug_report.yaml
+│   │   ├── 2_feature_request.yaml
+│   │   ├── 3_question.yaml
+│   │   └── config.yaml
+│   ├── PULL_REQUEST_TEMPLATE.md
 │   └── workflows
 │       ├── README.md
 │       └── release.yaml
 ├── .gitignore
+├── CONTRIBUTING.md
 ├── LICENSE
 ├── pyproject.toml
 ├── README.md
 ├── src
 │   └── thing
 │       ├── __init__.py
-│       └── __main__.py
+│       ├── __main__.py
+│       ├── self_subcommand.py
+│       └── settings.py
 ├── tests
 │   └── __init__.py
 └── uv.lock
 ```
+
+The `.cookiecutter.json` file is a dump of the cookiecutter JSON that
+created this project.  The `.envrc` file can be safely removed if you
+aren't using [direnv][direnv].
 
 ## Post Install
 
@@ -121,8 +144,9 @@ sub-directories. You can activate the project virtual environment
 manually without `direnv` using `source .venv/bin/activate`, but it's
 less cool.
 
-Once your venv is activated, all the dev tools are available for use
-without having to use `uv run` to preface the command. Check out `poe`!
+Once your venv is activated, all the development tools are available
+for use without having to use `uv run` to preface the command. Check
+out `poe`!
 
 
 ## Default Poe Tasks 
@@ -150,17 +174,20 @@ Global options:
   --no-ansi             Force disable ANSI output
 
 Configured tasks:
-  coverage              Generate HTML code coverage report and open it in a browser. [Code Quality]
-  mypy                  Run mypy type checker on source. [Code Quality]
-  ty                    Run ty type checker on source. [Code Quality]
-  ruff                  Run ruff linter on source. [Code Quality]
-  check                 Run all code quality tools on source.
-  test                  Runs testing suites using pytest.
-  publish_patch         Publish a patch release.
-  publish_minor         Publish a minor release.
-  publish_major         Publish a major release.
-  publish               Publish a minor release.
-  clean                 Clean up the project directory.
+  coverage              [Code Quality] Open generated coverage report in a browser.
+  mypy                  [Code Quality] Run mypy type checker on source.
+  ty                    [Code Quality] Run ty type checker on source.
+  ruff-check            [Code Quality] Run ruff check on source.
+  ruff-format           [Code Quality] Run ruff format on source.
+  ruff                  [Code Quality] Run Ruff check and format on source.
+  check                 [Code Quality] Run all code quality tools on source.
+  test                  [Code Quality] Runs testing suites using pytest.
+  qc                    [Code Quality] Run all code quality tasks.
+  publish_patch         [Publish] Patch release.
+  publish_minor         [Publish] Minor release.
+  publish_major         [Publish] Major release.
+  publish               [Publish] Minor release.
+  clean                 [Clean] Remove testing, build and code quality artifacts.
 ```
 
 These are the tasks that I like. Feel free to hack them up however it
@@ -188,6 +215,42 @@ flowchart TD
 
 ## Things You Will Want to Change
 
+This package is how I like things and it would be an unimaginable
+coincidence if this was exactly how you like things. 
+
+### LICENSE
+
+Depending on the Open Source license you chose, you may need to edit
+the license file and/or source files to be in compliance with the
+license. I am not a lawyer. I don't play one on TV. I am the last
+person to ask for advice on this matter. Also, I am not a lawyer.
+
+### CONTRIBUTING.md
+
+You want to update this file with all the details that potential
+contributors to your project need to know. This file is currently a
+skeleton. Be as specific as possible.
+
+### pyproject.toml - Trove Classifiers
+
+I supply a couple of [Trove classifiers][trove-classifiers] in the
+project `pyproject.toml` file, however you should update them to
+match the specific details of your project. It will help people
+connect with your project.
+
+
+### .github/ISSUE_TEMPLATE/*.yaml
+
+This directory holds a set of YAML files describing GitHub [Issue
+templates][github-templates]. You should edit them to reflect your
+projects needs and personality. You'll specifically want to edit
+`config.yaml` as it has entries for issue links that would take the
+user _offsite_ rather than open an issue. The default (broken) links
+are cookiecutter.repository/docs and a bogus Discord channel
+invite. Maybe, I don't know much about Discord.  You should definitely
+change those things.
+
+
 ### .github/workflows/release.yml
 
 The `release.yaml` workflow defines a matrix of operating systems and
@@ -206,18 +269,14 @@ sort of rigor in testing, so feel free to trim the os and
 python-version lists to fit your needs.
 
 
-## TODO
-- Automatic [GitHub release][github-release] creation in release workflow.
-- Automatic [release notes generator][release-drafter] in release workflow.
-- Integration with [readthedocs.io][readthedocs].
-- Add [GitHub templates][github-templates] to .github directory.
-
-
 <!-- End Links -->
+
+<!-- badges -->
 [python-package-cookiecutter-badge]: https://img.shields.io/badge/Made_With_Cookiecutter-python--package--cookiecutter-green?style=for-the-badge
 [python-package-cookiecutter]: https://github.com/JnyJny/python-package-cookiecutter
 [release-badge]: https://img.shields.io/github/v/release/JnyJny/python-package-cookiecutter?sort=semver&display_name=release&style=for-the-badge&color=green
 
+<!-- resources -->
 [cookiecutter]: https://cookiecutter.readthedocs.io/en/stable/index.html
 [templates]: https://www.cookiecutter.io/templates
 [poe]: https://poethepoet.natn.io
@@ -229,8 +288,8 @@ python-version lists to fit your needs.
 [loguru]: https://loguru.readthedocs.io/en/stable/
 [pydantic-settings]: https://docs.pydantic.dev/latest/api/pydantic_settings/
 [semantic-version]: https://semver.org
-
-<!-- TODO References -->
+[dependabot]: https://docs.github.com/en/code-security/dependabot
+[trove-classifiers]: https://pypi.org/classifiers/
 [readthedocs]: https://docs.readthedocs.com/platform/latest/tutorial/index.html
 [release-drafter]: https://github.com/marketplace/actions/release-drafter
 [github-release]: https://github.com/marketplace/actions/create-a-release-in-a-github-action
