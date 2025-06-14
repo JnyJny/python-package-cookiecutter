@@ -25,7 +25,7 @@ def global_callback(
         False,
         "--debug",
         '-D',
-        help="Enable debugging output"),
+        help="Enable debugging output."),
 ) -> None:
     """{{ cookiecutter.project_short_description }}
     """
