@@ -13,12 +13,12 @@
     "python_version_max": "4.0",
     "python_version_dev": "{{ cookiecutter._python_versions[-1] }}",
     "repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}",
-    "readme_badges": true
-    "create_github_repo": true
+    "readme_badges": true,
+    "create_github_repo": true,
     "license": ["apache-2.0","agpl-3.0","bsd-2-clause","bsd-3-clause","bsl-1.0","cc0-1.0","epl-2.0","gpl-2.0","gpl-3.0","lgpl-2.1"],
-    "use_pydantic_settings": true
-    "log_to_file": true
-    "use_dependabot": true
+    "use_pydantic_settings": true,
+    "log_to_file": true,
+    "use_dependabot": true,
     "python_testing_matrix": [
 	"{{ cookiecutter._python_versions }}",
 	"{{ cookiecutter._python_versions[0] }}",
