@@ -57,7 +57,16 @@ class Task(NamedTuple):
 def post_generation_tasks() -> int:
     """Things to do after cookiecutter has rendered the template."""
     tasks = [
-        Task("Create .venv", "uv --verbose venv", required=True),
+        Task(
+            "Install Dev Python",
+            "uv python install {{ cookiecutter.python_version_dev }}",
+            required=True,
+        ),
+        Task(
+            "Create .venv",
+            "uv --verbose venv --python {{ cookiecutter.python_version_dev }} --managed-python",
+            required=True,
+        ),
         Task("Enable Direnv", "direnv allow", required=False),
         Task("Sync Project Deps", "uv --quiet --no-progress sync", required=True),
         Task("Initialize Git", "git init --quiet --initial-branch main", required=True),
