@@ -10,7 +10,7 @@ requires-python = ">={{ cookiecutter.python_version_min }},<{{ cookiecutter.pyth
 dependencies = [
     "loguru",
     "typer",
-{% if cookiecutter.use_pydantic_settings == "yes" -%}
+{% if cookiecutter.use_pydantic_settings -%}
     "pydantic_settings",
 {%- endif %}
 ]
@@ -142,7 +142,7 @@ ignore_missing_imports = true
 [mypy-typer]
 ignore_missing_imports = true
 
-{% if cookiecutter.use_pydantic_settings == "yes" -%}
+{% if cookiecutter.use_pydantic_settings -%}
 [mypy-pydantic_settings]
 ignore_missing_imports = true
 {% endif -%}
