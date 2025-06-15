@@ -42,7 +42,6 @@ you and people that interact with your project repository.
 - Optionally configured [dependabot][dependabot] dependency checker.
 - Optionally managed CLI settings using [pydantic-settings][pydantic-settings].
 
-
 ## Prerequisites
 
 ### User Accounts
@@ -82,9 +81,6 @@ After answering the `cookiecutter` prompts, you should see the
 following:
 
 ```console
-...
-Task [GitHub Username...............] 🟢
-Task [GitHub Email..................] 🟢
 Task [Create .venv..................] 🟢
 Task [Enable Direnv.................] 🟢
 Task [Sync Project Deps.............] 🟢
@@ -244,7 +240,7 @@ connect with your project.
 
 ### pyproject.toml - ruff rules
 
-You may not want to check again ALL of the rules.
+You may not want to check against _ALL_ of the rules. Or maybe you do.
 
 
 ### pyproject.toml - tool.poe.tasks.qc
@@ -278,6 +274,10 @@ stage of release will start. Chances are very good you don't need that
 sort of rigor in testing, so feel free to trim the os and
 python-version lists to fit your needs.
 
+## The End
+
+If you've read this far, [you have my gratitude][gratitude]. Send me
+some email, open an issue, or just make something cool (and let me know!).
 
 <!-- End Links -->
 
@@ -304,4 +304,7 @@ python-version lists to fit your needs.
 [release-drafter]: https://github.com/marketplace/actions/release-drafter
 [github-release]: https://github.com/marketplace/actions/create-a-release-in-a-github-action
 [github-templates]: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates
+
+<!-- silly -->
 [plethora]: https://youtu.be/P8ROhP_3-Qk?si=Qlt6RAERwT1VbEbw&t=24
+[gratitude]: https://youtu.be/xl55ltDG5Ow?si=Q2XQqif1xo1OGqPn
