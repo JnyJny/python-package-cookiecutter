@@ -1,5 +1,5 @@
 {
-    "name": "First Last",
+    "full_name": "First Last",
     "year": "{% now 'utc', '%Y' %}",
     "email": "your.email@somewhere.com",
     "github_username": "your_github_username",
@@ -8,8 +8,10 @@
     "project_short_description": "Thing for humans, presumably like you!",
     "cli_name": "{{ cookiecutter.package_name }}",
     "project_version": "0.1.0",
-    "python_version_min": "3.9",
+    "_python_versions": ["3.9", "3.13"],
+    "python_version_min": "{{ cookiecutter._python_versions[0] }}",
     "python_version_max": "4.0",
+    "python_version_dev": "{{ cookiecutter._python_versions[-1] }}",
     "repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}",
     "readme_badges": ["yes", "no"],
     "create_github_repo": ["yes", "no"],
@@ -17,6 +19,21 @@
     "use_pydantic_settings": ["yes", "no"],
     "log_to_file": ["yes", "no"],
     "use_dependabot": ["yes", "no"],
+    "python_testing_matrix": [
+	"{{ cookiecutter._python_versions }}",
+	"{{ cookiecutter._python_versions[0] }}",
+	"{{ cookiecutter._python_versions[-1] }}"
+    ],
+    "os_testing_matrix": [
+	"ubuntu-latest",
+	"macos-latest",
+	"windows-latest",
+	"ubuntu-latest, macos-latest",
+	"ubuntu-latest, windows-latest",
+	"macos-latest, windows-latest",
+	"ubuntu-latest, macos-latest, windows-latest"
+    ],
+
     "__prompts__": {
 	"name": "Your full name",
 	"year": "What year is it",
@@ -29,11 +46,12 @@
 	"project_version": "Initial project version",
 	"python_version_min": "Minimum Python version (inclusive)",
 	"python_version_max": "Maximum Python version (non-inclusive)",
+	"python_version_dev": "Python version to use in development",
 	"repository": "GitHub project URL",
 	"readme_badges": "Include badges in project README.md",
 	"create_github_repo": "Create GitHub repository and sync",
 	"license": {
-	    "__prompt__":"Pick a license to cover this project",
+	    "__prompt__":"Pick a license for this project",
 	    "apache-2.0": "Apache License 2.0",
 	    "agpl-3.0": "GNU Affero General Public License v3.0",
 	    "bsd-2-clause": "BSD 2-Clause 'Simplified' License",
@@ -44,6 +62,16 @@
 	    "gpl-2.0": "GNU General Public License v2.0",
 	    "gpl-3.0": "GNU General Public License v3.0",
 	    "lgpl-2.1": "GNU Lesser General Public License v2.1"
+	},
+	"os_testing_matrix": {
+	    "__prompt__": "Pick Operating Systems for testing",
+	    "ubuntu-latest": "Linux",
+	    "macos-latest": "MacOS",
+	    "windows-latest": "Windows",
+	    "ubuntu-latest, macos-latest": "Linux & MacOS",
+	    "ubuntu-latest, windows-latest": "Linux & Windows",
+	    "macos-latest, windows-latest": "MacOS & Windows",
+	    "ubuntu-latest, macos-latest, windows-latest": "Linux, MacOS & Windows"
 	},
 	"use_pydantic_settings": "Configure CLI settings with pydantic-settings",
 	"log_to_file": "Configure CLI to log to a file",
