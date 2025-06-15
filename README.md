@@ -37,6 +37,7 @@ you and people that interact with your project repository.
   - Publish to PyPI via GitHub Actions with `poe publish`.
 - Development tool options integrated into pyproject.toml.
 - Generic GitHub Issue and Pull Request templates.
+- Operating System and Python version test matrices.
 - Configured to use [direnv][direnv] to automatically activate & deactivate venvs.
 - Optionally configured badges in README.md for cool points.
 - Optionally configured [dependabot][dependabot] dependency checker.
@@ -81,6 +82,7 @@ After answering the `cookiecutter` prompts, you should see the
 following:
 
 ```console
+Task [Install Dev Python............] 🟢
 Task [Create .venv..................] 🟢
 Task [Enable Direnv.................] 🟢
 Task [Sync Project Deps.............] 🟢
@@ -267,12 +269,9 @@ successfully, the package will be built and published to PyPI, unless
 the triggering tag has a "-test" suffix in which case the workflow
 skips publishing.
 
-In it's initial state, tests are run against Linux, MacOS, and Windows
-for Python versions 3.9, 3.10, 3.11, 3.12 and 3.13. This will result
-in 15 seperate test instances that need to succeed before the publish
-stage of release will start. Chances are very good you don't need that
-sort of rigor in testing, so feel free to trim the os and
-python-version lists to fit your needs.
+Tests are designed to be run against matrices of Operating System and
+Python version values. The matrices can be a list with a single item
+or a list of multiple items.
 
 ## The End
 
