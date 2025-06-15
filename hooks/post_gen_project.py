@@ -6,6 +6,8 @@ import subprocess
 import sys
 from typing import NamedTuple
 
+from cookiecutter.config import logger
+
 _SUCCESS = "🟢"
 _FAILED_NOTREQUIRED = "🟡"
 _FAILURE = "🔴"
@@ -44,13 +46,11 @@ class Task(NamedTuple):
             if not self.required:
                 print(self, _FAILED_NOTREQUIRED, error)  # noqa: T201
             else:
-                print(self, _FAILURE)  # noqa: T201
-                print(f"\tCommand: {self.task}")  # noqa: T201
-                print(f"\tstdout:  {error.stdout}")  # noqa: T201
-                print(f"\tstderr:  {error.stderr}")  # noqa: T201
-
+                print(self, _FAILURE, error)  # noqa: T201
+                logger.error("\tCommand: %s", self.task)
+                logger.error("\t stdout: %s", error.stdout)
+                logger.error("\t stderr: %s", error.stderr)
                 raise
-
             return ""
 
 
