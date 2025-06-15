@@ -1,4 +1,4 @@
-Copyright {{ cookiecutter.year }} {{ cookiecutter.name or cookiecutter.email }}
+Copyright {{ cookiecutter.year }} {{ cookiecutter.full_name or cookiecutter.email }}
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
