@@ -18,11 +18,12 @@ you and people that interact with your project repository.
 
 - Choose from a [plethora][plethora] of Open Source licenses.
 - Automatically detects GitHub user name and email address (if configured).
+- Installs requested version of development Python if needed.
 - Creates a virtual environment in the project directory.
 - Enables `direnv` for this subdirectory if `direnv` available.
 - Automatically syncs dependencies and the project into virtual environment.
 - Automatically initializes a git repository with a main branch.
-- Automatically creates initial commit.
+- Automatically creates an initial git commit.
 - Optionally creates an upstream repository and pushes (GitHub only, requires [gh][gh]).
 
 ## Package Features
@@ -37,11 +38,14 @@ you and people that interact with your project repository.
   - Publish to PyPI via GitHub Actions with `poe publish`.
 - Development tool options integrated into pyproject.toml.
 - Generic GitHub Issue and Pull Request templates.
+- Configured to use [dependabot][dependabot] dependency checker.
+  - Checks project dependencies.
+  - Checks project GitHub action dependencies.
 - Operating System and Python version test matrices.
 - Configured to use [direnv][direnv] to automatically activate & deactivate venvs.
 - Optionally configured badges in README.md for cool points.
-- Optionally configured [dependabot][dependabot] dependency checker.
 - Optionally managed CLI settings using [pydantic-settings][pydantic-settings].
+- Optionally logs to a file.
 
 ## Prerequisites
 
@@ -62,7 +66,7 @@ you and people that interact with your project repository.
 
 ## Creating Your Project
 
-Once you have `uv` installed, you get `uvx` for free!
+
 
 If you haven't authenticated to GitHub with `gh` yet and you plan to
 ask `cookiecutter` to create the upstream repository, you should do
@@ -72,7 +76,8 @@ that now:
 gh auth login
 ```
 
-All done? Now you are ready to create your project:
+All done? Now you are ready to create your project and the good news
+is once you install `uv` you get the great tool runner `uvx` for free!
 
 ```console
 uvx cookiecutter gh:JnyJny/python-package-cookiecutter
@@ -125,8 +130,7 @@ $ tree -a -I .venv -I .git
 │   └── thing
 │       ├── __init__.py
 │       ├── __main__.py
-│       ├── self_subcommand.py
-│       └── settings.py
+│       └── self_subcommand.py
 ├── tests
 │   └── __init__.py
 └── uv.lock
