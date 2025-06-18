@@ -1,0 +1,20 @@
+[project]
+name = "python-package-cookiecutter"
+version = "1.2.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+    "ruff>=0.11.13",
+]
+
+
+[tool.ruff]
+fix = true
+lint.select = [ "ALL" ]
+lint.ignore = [ "D203", "D211", "D212", "D213", "COM812" , "S101"]
+
