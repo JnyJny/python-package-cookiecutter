@@ -197,3 +197,5 @@ cython_debug/
 # MacOS FS 
 .DS_Store/
 
+# python-project-cookiecutter temporary install directory
+tmp/
