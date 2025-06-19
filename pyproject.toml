@@ -1,6 +1,6 @@
 [project]
 name = "python-package-cookiecutter"
-version = "1.2.1"
+version = "1.2.2"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -29,7 +29,7 @@ _major_bump = "uv version --bump major"
 
 _add = "git add pyproject.toml uv.lock"
 _commit = {shell = "git commit -m v`uv version --short`"}
-_tag = {shell = "git tag v`uv version --sort`"}
+_tag = {shell = "git tag v`uv version --short`"}
 _push = "git push --all"
 _push_tags = "git push --tags"
 
