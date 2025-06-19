@@ -33,8 +33,12 @@ _MANIFEST = [
     ("is_file", "uv.lock"),
 ]
 
+_SRC = ["__init__.py", "__main__.py", "self_subcommand.py", "settings.py"]
 
-def test_manifest_exists_in_generated_project(generated_template_path: Path) -> None:
+
+def test_manifest_exists_in_generated_project(
+    generated_template_path: Path, cookiecutter_package_name: str
+) -> None:
     """Tests the existence of content in the generated template."""
 
     assert generated_template_path.exists()
@@ -46,3 +50,8 @@ def test_manifest_exists_in_generated_project(generated_template_path: Path) -> 
         assert getattr(path, content_test)() == True
         if path.is_file():
             assert path.stat().st_size > 0, f"File {path} is empty"
+
+    src = generated_template_path / "src" / cookiecutter_package_name
+
+    for path in src.rglob("*.py"):
+        assert path.name in _SRC
