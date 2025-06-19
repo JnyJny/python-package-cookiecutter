@@ -48,7 +48,7 @@ release.help = "Publish patch release"
 # Create a project with the template for local testing.
 
 _tmpdir = "mkdir -p tmp"
-_generate = "cookiecutter --no-input -o tmp ."
+_generate = "cookiecutter --no-input -o tmp --overwrite-if-exists ."
 bake.sequence = [ "_tmpdir", "_generate" ]
 bake.help = "Create a project in ./tmp"
 
