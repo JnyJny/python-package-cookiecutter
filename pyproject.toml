@@ -22,6 +22,7 @@ test.help = "Test cookiecutter package."
 ruff_check.cmd = "ruff check ."
 ruff_format.cmd = "ruff format ."
 
+# Release tasks
 _patch_bump = "uv version --bump patch"
 _minor_bump = "uv version --bump minor"
 _major_bump = "uv version --bump major"
@@ -35,15 +36,35 @@ _push_tags = "git push --tags"
 _update_pyproject = ["_add", "_commit", "_tag", "_push_tags", "_push"]
 
 release_patch.sequence = [ "_patch_bump", "_update_pyproject"]
+release_patch.help = "Publish patch release."
 release_minor.sequence = [ "_minor_bump", "_update_pyproject"]
+release_minor.help = "Publish minor release."
 release_major.sequence = [ "_major_bump", "_update_pyproject"]
+release_major.help = "Publish major release."
 
 release.ref = "release_patch"
 release.help = "Publish patch release"
 
+# Create a project with the template for local testing.
+
+_tmpdir = "mkdir -p tmp"
+_generate = "cookiecutter --no-input -o tmp ."
+bake.sequence = [ "_tmpdir", "_generate" ]
+bake.help = "Create a project in ./tmp"
+
+# Cleanup tasks
+_remove_tmp = "rm -rf tmp"
+clean.sequence = ["_remove_tmp", ]
+clean.help = "Cleanup project."
 
 [tool.ruff]
 fix = true
 lint.select = [ "ALL" ]
 lint.ignore = [ "D203", "D211", "D212", "D213", "COM812" , "S101"]
+
+[tool.pytest.ini_options]
+
+# the goal here is to ignore template tests
+testpaths = [ "tests" ]
+
 
