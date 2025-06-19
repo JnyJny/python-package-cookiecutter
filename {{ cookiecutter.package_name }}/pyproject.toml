@@ -116,7 +116,7 @@ publish_major.sequence = ["_major_bump", "_update_pyproject"]
 publish_major.help = "[Publish] Major release."
 
 publish.ref =  "publish_patch"
-publish.help = "[Publish] Minor release."
+publish.help = "[Publish] Patch release."
 
 # Clean
 
