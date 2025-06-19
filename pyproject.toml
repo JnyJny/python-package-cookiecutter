@@ -14,6 +14,33 @@ dev = [
     "ruff>=0.11.13",
 ]
 
+[tool.poe.tasks]
+
+test.cmd = "pytest"
+test.help = "Test cookiecutter package."
+
+ruff_check.cmd = "ruff check ."
+ruff_format.cmd = "ruff format ."
+
+_patch_bump = "uv version --bump patch"
+_minor_bump = "uv version --bump minor"
+_major_bump = "uv version --bump major"
+
+_add = "git add pyproject.toml uv.lock"
+_commit = {shell = "git commit -m v`uv version --short`"}
+_tag = {shell = "git tag v`uv version --sort`"}
+_push = "git push --all"
+_push_tags = "git push --tags"
+
+_update_pyproject = ["_add", "_commit", "_tag", "_push_tags", "_push"]
+
+release_patch.sequence = [ "_patch_bump", "_update_pyproject"]
+release_minor.sequence = [ "_minor_bump", "_update_pyproject"]
+release_major.sequence = [ "_major_bump", "_update_pyproject"]
+
+release.ref = "release_patch"
+release.help = "Publish patch release"
+
 
 [tool.ruff]
 fix = true
