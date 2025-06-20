@@ -1,5 +1,4 @@
-""" {{ cookiecutter.project_name }} pytest configuration file
-"""
+"""{{ cookiecutter.project_name }} pytest configuration file"""
 
 from pathlib import Path
 
@@ -11,6 +10,7 @@ import tomllib
 def project_root() -> Path:
     """Return the root path of the project."""
     yield Path.cwd()
+
 
 @pytest.fixture(scope="session")
 def pyproject_path(project_root) -> Path:
@@ -27,5 +27,4 @@ def pyproject_toml(pyproject_path: Path) -> dict:
 @pytest.fixture(scope="session")
 def project_version(pyproject_toml: dict) -> str:
     """Return the project version from pyproject.toml."""
-    return pyproject_toml['project']['version']
-
+    return pyproject_toml["project"]["version"]
