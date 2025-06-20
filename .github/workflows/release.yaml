@@ -28,6 +28,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Run tests - ${{ matrix.python-version }} - ${{ matrix.os }}
+        env:
+          GITHUB_AUTHOR_NAME: "NOBODY"
+          GITHUB_AUTHOR_EMAIL: "NOBODY@NOWHERE.EXAMPLE.COM"
         run: |
           uv run pytest
 
