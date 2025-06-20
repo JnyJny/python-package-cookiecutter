@@ -45,7 +45,7 @@ class Task(NamedTuple):
         except FileNotFoundError as error:
             if self.required:
                 raise
-            print(self, _FAILED_NOTREQUIRED, error)
+            logger.error(self, _FAILED_NOTREQUIRED, error)
 
         except subprocess.CalledProcessError as error:
             if self.required:
@@ -60,6 +60,11 @@ class Task(NamedTuple):
         return ""
 
 
+uv_venv_cmd = """
+uv --verbose venv --python {{ cookiecutter.python_version_dev }} --managed-python
+""".strip()
+
+
 def post_generation_tasks() -> int:
     """Things to do after cookiecutter has rendered the template."""
     tasks = [
@@ -70,7 +75,7 @@ def post_generation_tasks() -> int:
         ),
         Task(
             "Create .venv",
-            "uv --verbose venv --python {{ cookiecutter.python_version_dev }} --managed-python",
+            uv_venv_cmd,
             required=True,
         ),
         Task("Enable Direnv", "direnv allow", required=False),

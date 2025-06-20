@@ -6,12 +6,15 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+from typing import NamedTuple
+
 from cookiecutter.config import logger
 from post_gen_project import Task
-from typing import NamedTuple
 
 
 class Version(NamedTuple):
+    """A bespoke Semantic Version."""
+
     major: str
     minor: str
     patch: str
@@ -36,8 +39,7 @@ class Version(NamedTuple):
 
 
 def available_python_versions() -> list[str]:
-    """Returns a list of available Python versions, sorted least to greatest."""
-
+    """Return a sorted list of available Python versions."""
     task = Task(
         "Available Python Versions",
         "uv python list --output-format json",

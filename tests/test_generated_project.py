@@ -1,10 +1,6 @@
-""" """
+"""tests the contents of the generated package."""
 
 from pathlib import Path
-import pytest
-
-
-from cookiecutter.main import cookiecutter as bake
 
 # EJO This file manifest is super fragile, it should be generated from
 #     template data rather than duplicated here. It's a start.
@@ -40,14 +36,13 @@ def test_manifest_exists_in_generated_project(
     generated_template_path: Path, cookiecutter_package_name: str
 ) -> None:
     """Tests the existence of content in the generated template."""
-
     assert generated_template_path.exists()
     assert generated_template_path.is_dir()
 
     for content_test, content_path in _MANIFEST:
         path = generated_template_path / content_path
-        assert path.exists(), f"Expected {path} to exist in {package}"
-        assert getattr(path, content_test)() == True
+        assert path.exists(), f"Expected {path} to exist in {cookiecutter_package_name}"
+        assert getattr(path, content_test)()
         if path.is_file():
             assert path.stat().st_size > 0, f"File {path} is empty"
 
