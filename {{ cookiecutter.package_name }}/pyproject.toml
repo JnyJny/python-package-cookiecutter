@@ -124,6 +124,11 @@ clean.cmd = "rm -rf htmlcov dist {{ cookiecutter.package_name }}.egg-info *.log"
 # clean.cmd = "git clean -f"
 clean.help = "[Clean] Remove testing, build and code quality artifacts."
 
+# Misc
+
+tree.cmd = "tree . -a -I .venv -I .git -I .ruff_cache"
+tree.help = "List project files in tree format."
+
 # Tool Options
 
 [tool.pytest.ini_options]

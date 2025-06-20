@@ -74,6 +74,12 @@ _remove_gh_repo = "gh repo delete thing --yes"
 clean.sequence = ["_remove_tmp", "_remove_gh_repo" ]
 clean.help = "Cleanup project."
 
+# Misc
+
+tree.cmd = "tree . -a -I .venv -I .git -I .ruff_cache -I .pytest_cache"
+tree.help = "[Misc] List project files in tree format."
+
+
 [tool.ruff]
 fix = true
 lint.select = [ "ALL" ]
