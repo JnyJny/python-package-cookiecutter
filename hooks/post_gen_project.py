@@ -42,6 +42,11 @@ class Task(NamedTuple):
             if verbose:
                 print(self, _SUCCESS)  # noqa: T201
             return results.stdout.strip()
+        except FileNotFoundError as error:
+            if self.required:
+                raise
+            print(self, _FAILED_NOTREQURIRED, error)
+
         except subprocess.CalledProcessError as error:
             if self.required:
                 print(self, _FAILURE, error)  # noqa: T201
@@ -51,6 +56,7 @@ class Task(NamedTuple):
                 raise
 
             print(self, _FAILED_NOTREQUIRED, error)  # noqa: T201
+
         return ""
 
 
