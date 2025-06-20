@@ -94,9 +94,11 @@ def post_generation_tasks() -> int:
         Task("Initial Commit", "git commit -m 'initial commit'", required=True),
     ]
 
-    if "{{ cookiecutter.create_github_repo }}":
+    create_github_repo = "{{ cookiecutter.create_github_repo }}"
+
+    if create_github_repo == "True":
         create_repo = Task(
-            "Create Upstream Repo",
+            f"Create Upstream Repo {create_github_repo}",
             "gh repo create {{ cookiecutter.package_name }} --public"
             " --push --source=. --remote=upstream",
             required=False,
