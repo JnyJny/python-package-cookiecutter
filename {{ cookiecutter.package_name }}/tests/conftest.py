@@ -1,4 +1,4 @@
-"""{{ cookiecutter.project_name }} pytest configuration file"""
+"""{{ cookiecutter.project_name }} pytest configuration file."""
 
 from pathlib import Path
 
@@ -13,7 +13,7 @@ def project_root() -> Path:
 
 
 @pytest.fixture(scope="session")
-def pyproject_path(project_root) -> Path:
+def pyproject_path(project_root: Path) -> Path:
     """Return the path to the pyproject.toml file."""
     yield project_root / "pyproject.toml"
 

@@ -1,4 +1,4 @@
-"""{{ cookiecutter.cli_name }} Self Command-Line Interface
+"""{{ cookiecutter.cli_name }} Self Command-Line Interface.
 
 This module provides a command-line interface to interact with
 internals of the {{ cookiecutter.cli_name }} CLI.
@@ -21,4 +21,4 @@ def version_subcommand() -> None:
         typer.secho(pkg_version, fg=typer.colors.GREEN)
     except Exception as error:
         logger.error(f"Failed to retrieve package version: {error}")
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from None

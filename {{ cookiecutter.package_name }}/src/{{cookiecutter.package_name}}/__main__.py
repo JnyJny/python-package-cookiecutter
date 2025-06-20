@@ -1,4 +1,4 @@
-"""{{ cookiecutter.cli_name }}
+"""{{ cookiecutter.cli_name }} CLI implementation.
 
 {{ cookiecutter.project_short_description }}
 """
