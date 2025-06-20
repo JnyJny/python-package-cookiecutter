@@ -1,6 +1,5 @@
 """test CLI"""
 
-import pytest
 from typer.testing import CliRunner
 
 from thing.__main__ import cli
