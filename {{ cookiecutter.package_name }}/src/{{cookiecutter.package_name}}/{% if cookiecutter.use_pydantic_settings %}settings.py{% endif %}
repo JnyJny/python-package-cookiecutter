@@ -9,4 +9,4 @@ class Settings(BaseSettings):
         env_prefix="{{ cookiecutter.package_name.upper() }}",
         env_file=".env-{{ cookiecutter.package_name.lower() }}",
     )
-    debug: bool  = False
+    debug: bool = False

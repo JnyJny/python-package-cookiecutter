@@ -1,4 +1,4 @@
-"""{{ cookiecutter.cli_name }} 
+"""{{ cookiecutter.cli_name }}
 
 {{ cookiecutter.project_short_description }}
 """
@@ -9,9 +9,9 @@ import typer
 from loguru import logger
 
 from .self_subcommand import cli as self_cli
-{%- if cookiecutter.use_pydantic_settings %}
+# {%- if cookiecutter.use_pydantic_settings %}
 from .settings import Settings
-{%- endif %}
+# {%- endif %}
 
 cli = typer.Typer()
 
@@ -25,17 +25,22 @@ cli.add_typer(
 @cli.callback(invoke_without_command=True, no_args_is_help=True)
 def global_callback(
     ctx: typer.Context,
-    debug: bool = typer.Option(False, "--debug", "-D", help="Enable debugging output."),
+    debug: bool = typer.Option(
+        False,
+        "--debug",
+        "-D",
+        help="Enable debugging output.",
+    ),
 ) -> None:
     """{{ cookiecutter.project_short_description }}"""
-{%- if cookiecutter.use_pydantic_settings %}
+    # {%- if cookiecutter.use_pydantic_settings %}
     ctx.obj = Settings()
     debug = debug or ctx.obj.debug
-{%- endif %}
+    # {%- endif %}
     (logger.enable if debug else logger.disable)("{{ cookiecutter.package_name }}")
-{%- if cookiecutter.log_to_file %}
+    # {%- if cookiecutter.log_to_file %}
     logger.add("{{ cookiecutter.package_name }}.log")
-{%- endif %}
+    # {%- endif %}
     logger.info(f"{debug=}")
 
 
