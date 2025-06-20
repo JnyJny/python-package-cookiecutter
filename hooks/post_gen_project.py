@@ -43,15 +43,15 @@ class Task(NamedTuple):
                 print(self, _SUCCESS)  # noqa: T201
             return results.stdout.strip()
         except subprocess.CalledProcessError as error:
-            if not self.required:
-                print(self, _FAILED_NOTREQUIRED, error)  # noqa: T201
-            else:
+            if self.required:
                 print(self, _FAILURE, error)  # noqa: T201
                 logger.error("\tCommand: %s", self.task)
                 logger.error("\t stdout: %s", error.stdout)
                 logger.error("\t stderr: %s", error.stderr)
                 raise
-            return ""
+
+            print(self, _FAILED_NOTREQUIRED, error)  # noqa: T201
+        return ""
 
 
 def post_generation_tasks() -> int:
