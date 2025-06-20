@@ -19,8 +19,12 @@ dev = [
 test.cmd = "pytest"
 test.help = "Test cookiecutter package."
 
-ruff_check.cmd = "ruff check ."
-ruff_format.cmd = "ruff format ."
+ruff_check.cmd = "ruff check hooks tests"
+ruff_format.cmd = "ruff format hooks tests"
+ruff_check_template.cmd = "ruff --isolated check '{{ cookiecutter.package_name }}'/src '{{ cookiecutter.package_name }}'/tests"
+ruff_format_template.cmd = "ruff --isolated format '{{ cookiecutter.package_name }}'/src '{{ cookiecutter.package_name }}'/tests"
+
+ruff.sequence = [ "ruff_check", "ruff_check_template", "ruff_format", "ruff_format_template" ]
 
 # Release tasks
 _patch_bump = "uv version --bump patch"
