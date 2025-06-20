@@ -95,7 +95,7 @@ Task [Ruff Check Source.............] 🟢
 Task [Initialize Git................] 🟢
 Task [Add Files.....................] 🟢
 Task [Initial Commit................] 🟢
-Task [Create Upstream Repo True.....] 🟢
+Task [Create Upstream Repo .........] 🟢
 $ 
 ```
 
