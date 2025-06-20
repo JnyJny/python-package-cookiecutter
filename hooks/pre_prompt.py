@@ -85,7 +85,9 @@ def pre_prompt_tasks(config_file: str | Path | None = None) -> int:
         cookiecutter = json.load(config_file.open())
 
         for key, task in tasks:
-            cookiecutter[key] = task(verbose=False)
+            result = task(verbose=False)
+            if result:
+                cookiecutter[key] = result
 
         cookiecutter["_python_versions"] = available_python_versions()
 
