@@ -67,7 +67,7 @@ mypy.help = "[Code Quality] Run mypy type checker on source."
 ty.cmd = "ty check src/{{ cookiecutter.package_name }}"
 ty.help = "[Code Quality] Run ty type checker on source."
 
-ruff-check.cmd = "ruff check --select ALL src/{{ cookiecutter.package_name }} tests"
+ruff-check.cmd = "ruff check src tests"
 ruff-check.help = "[Code Quality] Run ruff check on source."
 
 ruff-format.cmd = "ruff format src tests"
@@ -82,7 +82,7 @@ check.help = "[Code Quality] Run all code quality tools on source."
 test.cmd = "pytest"
 test.help = "[Code Quality] Runs testing suites using pytest."
 
-qc.seqence = [ "test", "ruff", "mypy", "ty" ]
+qc.sequence = [ "test", "ruff", "mypy", "ty" ]
 qc.help = "[Code Quality] Run all code quality tasks."
 
 # Publish tasks
@@ -130,7 +130,8 @@ clean.help = "[Clean] Remove testing, build and code quality artifacts."
 
 [tool.ruff]
 fix = true
-lint.select = [ "I" ]
+lint.select = [ "I", "ALL" ]
+lint.ignore = [ "COM812", "D203", "D211", "D212", "D213", "FBT001", "FBT003", "D400", "BLE001", "S101" ]
 
 [tool.ty]
 
