@@ -1,9 +1,10 @@
 """ {{ cookiecutter.project_name }} pytest configuration file
 """
 
+from pathlib import Path
+
 import pytest
 import tomllib
-from pathlib import Path
 
 
 @pytest.fixture(scope="session")
