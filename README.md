@@ -91,10 +91,11 @@ Task [Install Dev Python............] 🟢
 Task [Create .venv..................] 🟢
 Task [Enable Direnv.................] 🟢
 Task [Sync Project Deps.............] 🟢
+Task [Ruff Check Source.............] 🟢
 Task [Initialize Git................] 🟢
 Task [Add Files.....................] 🟢
 Task [Initial Commit................] 🟢
-Task [Create Upstream Repo..........] 🟢
+Task [Create Upstream Repo True.....] 🟢
 $ 
 ```
 
@@ -106,12 +107,12 @@ generation will complete successfully.
 ### Example Package Tree
 
 ```console
-$ tree -a -I .venv -I .git
+$ poe tree
 .
 ├── .cookiecutter.json
 ├── .envrc
 ├── .github
-│   ├── dependabot.yml
+│   ├── dependabot.yaml
 │   ├── ISSUE_TEMPLATE
 │   │   ├── 1_bug_report.yaml
 │   │   ├── 2_feature_request.yaml
@@ -130,9 +131,12 @@ $ tree -a -I .venv -I .git
 │   └── thing
 │       ├── __init__.py
 │       ├── __main__.py
-│       └── self_subcommand.py
+│       ├── self_subcommand.py
+│       └── settings.py
 ├── tests
-│   └── __init__.py
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── test_cli.py
 └── uv.lock
 ```
 
@@ -192,6 +196,7 @@ Configured tasks:
   publish_major         [Publish] Major release.
   publish               [Publish] Minor release.
   clean                 [Clean] Remove testing, build and code quality artifacts.
+  tree                  [Misc] List project files in tree format.
 ```
 
 These are the tasks that I like. Feel free to hack them up however it
