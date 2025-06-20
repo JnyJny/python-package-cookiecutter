@@ -4,6 +4,8 @@
 import shlex
 import subprocess
 import sys
+from collections.abc import Callable
+from pathlib import Path
 from typing import NamedTuple
 
 from cookiecutter.config import logger
@@ -14,10 +16,10 @@ _FAILURE = "🔴"
 
 
 class Task(NamedTuple):
-    """A cookiecutter generation task."""
+    """A cookiecutter hook task."""
 
     name: str
-    task: str
+    task: str | Callable[[], str]
     required: bool
 
     def __str__(self) -> str:
@@ -61,8 +63,18 @@ class Task(NamedTuple):
 
 
 uv_venv_cmd = """
-uv --verbose venv --python {{ cookiecutter.python_version_dev }} --managed-python
+uv venv --python {{ cookiecutter.python_version_dev }} --managed-python
 """.strip()
+
+
+def remove_empty_comments(path: Path | str) -> None:
+    """Remove empty comments from Python files in the given path."""
+    path = Path(path)
+
+    for pypath in path.rglob("*.py"):
+        lines = pypath.read_text().splitlines()
+        text = [line for line in lines if line.strip() != "#"]
+        pypath.write_text("\n".join(text) + "\n")
 
 
 def post_generation_tasks() -> int:
@@ -73,11 +85,7 @@ def post_generation_tasks() -> int:
             "uv python install {{ cookiecutter.python_version_dev }}",
             required=True,
         ),
-        Task(
-            "Create .venv",
-            uv_venv_cmd,
-            required=True,
-        ),
+        Task("Create .venv", uv_venv_cmd, required=True),
         Task("Enable Direnv", "direnv allow", required=False),
         Task("Sync Project Deps", "uv --quiet --no-progress sync", required=True),
         Task("Initialize Git", "git init --quiet --initial-branch main", required=True),
@@ -93,6 +101,9 @@ def post_generation_tasks() -> int:
             required=False,
         )
         tasks.append(create_repo)
+
+    for pysrc in ["src", "tests"]:
+        remove_empty_comments(pysrc)
 
     try:
         for task in tasks:
