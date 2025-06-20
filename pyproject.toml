@@ -54,17 +54,22 @@ bake.help = "Create a project in ./tmp"
 
 # Cleanup tasks
 _remove_tmp = "rm -rf tmp"
-clean.sequence = ["_remove_tmp", ]
+_remove_gh_repo = "gh repo delete thing --yes"
+clean.sequence = ["_remove_tmp", "_remove_gh_repo" ]
 clean.help = "Cleanup project."
 
 [tool.ruff]
 fix = true
 lint.select = [ "ALL" ]
 lint.ignore = [ "D203", "D211", "D212", "D213", "COM812" , "S101", "BLE001"]
+
+# Excluding Jinja formatted paths is kind of tricky.
+# Escape '{{' as '[{][{]' and '}}' as '[}][}]'
 exclude = [ "[{][{] cookiecutter.package_name [}][}]", ]
 
 [tool.pytest.ini_options]
 # Narrow to just tests to avoid finding {{ cookiecutter.package_name }}/tests
+# which fail when executed in-place.
 testpaths = [ "tests" ]
 
 
