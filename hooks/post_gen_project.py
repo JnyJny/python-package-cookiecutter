@@ -66,6 +66,10 @@ uv_venv_cmd = """
 uv venv --python {{ cookiecutter.python_version_dev }} --managed-python
 """.strip()
 
+gh_create_repo_cmd = """
+gh repo create {{ cookiecutter.package_name }} --public  --push --source=. --remote=upstream
+""".strip()  # noqa: E501
+
 
 def remove_empty_comments(path: Path | str) -> None:
     """Remove empty comments from Python files in the given path."""
@@ -97,16 +101,11 @@ def post_generation_tasks() -> int:
     create_github_repo = "{{ cookiecutter.create_github_repo }}"
 
     if create_github_repo == "True":
-        create_repo = Task(
-            f"Create Upstream Repo {create_github_repo}",
-            "gh repo create {{ cookiecutter.package_name }} --public"
-            " --push --source=. --remote=upstream",
-            required=False,
-        )
+        create_repo = Task("Create Upstream Repo", gh_create_repo_cmd, required=False)
         tasks.append(create_repo)
 
-    for pysrc in ["src", "tests"]:
-        remove_empty_comments(pysrc)
+    for subdir in ["src", "tests"]:
+        remove_empty_comments(subdir)
 
     try:
         for task in tasks:
