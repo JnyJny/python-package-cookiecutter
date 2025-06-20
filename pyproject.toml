@@ -20,11 +20,19 @@ test.cmd = "pytest"
 test.help = "Test cookiecutter package."
 
 ruff_check.cmd = "ruff check hooks tests"
+ruff_check.help = "ruff check on hooks and tests."
+
 ruff_format.cmd = "ruff format hooks tests"
+ruff_format.help = "Ruff format hooks and tests."
+
 ruff_check_template.cmd = "ruff --isolated check '{{ cookiecutter.package_name }}'/src '{{ cookiecutter.package_name }}'/tests"
+ruff_check_template.help = "Ruff check template src and tests."
+
 ruff_format_template.cmd = "ruff --isolated format '{{ cookiecutter.package_name }}'/src '{{ cookiecutter.package_name }}'/tests"
+ruff_format_template.help = "Ruff format template src and tests."
 
 ruff.sequence = [ "ruff_check", "ruff_check_template", "ruff_format", "ruff_format_template" ]
+ruff.help = "Run ruff check and format on all code."
 
 # Release tasks
 _patch_bump = "uv version --bump patch"
@@ -41,8 +49,10 @@ _update_pyproject = ["_add", "_commit", "_tag", "_push_tags", "_push"]
 
 release_patch.sequence = [ "_patch_bump", "_update_pyproject"]
 release_patch.help = "Publish patch release."
+
 release_minor.sequence = [ "_minor_bump", "_update_pyproject"]
 release_minor.help = "Publish minor release."
+
 release_major.sequence = [ "_major_bump", "_update_pyproject"]
 release_major.help = "Publish major release."
 
@@ -53,12 +63,14 @@ release.help = "Publish patch release"
 
 _tmpdir = "mkdir -p tmp"
 _generate = "cookiecutter --no-input -o tmp --overwrite-if-exists ."
+
 bake.sequence = [ "_tmpdir", "_generate" ]
 bake.help = "Create a project in ./tmp"
 
 # Cleanup tasks
 _remove_tmp = "rm -rf tmp"
 _remove_gh_repo = "gh repo delete thing --yes"
+
 clean.sequence = ["_remove_tmp", "_remove_gh_repo" ]
 clean.help = "Cleanup project."
 
