@@ -45,7 +45,7 @@ class Task(NamedTuple):
         except FileNotFoundError as error:
             if self.required:
                 raise
-            print(self, _FAILED_NOTREQURIRED, error)
+            print(self, _FAILED_NOTREQUIRED, error)
 
         except subprocess.CalledProcessError as error:
             if self.required:
