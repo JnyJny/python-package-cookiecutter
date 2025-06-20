@@ -88,6 +88,7 @@ def post_generation_tasks() -> int:
         Task("Create .venv", uv_venv_cmd, required=True),
         Task("Enable Direnv", "direnv allow", required=False),
         Task("Sync Project Deps", "uv --quiet --no-progress sync", required=True),
+        Task("Ruff Check Source", "uvx ruff check --fix src tests", required=True),
         Task("Initialize Git", "git init --quiet --initial-branch main", required=True),
         Task("Add Files", "git add .", required=True),
         Task("Initial Commit", "git commit -m 'initial commit'", required=True),
