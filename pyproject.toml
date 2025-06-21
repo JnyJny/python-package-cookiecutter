@@ -1,6 +1,6 @@
 [project]
 name = "python-package-cookiecutter"
-version = "1.3.1"
+version = "1.4.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -12,6 +12,7 @@ dev = [
     "poethepoet>=0.35.0",
     "pytest>=8.4.0",
     "ruff>=0.11.13",
+    "sphinx>=8.2.3",
 ]
 
 [tool.poe.tasks]
@@ -83,11 +84,10 @@ tree.help = "[Misc] List project files in tree format."
 [tool.ruff]
 fix = true
 lint.select = [ "ALL" ]
-lint.ignore = [ "D203", "D211", "D212", "D213", "COM812" , "S101", "BLE001"]
+lint.ignore = [ "D203", "D211", "D212", "D213", "COM812", "BLE001"]
 
-# Excluding Jinja formatted paths is kind of tricky.
-# Escape '{{' as '[{][{]' and '}}' as '[}][}]'
-exclude = [ "[{][{] cookiecutter.package_name [}][}]", ]
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S603"]
 
 [tool.pytest.ini_options]
 # Narrow to just tests to avoid finding {{ cookiecutter.package_name }}/tests
