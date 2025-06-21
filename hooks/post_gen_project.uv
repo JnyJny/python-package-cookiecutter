@@ -56,9 +56,14 @@ def post_gen_project() -> int:
         for path in Path(subdir).rglob("*.py"):
             _remove_empty_comments(path)
 
+    try:
+        direnv_allow = sh.direnv.bake("allow")
+    except sh.CommandNotFound:
+        direnv_allow = lambda *args, **kwargs: None
+
     cmds = [
         (True, sh.uv.python.install.bake("{{ cookiecutter.python_version_dev }}")),
-        (False, sh.direnv.bake("allow")),
+        (False, direnv_allow),
         (True, sh.uv.sync.bake("--quiet", "--no-progress")),
         (True, sh.uvx.ruff.check.bake("--fix", "src", "tests")),
         (True, sh.git.init.bake("--quiet", "--initial-branch", "main")),
