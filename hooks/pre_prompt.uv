@@ -1,0 +1,118 @@
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [ "sh", "packaging>=25", "loguru" ]
+# ///
+
+"""Pre-prompt tasks for cookiecutter templates.
+
+During pre-prompt, we collect some information so we can populate the
+cookiecuter context with useful defaults. We also check for the
+presence of required tools and available Python versions.
+"""
+
+import json
+import sys
+from contextlib import suppress
+from pathlib import Path
+from functools import partial
+
+import sh
+from loguru import logger
+from packaging.version import Version
+
+
+def _logger_setup() -> None:
+    """Setup logger for post-generation tasks."""
+    logger.remove()
+    logger.add(
+        sys.stdout,
+        format="✨ {function:<15} | <level>{level:<8}</level>  | {message}",
+    )
+    logger.level("REQUIRED", no=50, color="<red>", icon="💔")
+    logger.level("OPTIONAL", no=30, color="<blue>", icon="⚠️")
+    logger.required = partial(logger.log, "REQUIRED")
+    logger.optional = partial(logger.log, "OPTIONAL")
+
+
+def available_python_versions() -> list[str]:
+    """Return a sorted list of available non-prerelease Python versions.
+
+    Only major.minor versions are considered, leaving it up to
+    the user to determine which patch versions (if any) to use
+    after template generation.
+
+    Raises:
+    - sh.CommandNotFound if uv not available.
+    - packaging.version.InvalidVersion if version parsing fails.
+
+    """
+    try:
+        raw_version_data = sh.uv.python.list(output_format="json")
+    except sh.CommandNotFound:
+        # EJO ok, uv is already in the shebang for this file, if we
+        #     get here uv is available.
+        logger.error("uv is not available, please install uv to use this template.")
+        raise
+
+    except sh.ErrorReturnCode_1 as error:
+        logger.error("command 'uv python list' failed")
+        logger.error(error.stderr.decode("utf-8").strip())
+        raise
+
+    try:
+        version_data = json.loads(raw_version_data)
+    except json.decoder.JSONDecodeError:
+        logger.error("Unable to decode JSON from 'uv python list'")
+        raise
+
+    versions = set()
+
+    for vinfo in version_data:
+        v = Version(vinfo["version"])
+        if v.is_prerelease:
+            continue
+        version = Version(f"{v.major}.{v.minor}")
+        versions.add(version)
+
+    return [f"{v.major}.{v.minor}" for v in sorted(versions)]
+
+
+def pre_prompt(config_file: str | Path | None = None) -> int:
+    """Things to do before prompting the user.
+
+    - Check for availability of mandatory tools; uv and git
+    - Fetch GitHub user.name from git config.
+    - Fetch GitHub user.email from git config.
+    - Find available Python versions excluding pre-releases.
+
+    Discovered values are then merged into the cookiecutter context.
+    """
+    for cmd in [sh.uv, sh.git]:
+        try:
+            cmd(version=True)
+        except sh.CommandNotFound:
+            logger.required(f"Command not available: {cmd}")
+            raise
+
+    discovered = {}
+
+    git_global_config = sh.git.config.bake("--global")
+
+    for key, target in [("github_username", "user.name"), ("email", "user.email")]:
+        with suppress((sh.CommandNotFound, sh.ErrorReturnCode_1)):
+            discovered[key] = git_global_config(target).strip()
+
+    discovered["_python_versions"] = available_python_versions()
+
+    config_file = Path(config_file or "cookiecutter.json")
+    cookiecutter = json.loads(config_file.read_text())
+    cookiecutter |= discovered
+    json.dump(cookiecutter, config_file.open("w"), indent=4)
+
+    return 0
+
+
+if __name__ == "__main__":
+    _logger_setup()
+    sys.exit(pre_prompt())

@@ -1,0 +1,36 @@
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [ "sh", "loguru" ]
+# ///
+"""Pre-generation tasks for cookiecutter templates."""
+
+import sys
+from functools import partial
+from loguru import logger
+
+
+def _logger_setup() -> None:
+    """Setup logger for post-generation tasks."""
+    logger.remove()
+    logger.add(
+        sys.stdout,
+        format="✨ {function:<15} | <level>{level:<8}</level>  | {message}",
+    )
+    logger.level("REQUIRED", no=50, color="<red>", icon="💔")
+    logger.level("OPTIONAL", no=30, color="<blue>", icon="⚠️")
+    logger.required = partial(logger.log, "REQUIRED")
+    logger.optional = partial(logger.log, "OPTIONAL")
+
+
+def pre_gen_project() -> int:
+    """Things to do before cookiecutter renders the template.
+
+    - no pre-generation tasks (yet).
+    """
+    return 0
+
+
+if __name__ == "__main__":
+    _logger_setup()
+    sys.exit(pre_gen_project())

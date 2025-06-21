@@ -26,26 +26,36 @@ you and people that interact with your project repository.
 - Automatically creates an initial git commit.
 - Optionally creates an upstream repository and pushes (GitHub only, requires [gh][gh]).
 
-## Package Features
+## So Many Package Features
 
-- Python project designed to be managed with [uv][uv].
-- Exposes a command line interface built with [typer][typer].
-- Package is callable via `python -m <package>`.
+### Code Features
+- Python `src` style project designed to be managed with [uv][uv].
+- Includes a command line interface built with [typer][typer].
+  - Application settings optionally managed with [pydantic-settings][pydantic-settings].
+  - Preconfigured with a `self` subcommand like all the cool kids.
+- Logging handled by [loguru][loguru] with optional logging to a file.
+- Package is also callable via `python -m <package>` magic.
+
+
+### Quality Of Life Features
 - [Poe the Poet][poe] tasks integrated into pyproject.toml:
-  - Test with pytest.
+  - Test with pytest, tests started for you!
   - Generate HTML code coverage reports.
   - Run code quality checks using `mypy`, `ruff`, and `ty`.
   - Publish to PyPI via GitHub Actions with `poe publish`.
 - Development tool options integrated into pyproject.toml.
+
+### GitHub Integrations
 - Generic GitHub Issue and Pull Request templates.
-- Configured to use [dependabot][dependabot] dependency checker.
-  - Checks project dependencies.
-  - Checks project GitHub action dependencies.
+- The [dependabot][dependabot] checks:
+  - Project dependencies.
+  - Project GitHub action dependencies (these never age out right?).
 - Operating System and Python version test matrices.
+
+### Miscellaneous
 - Configured to use [direnv][direnv] to automatically activate & deactivate venvs.
 - Optionally configured badges in README.md for cool points.
-- Optionally managed CLI settings using [pydantic-settings][pydantic-settings].
-- Optionally logs to a file.
+
 
 ## Prerequisites
 
@@ -66,8 +76,6 @@ you and people that interact with your project repository.
 
 ## Creating Your Project
 
-
-
 If you haven't authenticated to GitHub with `gh` yet and you plan to
 ask `cookiecutter` to create the upstream repository, you should do
 that now:
@@ -87,26 +95,14 @@ After answering the `cookiecutter` prompts, you should see the
 following:
 
 ```console
-Task [Install Dev Python............] 🟢
-Task [Create .venv..................] 🟢
-Task [Enable Direnv.................] 🟢
-Task [Sync Project Deps.............] 🟢
-Task [Ruff Check Source.............] 🟢
-Task [Initialize Git................] 🟢
-Task [Add Files.....................] 🟢
-Task [Initial Commit................] 🟢
-Task [Create Upstream Repo .........] 🟢
+✨ Your new project is ready to use! ✨
 $ 
 ```
-
-If you didn't ask to have the upstream GitHub repository created, the
-last task will not run.  If you don't have `gh` installed or you
-aren't authenticated, the last task will fail but the template
-generation will complete successfully.
 
 ### Example Package Tree
 
 ```console
+$ cd <YOUR_PACKAGE_NAME_HERE>
 $ poe tree
 .
 ├── .cookiecutter.json

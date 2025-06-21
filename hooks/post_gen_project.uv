@@ -1,0 +1,103 @@
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [ "sh", "loguru" ]
+# ///
+"""Post generation tasks for cookiecutter templates."""
+
+import sys
+from pathlib import Path
+from functools import partial
+
+import sh
+from loguru import logger
+
+
+def _logger_setup() -> None:
+    """Setup logger for post-generation tasks."""
+    logger.remove()
+    logger.add(
+        sys.stdout,
+        format="✨ {function:<15} | <level>{level:<8}</level>  | {message}",
+    )
+    logger.level("REQUIRED", no=50, color="<red>", icon="💔")
+    logger.level("OPTIONAL", no=30, color="<blue>", icon="⚠️")
+    logger.required = partial(logger.log, "REQUIRED")
+    logger.optional = partial(logger.log, "OPTIONAL")
+
+
+def _remove_empty_comments(path: Path | str) -> None:
+    """Remove empty comment lines from the given path.
+
+    Cookiecutter template files have Jinja directives in them
+    that are commented out. When the directives are processed,
+    it leaves lines with empty comments (e.g. `# `) in the files.
+    """
+    path = Path(path)
+    lines = path.read_text().splitlines()
+    text = [line for line in lines if line.strip() != "#"]
+    path.write_text("\n".join(text) + "\n")
+
+
+def post_gen_project() -> int:
+    """Things to do after cookiecutter has rendered the template.
+
+    - Remove empty comment lines left over from Jinja processing.
+    - Install requested development python version.
+    - Create a python virtual environment.
+    - Sync project requirements to venv.
+    - Ruff check src and test.
+    - Initialize a git repo.
+    - Add all files to git.
+    - Commit initial state of the repo.
+    - Optionally create a GitHub repository and push the initial commit.
+    """
+    for subdir in ["src", "tests"]:
+        for path in Path(subdir).rglob("*.py"):
+            _remove_empty_comments(path)
+
+    cmds = [
+        (True, sh.uv.python.install.bake("{{ cookiecutter.python_version_dev }}")),
+        (False, sh.direnv.bake("allow")),
+        (True, sh.uv.sync.bake("--quiet", "--no-progress")),
+        (True, sh.uvx.ruff.check.bake("--fix", "src", "tests")),
+        (True, sh.git.init.bake("--quiet", "--initial-branch", "main")),
+        (True, sh.git.add.bake(".")),
+        (True, sh.git.commit.bake("-m", "initial commit")),
+        # {% if cookiecutter.create_github_repo %}
+        (
+            False,
+            sh.gh.repo.create.bake(
+                "{{ cookiecutter.package_name }}",
+                "--public",
+                "--push",
+                "--source=.",
+                "--remote=upstream",
+            ),
+        ),
+        # {% endif %}
+    ]
+
+    for required, cmd in cmds:
+        try:
+            cmd()
+        except sh.CommandNotFound:
+            if required:
+                logger.required("Required command not available: %s" % cmd)
+                raise
+            logger.optional("Command not found: %s" % cmd)
+        except sh.ErrorReturnCode_1 as error:
+            if required:
+                logger.required(f"Command failed: {cmd}")
+                logger.required(error.stderr.decode("utf-8").strip())
+                raise
+            logger.optional(f"Command failed: {cmd}")
+            logger.optional(error.stderr.decode("utf-8").strip())
+
+    print("✨ Your new project is ready to use! ✨")
+    return 0
+
+
+if __name__ == "__main__":
+    _logger_setup()
+    sys.exit(post_gen_project())
