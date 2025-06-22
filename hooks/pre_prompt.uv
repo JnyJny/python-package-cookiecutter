@@ -85,6 +85,7 @@ def pre_prompt(config_file: str | Path | None = None) -> int:
     - Fetch GitHub user.name from git config.
     - Fetch GitHub user.email from git config.
     - Find available Python versions excluding pre-releases.
+    - Check for optional tool gh and disable GitHub prompting if not found.
 
     Discovered values are then merged into the cookiecutter context.
     """
@@ -107,7 +108,19 @@ def pre_prompt(config_file: str | Path | None = None) -> int:
 
     config_file = Path(config_file or "cookiecutter.json")
     cookiecutter = json.loads(config_file.read_text())
+
+    # Optional tool checks and modifications to cookiecutter JSON
+    try:
+        sh.gh("--version")
+    except sh.CommandNotFound:
+        logger.optional("gh is not available, disabling GitHub prompts.")
+        del cookiecutter["create_github_repo"]
+        del cookiecutter["make_github_repo_private"]
+        del cookiecutter["__prompts__"]["create_github_repo"]
+        del cookiecutter["__prompts__"]["make_github_repo_private"]
+
     cookiecutter |= discovered
+
     json.dump(cookiecutter, config_file.open("w"), indent=4)
 
     return 0
