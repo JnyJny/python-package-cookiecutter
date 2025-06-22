@@ -74,7 +74,11 @@ def post_gen_project() -> int:
             False,
             sh.gh.repo.create.bake(
                 "{{ cookiecutter.package_name }}",
+                # {% if cookiecutter.make_github_repo_private %}
+                "--private",
+                # {% else %}
                 "--public",
+                # {% endif %}
                 "--push",
                 "--source=.",
                 "--remote=upstream",

@@ -15,7 +15,8 @@
     "repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}",
     "readme_badges": true,
     "create_github_repo": true,
-    "license": ["apache-2.0","agpl-3.0","bsd-2-clause","bsd-3-clause","bsl-1.0","cc0-1.0","epl-2.0","gpl-2.0","gpl-3.0","lgpl-2.1"],
+    "make_github_repo_private": false,
+    "license": ["apache-2.0", "mit", "agpl-3.0", "bsd-2-clause", "bsd-3-clause", "bsl-1.0", "cc0-1.0", "epl-2.0", "gpl-2.0", "gpl-3.0", "lgpl-2.1", "no-license"],
     "use_pydantic_settings": true,
     "log_to_file": true,
     "python_testing_matrix": [
@@ -48,10 +49,12 @@
 	"python_version_dev": "Python version to use in development",
 	"repository": "GitHub project URL",
 	"readme_badges": "Include badges in project README.md",
-	"create_github_repo": "Create GitHub repository and sync",
+	"create_github_repo": "Create public GitHub repository and sync",
+	"make_github_repo_private": "Make the GitHub repository private",
 	"license": {
 	    "__prompt__":"Pick a license for this project",
 	    "apache-2.0": "Apache License 2.0",
+	    "mit": "MIT License",
 	    "agpl-3.0": "GNU Affero General Public License v3.0",
 	    "bsd-2-clause": "BSD 2-Clause 'Simplified' License",
 	    "bsd-3-clause": "BSD 3-Clause 'New' or 'Revised' License",
@@ -60,7 +63,8 @@
 	    "epl-2.0": "Eclipse Public License 2.0",
 	    "gpl-2.0": "GNU General Public License v2.0",
 	    "gpl-3.0": "GNU General Public License v3.0",
-	    "lgpl-2.1": "GNU Lesser General Public License v2.1"
+	    "lgpl-2.1": "GNU Lesser General Public License v2.1",
+	    "no-license": "No License"
 	},
 	"os_testing_matrix": {
 	    "__prompt__": "Pick Operating Systems for testing",
