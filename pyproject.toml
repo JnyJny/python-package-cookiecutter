@@ -12,7 +12,6 @@ dev = [
     "poethepoet>=0.35.0",
     "pytest>=8.4.0",
     "ruff>=0.11.13",
-    "sh>=2.2.2",
     "sphinx>=8.2.3",
 ]
 
@@ -85,10 +84,29 @@ tree.help = "[Misc] List project files in tree format."
 [tool.ruff]
 fix = true
 lint.select = [ "ALL" ]
-lint.ignore = [ "D203", "D211", "D212", "D213", "COM812", "BLE001"]
+lint.ignore = [
+  # incorrect-blank-line-before-class (D203)
+  "D203",
+  # blank-line-before-class (D211)
+  "D211",
+  # multi-line-summary-first-line (D212)
+  "D212",
+  # multi-line-summary-second-line (D213)
+  "D213",
+  # missing-trailing-comma (COM812)
+  "COM812",
+  # blind-except (BLE001)
+  "BLE001"
+]
+
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "S603"]
+"tests/*" = [
+  # assert (S101)
+  "S101",
+  # subprocess-without-shell-equals-true (S603)
+  "S603"
+]
 
 [tool.pytest.ini_options]
 # Narrow to just tests to avoid finding {{ cookiecutter.package_name }}/tests
