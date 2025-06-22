@@ -137,11 +137,40 @@ tree.help = "List project files in tree format."
 
 [tool.ruff]
 fix = true
-lint.select = [ "I", "ALL" ]
-lint.ignore = [ "COM812", "D203", "D211", "D212", "D213", "FBT001", "FBT003", "D400", "BLE001" ]
+lint.select = [
+  # isort
+  "I",
+  # ok isort is in all.
+  "ALL"
+]
+lint.ignore = [
+  # missing-trailing-comma (COM812)
+  "COM812",
+  # incorrect-blank-line-before-class (D203)
+  "D203",
+  # blank-line-before-class (D211)
+  "D211",
+  # multi-line-summary-first-line (D212)
+  "D212",
+  # multi-line-summary-second-line (D213)
+  "D213",
+  # boolean-type-hint-positional-argument (FBT001)
+  "FBT001",
+  # boolean-positional-value-in-call (FBT003)
+  "FBT003",
+  # missing-trailing-period (D400)
+  "D400",
+  # blind-except (BLE001)
+  "BLE001"
+ ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "S603"]
+"tests/*" = [
+   # assert (S101)
+  "S101",
+  # subprocess-without-shell-equals-true (S603)
+  "S603"
+]
 
 [tool.ty]
 
