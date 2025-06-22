@@ -61,6 +61,21 @@ def post_gen_project() -> int:
     except sh.CommandNotFound:
         direnv_allow = lambda *args, **kwargs: None
 
+    try:
+        gh_repo_create = sh.gh.repo.create(
+            "{{ cookiecutter.package_name }}",
+            # {% if cookiecutter.make_github_repo_private %}
+            "--private",
+            # {% else %}
+            "--public",
+            # {% endif %}
+            "--push",
+            "--source=.",
+            "--remote=upstream",
+        )
+    except sh.CommandNotFound:
+        gh_repo_create = lambda *args, **kwargs, None
+        
     cmds = [
         (True, sh.uv.python.install.bake("{{ cookiecutter.python_version_dev }}")),
         (False, direnv_allow),
@@ -70,20 +85,7 @@ def post_gen_project() -> int:
         (True, sh.git.add.bake(".")),
         (True, sh.git.commit.bake("-m", "initial commit")),
         # {% if cookiecutter.create_github_repo %}
-        (
-            False,
-            sh.gh.repo.create.bake(
-                "{{ cookiecutter.package_name }}",
-                # {% if cookiecutter.make_github_repo_private %}
-                "--private",
-                # {% else %}
-                "--public",
-                # {% endif %}
-                "--push",
-                "--source=.",
-                "--remote=upstream",
-            ),
-        ),
+        (False, gh_repo_create)
         # {% endif %}
     ]
 
