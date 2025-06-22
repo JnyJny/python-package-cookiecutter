@@ -1,4 +1,4 @@
-[![gh:JnyJny/python-package-cookiecutter][python-package-cookiecutter-badge]][python-package-cookiecutter] ![release][release-badge] [![test-status][test-status-badge]][testing-workflow]
+[![gh:JnyJny/python-package-cookiecutter][python-package-cookiecutter-badge]][python-package-cookiecutter] [![releases][release-badge]][releases] [![test-status][test-status-badge]][testing-workflow]
 
 # Python Package Cookiecutter Template
 
@@ -289,6 +289,7 @@ some email, open an issue, or just make something cool (and let me know!).
 [python-package-cookiecutter-badge]: https://img.shields.io/badge/Made_With_Cookiecutter-python--package--cookiecutter-green?style=for-the-badge
 [python-package-cookiecutter]: https://github.com/JnyJny/python-package-cookiecutter
 [release-badge]: https://img.shields.io/github/v/release/JnyJny/python-package-cookiecutter?sort=semver&display_name=tag&style=for-the-badge&color=green
+[releases]: https://github.com/JnyJny/python-package-cookiecutter/releases
 [test-status-badge]: https://img.shields.io/github/actions/workflow/status/JnyJny/python-package-cookiecutter/release.yaml?style=for-the-badge&label=Tests
 [testing-workflow]: https://github.com/JnyJny/python-package-cookiecutter/actions/workflows/release.yaml
 
