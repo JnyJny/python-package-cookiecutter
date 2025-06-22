@@ -12,7 +12,7 @@ requires-python = ">={{ cookiecutter.python_version_min }},<{{ cookiecutter.pyth
 dependencies = [
     "loguru",
     "typer",
-{% if cookiecutter.use_pydantic_settings -%}
+{%- if cookiecutter.use_pydantic_settings %}
     "pydantic_settings",
 {%- endif %}
 ]
