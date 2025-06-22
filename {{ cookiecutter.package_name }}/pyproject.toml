@@ -166,7 +166,7 @@ lint.ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = [
-   # assert (S101)
+  # assert (S101)
   "S101",
   # subprocess-without-shell-equals-true (S603)
   "S603"
