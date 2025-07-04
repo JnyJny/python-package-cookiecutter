@@ -8,6 +8,61 @@ from cookiecutter.main import cookiecutter as bake
 
 _PROJECT = "python-package-cookiecutter"
 
+# EJO This file manifest is super fragile, it should be generated from
+#     template data rather than duplicated here. It's a start.
+
+MANIFEST = [
+    ("is_dir", ".git"),
+    ("is_dir", ".github"),
+    ("is_dir", ".github/ISSUE_TEMPLATE"),
+    ("is_dir", ".github/workflows"),
+    ("is_dir", ".venv"),
+    ("is_dir", "src"),
+    ("is_dir", "tests"),
+    ("is_file", ".envrc"),
+    ("is_file", ".github/ISSUE_TEMPLATE/1_bug_report.yaml"),
+    ("is_file", ".github/ISSUE_TEMPLATE/2_feature_request.yaml"),
+    ("is_file", ".github/ISSUE_TEMPLATE/3_question.yaml"),
+    ("is_file", ".github/ISSUE_TEMPLATE/config.yaml"),
+    ("is_file", ".github/PULL_REQUEST_TEMPLATE.md"),
+    ("is_file", ".github/dependabot.yaml"),
+    ("is_file", ".github/workflows/README.md"),
+    ("is_file", ".github/workflows/release.yaml"),
+    ("is_file", ".gitignore"),
+    ("is_file", "LICENSE"),
+    ("is_file", "README.md"),
+    ("is_file", "pyproject.toml"),
+    ("is_file", "uv.lock"),
+]
+
+SRC = ["__init__.py", "__main__.py", "self_subcommand.py", "settings.py"]
+
+
+def check_project_contents(
+    project_path: Path | str,
+    project_name: str,
+) -> bool:
+    """Check that the project contents match the expected manifest."""
+    project_path = Path(project_path)
+
+    assert project_path.exists()
+    assert project_path.is_dir()
+
+    for content_test, content_path in MANIFEST:
+        path = project_path / content_path
+
+        assert path.exists(), f"Expected {path} to exist"
+        assert getattr(path, content_test)(), f"Expected {content_test} for {path}"
+
+        if path.is_file():
+            assert path.stat().st_size > 0, f"File {path} is unexpectedly empty"
+
+    src = project_path / "src" / project_name
+    for path in src.rglob("*.py"):
+        assert path.name in SRC
+
+    return True
+
 
 @pytest.fixture(scope="session")
 def template_root() -> Path:
