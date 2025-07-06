@@ -218,9 +218,14 @@ print("Settings integration test passed")
         assert result.returncode == 0, f"Test environment creation failed: {result.stderr}"
         
         # Install the package
+        # Need to inherit PATH and other env vars for uv to work
+        import os
+        env = os.environ.copy()
+        env["VIRTUAL_ENV"] = str(test_env)
+        
         result = subprocess.run(
             ["uv", "pip", "install", str(wheel_files[0])],
-            env={"VIRTUAL_ENV": str(test_env)},
+            env=env,
             capture_output=True,
             text=True
         )

@@ -133,13 +133,15 @@ class TestCLIIntegration:
             pytest.skip("Pydantic settings not enabled")
         
         # Test with environment variable
-        env = {"THING_DEBUG": "true"}
+        import os
+        env = os.environ.copy()
+        env["THING_DEBUG"] = "true"
         result = subprocess.run(
             ["uv", "run", "python", "-m", "thing", "self", "version"],
             cwd=generated_template_path,
             capture_output=True,
             text=True,
-            env={**subprocess.os.environ, **env}
+            env=env
         )
         assert result.returncode == 0, f"CLI with env var failed: {result.stderr}"
 
@@ -261,14 +263,16 @@ class TestCLIIntegration:
     ) -> None:
         """Test CLI handles Unicode properly."""
         # Test with Unicode in environment (if settings support it)
-        env = {"LANG": "en_US.UTF-8", "LC_ALL": "en_US.UTF-8"}
+        import os
+        env = os.environ.copy()
+        env.update({"LANG": "en_US.UTF-8", "LC_ALL": "en_US.UTF-8"})
         
         result = subprocess.run(
             ["uv", "run", "python", "-m", "thing", "self", "version"],
             cwd=generated_template_path,
             capture_output=True,
             text=True,
-            env={**subprocess.os.environ, **env}
+            env=env
         )
         assert result.returncode == 0, f"Unicode test failed: {result.stderr}"
 

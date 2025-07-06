@@ -174,9 +174,12 @@ class TestBuildValidation:
         dist_dir = generated_template_path / "dist"
         wheel_files = list(dist_dir.glob("*.whl"))
         
+        env = os.environ.copy()
+        env["VIRTUAL_ENV"] = str(test_env / "venv")
+        
         result = subprocess.run(
             ["uv", "pip", "install", str(wheel_files[0])],
-            env={"VIRTUAL_ENV": str(test_env / "venv")},
+            env=env,
             capture_output=True,
             text=True
         )
