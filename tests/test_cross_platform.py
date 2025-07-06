@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import pytest
+from cookiecutter.main import cookiecutter as bake
 
 
 @pytest.mark.cross_platform
@@ -18,7 +19,9 @@ class TestCrossPlatformCompatibility:
     ) -> None:
         """Test that generated projects handle paths correctly across platforms."""
         # Test that all paths in generated files use forward slashes or Path objects
-        python_files = list(generated_template_path.rglob("*.py"))
+        # Exclude .venv directory since we don't control third-party library content
+        python_files = [f for f in generated_template_path.rglob("*.py") 
+                       if ".venv" not in str(f) and "site-packages" not in str(f)]
         
         for py_file in python_files:
             content = py_file.read_text()
@@ -99,11 +102,11 @@ class TestCrossPlatformCompatibility:
         # Test with different environment variable formats
         test_cases = [
             {"TEST_VAR": "test_value"},
-            {"PATH": "/test/path"},  # Unix-style path
+            {"CUSTOM_PATH": "/test/path"},  # Don't override PATH as it breaks uv
         ]
         
         if sys.platform == "win32":
-            test_cases.append({"PATH": "C:\\test\\path"})  # Windows-style path
+            test_cases.append({"CUSTOM_PATH": "C:\\test\\path"})  # Windows-style path
         
         for env_vars in test_cases:
             env = {**os.environ, **env_vars}
@@ -123,7 +126,9 @@ class TestCrossPlatformCompatibility:
     ) -> None:
         """Test that imports work regardless of filesystem case sensitivity."""
         # Test that all imports in Python files reference actual file names correctly
-        python_files = list(generated_template_path.rglob("*.py"))
+        # Exclude .venv directory since we don't control third-party library content
+        python_files = [f for f in generated_template_path.rglob("*.py") 
+                       if ".venv" not in str(f) and "site-packages" not in str(f)]
         
         for py_file in python_files:
             content = py_file.read_text()

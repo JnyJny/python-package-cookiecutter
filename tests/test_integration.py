@@ -1,5 +1,6 @@
 """Integration tests for end-to-end workflows in generated projects."""
 
+import os
 import subprocess
 import time
 from pathlib import Path

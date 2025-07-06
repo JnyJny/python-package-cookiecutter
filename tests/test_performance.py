@@ -1,5 +1,6 @@
 """Performance and benchmarking tests for template generation and projects."""
 
+import os
 import subprocess
 import time
 from pathlib import Path

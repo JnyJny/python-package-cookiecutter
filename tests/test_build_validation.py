@@ -1,5 +1,6 @@
 """Build process validation tests for generated projects."""
 
+import os
 import subprocess
 import tarfile
 import zipfile
@@ -369,7 +370,7 @@ class TestBuildValidation:
             with wheel.open(metadata_files[0]) as metadata_file:
                 metadata = metadata_file.read().decode('utf-8')
                 
-                metadata_version_match = re.search(r'Version:\s*([^\s]+)', metadata)
+                metadata_version_match = re.search(r'^Version:\s*([^\s]+)', metadata, re.MULTILINE)
                 assert metadata_version_match, "Should find version in wheel metadata"
                 metadata_version = metadata_version_match.group(1)
                 
