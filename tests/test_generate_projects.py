@@ -37,4 +37,5 @@ def test_generate_project(
         output_dir=tmp_path,
     )
 
-    assert check_project_contents(project_path, cookiecutter_package_name)
+    context = extra | cookiecutter_extra_context
+    assert check_project_contents(project_path, cookiecutter_package_name, context)
