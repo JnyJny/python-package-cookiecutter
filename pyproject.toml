@@ -112,5 +112,11 @@ lint.ignore = [
 # Narrow to just tests to avoid finding {{ cookiecutter.package_name }}/tests
 # which fail when executed in-place.
 testpaths = [ "tests" ]
+markers = [
+    "integration: marks tests as integration tests (may be slow)",
+    "performance: marks tests as performance tests",
+    "slow: marks tests as slow running tests",
+    "cross_platform: marks tests that validate cross-platform compatibility",
+]
 
 
