@@ -11,9 +11,9 @@ command-line interface, optional settings using
 logger, [loguru][loguru]. Development activities like testing, code
 quality checks, and publishing to PyPI are all baked in and ready to
 go thanks to [Poe The Poet][poe]. Project documentation is
-automatically to GitHub Pages using [MkDocs][mkdocs]. Best of all,
-I've added all sorts of templates and base files to help provide a
-great GitHub experience for you and people that interact with your
+_automatically_ deployed to GitHub Pages using [MkDocs][mkdocs]. Best of
+all, I've added all sorts of templates and base files to help provide
+a great GitHub experience for you and people that interact with your
 project repository.
 
 ## Build Features
