@@ -38,7 +38,7 @@ project repository.
   - Preconfigured with a `self` subcommand like all the cool kids.
 - Logging handled by [loguru][loguru] with optional logging to a file.
 - Package is also callable via `python -m <package>` magic.
-- Professional documentation with [MkDocs][mkdocs] and Material Design theme.
+- Professional documentation with [MkDocs][mkdocs] and a selection of themes.
 - Automatic API documentation generation from docstrings.
 
 
