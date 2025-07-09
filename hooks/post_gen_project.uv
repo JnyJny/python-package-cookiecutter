@@ -51,6 +51,7 @@ def post_gen_project() -> int:
     - Add all files to git.
     - Commit initial state of the repo.
     - Optionally create a GitHub repository and push the initial commit.
+    - Optionally enable GitHub Pages for MkDocs documentation.
     """
     for subdir in ["src", "tests"]:
         for path in Path(subdir).rglob("*.py"):
@@ -74,8 +75,16 @@ def post_gen_project() -> int:
         "--source=.",
         "--remote=upstream",
     )
+    
+    # Enable GitHub Pages with GitHub Actions deployment for MkDocs
+    gh_pages_enable = sh.gh.api.bake(
+        f"repos/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}/pages",
+        "-X", "POST",
+        "-f", "build_type=workflow"
+    )
     # {% else %}
     gh_repo_create = lambda *args, **kwargs: None
+    gh_pages_enable = lambda *args, **kwargs: None
     # {% endif %}
 
     cmds = [
@@ -87,6 +96,7 @@ def post_gen_project() -> int:
         (True, sh.git.add.bake(".")),
         (True, sh.git.commit.bake("-m", "initial commit")),
         (False, gh_repo_create),
+        (False, gh_pages_enable),
     ]
 
     for required, cmd in cmds:
