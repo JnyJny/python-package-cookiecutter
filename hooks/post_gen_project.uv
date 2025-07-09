@@ -115,7 +115,7 @@ def post_gen_project() -> int:
             logger.optional(f"Command failed: {cmd}")
             logger.optional(error.stderr.decode("utf-8").strip())
 
-    print("✨ Your new project is ready to use! ✨")
+    print("✨ Your new project {% cookiecutter.package_name %} is ready to use! ✨")
     return 0
 
 
