@@ -142,6 +142,14 @@ publish_major.help = "[Publish] Major release."
 publish.ref =  "publish_patch"
 publish.help = "[Publish] Patch release."
 
+# Release tasks
+
+changelog.shell = "git log --pretty=format:'- %s (%h)' $(git describe --tags --abbrev=0 2>/dev/null || echo 'HEAD')..HEAD"
+changelog.help = "[Release] Generate changelog since last tag."
+
+release-notes.shell = "echo '## Release Notes' > RELEASE_NOTES.md && echo '' >> RELEASE_NOTES.md && poe changelog >> RELEASE_NOTES.md"
+release-notes.help = "[Release] Generate release notes file."
+
 # Clean
 
 clean.cmd = "rm -rf htmlcov dist {{ cookiecutter.package_name }}.egg-info *.log"

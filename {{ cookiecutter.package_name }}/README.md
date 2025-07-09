@@ -73,6 +73,34 @@ uv sync
 poe --help
 ```
 
+### Release Management
+
+This project uses automated release management with GitHub Actions:
+
+#### Version Bumping
+- `poe publish_patch` - Bump patch version, commit, tag, and push
+- `poe publish_minor` - Bump minor version, commit, tag, and push  
+- `poe publish_major` - Bump major version, commit, tag, and push
+
+#### Release Notes
+- `poe changelog` - Generate changelog since last tag
+- `poe release-notes` - Generate release notes file
+
+#### Automatic Releases
+When you push a version tag (e.g., `v1.0.0`), GitHub Actions will:
+1. Run tests across all supported Python versions
+2. Build the package
+3. Publish to PyPI (if tests pass)
+4. Create a GitHub release with auto-generated notes
+5. Upload built artifacts to the release
+
+#### MkDocs Documentation
+- `poe docs-serve` - Serve documentation locally
+- `poe docs-build` - Build documentation
+- `poe docs-deploy` - Deploy to GitHub Pages
+
+The template includes MkDocs with {{ cookiecutter.mkdocs_theme }} theme and automatic deployment to GitHub Pages.
+
 <hr>
 
 [![gh:JnyJny/python-package-cookiecutter][python-package-cookiecutter-badge]][python-package-cookiecutter]
