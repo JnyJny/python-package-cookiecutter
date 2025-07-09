@@ -10,10 +10,11 @@ command-line interface, optional settings using
 [pydantic-settings][pydantic-settings] and logging using my favorite
 logger, [loguru][loguru]. Development activities like testing, code
 quality checks, and publishing to PyPI are all baked in and ready to
-go thanks to [Poe The Poet][poe]. Professional documentation with
-[MkDocs][mkdocs] automatically deploys to GitHub Pages. Best of all, I've
-added all sorts of templates and base files to help provide a great GitHub
-experience for you and people that interact with your project repository.
+go thanks to [Poe The Poet][poe]. Project documentation is
+automatically to GitHub Pages using [MkDocs][mkdocs]. Best of all,
+I've added all sorts of templates and base files to help provide a
+great GitHub experience for you and people that interact with your
+project repository.
 
 ## Build Features
 
@@ -111,7 +112,7 @@ $
 ```console
 $ cd <YOUR_PACKAGE_NAME_HERE>
 $ poe tree
-.
+
 ├── .cookiecutter.json
 ├── .envrc
 ├── .github
@@ -123,11 +124,25 @@ $ poe tree
 │   │   └── config.yaml
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   └── workflows
+│       ├── docs.yml
 │       ├── README.md
 │       └── release.yaml
 ├── .gitignore
 ├── CONTRIBUTING.md
+├── docs
+│   ├── changelog.md
+│   ├── contributing.md
+│   ├── gen_ref_pages.py
+│   ├── getting-started
+│   │   ├── configuration.md
+│   │   ├── installation.md
+│   │   └── quickstart.md
+│   ├── index.md
+│   └── user-guide
+│       ├── cli.md
+│       └── examples.md
 ├── LICENSE
+├── mkdocs.yml
 ├── pyproject.toml
 ├── README.md
 ├── src
@@ -210,7 +225,8 @@ suits you best. It won't hurt my feelings at all.
 
 ## Documentation with MkDocs
 
-Generated projects include a complete documentation setup using [MkDocs][mkdocs] with the [Material theme][mkdocs-material]:
+Generated projects include a complete documentation setup using
+[MkDocs][mkdocs] with the [Material theme][mkdocs-material]:
 
 ### Features
 - **Material Design theme** with dark/light mode toggle
@@ -218,18 +234,6 @@ Generated projects include a complete documentation setup using [MkDocs][mkdocs]
 - **Search functionality** with highlighting
 - **Automated deployment** to GitHub Pages via GitHub Actions
 - **Professional structure** with getting started, user guide, and API reference
-
-### Usage
-```console
-# Serve documentation locally during development
-poe docs-serve
-
-# Build documentation for production
-poe docs-build
-
-# Deploy documentation to GitHub Pages (manual)
-poe docs-deploy
-```
 
 ### Automatic Deployment
 When you push to the main branch, GitHub Actions automatically:
@@ -239,9 +243,9 @@ When you push to the main branch, GitHub Actions automatically:
 ### Documentation Structure
 ```
 docs/
-├── index.md                    # Main documentation homepage
+├── index.md                   # Main documentation homepage
 ├── getting-started/
-│   ├── installation.md         # Installation instructions
+│   ├── installation.md        # Installation instructions
 │   ├── quickstart.md          # Quick start guide
 │   └── configuration.md       # Configuration options
 ├── user-guide/
@@ -249,10 +253,11 @@ docs/
 │   └── examples.md            # Usage examples
 ├── contributing.md            # Contribution guidelines
 ├── changelog.md               # Project changelog
-└── gen_ref_pages.py          # Auto-generates API reference
+└── gen_ref_pages.py           # Auto-generates API reference
 ```
 
-The documentation is automatically customized with your project name, GitHub username, and other template values.
+The documentation is automatically customized with your project name,
+GitHub username, and other template values.
 
 ## Example Development Workflow
 
