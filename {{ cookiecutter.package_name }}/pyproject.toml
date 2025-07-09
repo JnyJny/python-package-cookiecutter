@@ -62,12 +62,18 @@ dev = [
 ]
 docs = [
     "mkdocs",
+    "mkdocstrings[python]",
+{%- if cookiecutter.mkdocs_theme == "material" %}
     "mkdocs-material",
     "mkdocs-autorefs",
     "mkdocs-gen-files",
     "mkdocs-literate-nav",
     "mkdocs-section-index",
-    "mkdocstrings[python]",
+{%- elif cookiecutter.mkdocs_theme == "bootstrap" %}
+    "mkdocs-bootstrap4",
+{%- elif cookiecutter.mkdocs_theme == "windmill" %}
+    "mkdocs-windmill-dark",
+{%- endif %}
 ]
 
 [tool.poe.tasks]

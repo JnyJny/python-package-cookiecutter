@@ -36,6 +36,13 @@
     ],
     "use_pydantic_settings": true,
     "log_to_file": true,
+    "mkdocs_theme": [
+        "material",
+        "readthedocs", 
+        "mkdocs",
+        "bootstrap",
+        "windmill"
+    ],
     "python_testing_matrix": [
 	"{{ cookiecutter._python_versions }}",
 	"{{ cookiecutter._python_versions[0] }}",
@@ -100,7 +107,15 @@
 	    "ubuntu-latest, macos-latest, windows-latest": "Linux, MacOS & Windows"
 	},
 	"use_pydantic_settings": "Configure CLI settings with pydantic-settings",
-	"log_to_file": "Configure CLI to log to a file"
+	"log_to_file": "Configure CLI to log to a file",
+	"mkdocs_theme": {
+	    "__prompt__": "Choose MkDocs theme for documentation",
+	    "material": "Material Design theme (modern, feature-rich)",
+	    "readthedocs": "Read the Docs theme (classic documentation style)",
+	    "mkdocs": "Default MkDocs theme (simple, lightweight)",
+	    "bootstrap": "Bootstrap theme (responsive, familiar)",
+	    "windmill": "Windmill theme (clean, minimal)"
+	}
     }
 }
 
