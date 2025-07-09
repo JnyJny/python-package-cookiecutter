@@ -11,10 +11,10 @@ command-line interface, optional settings using
 logger, [loguru][loguru]. Development activities like testing, code
 quality checks, and publishing to PyPI are all baked in and ready to
 go thanks to [Poe The Poet][poe]. Project documentation is
-automatically to GitHub Pages using [MkDocs][mkdocs]. Best of all,
-I've added all sorts of templates and base files to help provide a
-great GitHub experience for you and people that interact with your
-project repository.
+automatically configured to deploy to GitHub Pages using
+[MkDocs][mkdocs]. Best of all, I've added all sorts of templates and
+base files to help provide a great GitHub experience for you and
+people that interact with your project repository.
 
 ## Build Features
 
@@ -38,7 +38,7 @@ project repository.
   - Preconfigured with a `self` subcommand like all the cool kids.
 - Logging handled by [loguru][loguru] with optional logging to a file.
 - Package is also callable via `python -m <package>` magic.
-- Professional documentation with [MkDocs][mkdocs] and Material Design theme.
+- Professional documentation with [MkDocs][mkdocs] with a selection of themes.
 - Automatic API documentation generation from docstrings.
 
 
