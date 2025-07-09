@@ -52,7 +52,7 @@ theme:
 
 plugins:
   - search
-{%- if cookiecutter.mkdocs_theme == "material" %}
+{% if cookiecutter.mkdocs_theme == "material" %}
   - autorefs
   - mkdocstrings:
       handlers:
@@ -81,7 +81,7 @@ plugins:
   - literate-nav:
       nav_file: SUMMARY.md
   - section-index
-{% else -%}
+{% else %}
   - mkdocstrings:
       handlers:
         python:
@@ -101,7 +101,7 @@ plugins:
             merge_init_into_class: true
 {% endif %}
 
-{% if cookiecutter.mkdocs_theme == "material" -%}
+{% if cookiecutter.mkdocs_theme == "material" %}
 nav:
   - Home: index.md
   - Getting Started:
@@ -114,7 +114,7 @@ nav:
   - API Reference: reference/
   - Contributing: contributing.md
   - Changelog: changelog.md
-{%- else -%}
+{% else %}
 nav:
   - Home: index.md
   - Installation: getting-started/installation.md
@@ -125,9 +125,9 @@ nav:
   - API Reference: reference/
   - Contributing: contributing.md
   - Changelog: changelog.md
-{%- endif %}
+{% endif %}
 
-{% if cookiecutter.mkdocs_theme == "material" -%}
+{% if cookiecutter.mkdocs_theme == "material" %}
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -146,7 +146,7 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
-{%- else -%}
+{% else %}
 markdown_extensions:
   - codehilite
   - admonition
@@ -154,7 +154,7 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
-{%- endif %}
+{% endif %}
 
 extra:
   version:
