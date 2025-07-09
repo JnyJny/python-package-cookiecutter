@@ -29,9 +29,9 @@ classifiers = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.repository }}#readme"
-Issues = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.repository }}/issues"
-Source = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.repository }}"
+Documentation = "https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.package_name }}/"
+Issues = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}/issues"
+Source = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}"
 
 
 [project.scripts]
@@ -59,6 +59,15 @@ dev = [
     "pytest-cov",
     "ruff",
     "ty",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-autorefs",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+    "mkdocs-section-index",
+    "mkdocstrings[python]",
 ]
 
 [tool.poe.tasks]
@@ -137,6 +146,17 @@ clean.help = "[Clean] Remove testing, build and code quality artifacts."
 
 tree.cmd = "tree . -a -I .venv -I .git -I .ruff_cache"
 tree.help = "List project files in tree format."
+
+# Documentation
+
+docs-serve.cmd = "mkdocs serve"
+docs-serve.help = "[Documentation] Serve documentation locally for development."
+
+docs-build.cmd = "mkdocs build"
+docs-build.help = "[Documentation] Build documentation for production."
+
+docs-deploy.cmd = "mkdocs gh-deploy"
+docs-deploy.help = "[Documentation] Deploy documentation to GitHub Pages."
 
 # Tool Options
 
