@@ -75,12 +75,14 @@ def post_gen_project() -> int:
         "--source=.",
         "--remote=upstream",
     )
-    
-    # Enable GitHub Pages with GitHub Actions deployment for MkDocs
+
     gh_pages_enable = sh.gh.api.bake(
+        "--silent",
         f"repos/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}/pages",
-        "-X", "POST",
-        "-f", "build_type=workflow"
+        "-X",
+        "POST",
+        "-f",
+        "build_type=workflow",
     )
     # {% else %}
     gh_repo_create = lambda *args, **kwargs: None
