@@ -1,11 +1,8 @@
----
-# https://docs.github.com/en/code-security/dependabot/
-
 version: 2
 updates:
   # Check for Python package updates daily
-  - package-ecosystem: "uv"
-    directory: "/" 
+  - package-ecosystem: "pip"
+    directory: "/"
     schedule:
       interval: "daily"
       time: "08:00"
@@ -18,9 +15,9 @@ updates:
       - "dependencies"
       - "python"
     reviewers:
-      - "{{ cookiecutter.github_username }}"
-
-  # Check for GitHub Action updates weekly  
+      - "JnyJny"
+    
+  # Check for GitHub Action updates weekly
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -36,4 +33,4 @@ updates:
       - "dependencies"
       - "github-actions"
     reviewers:
-      - "{{ cookiecutter.github_username }}"
+      - "JnyJny"
