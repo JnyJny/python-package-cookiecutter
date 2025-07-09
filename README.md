@@ -226,14 +226,23 @@ suits you best. It won't hurt my feelings at all.
 ## Documentation with MkDocs
 
 Generated projects include a complete documentation setup using
-[MkDocs][mkdocs] with the [Material theme][mkdocs-material]:
+[MkDocs][mkdocs] with your choice of professional themes:
+
+### Theme Options
+Choose from 5 professional MkDocs themes during project generation:
+
+- **Material** - Modern Material Design with dark/light mode, advanced navigation
+- **Read the Docs** - Classic documentation style, clean and familiar  
+- **MkDocs** - Default lightweight theme, simple and fast
+- **Bootstrap** - Responsive Bootstrap-based theme, mobile-friendly
+- **Windmill** - Clean minimal theme, distraction-free reading
 
 ### Features
-- **Material Design theme** with dark/light mode toggle
 - **Auto-generated API documentation** from your code's docstrings
 - **Search functionality** with highlighting
 - **Automated deployment** to GitHub Pages via GitHub Actions
 - **Professional structure** with getting started, user guide, and API reference
+- **Theme-optimized configuration** with appropriate plugins and extensions
 
 ### Automatic Deployment
 When you push to the main branch, GitHub Actions automatically:

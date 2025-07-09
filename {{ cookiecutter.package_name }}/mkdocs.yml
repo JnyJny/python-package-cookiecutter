@@ -6,6 +6,7 @@ site_url: https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.p
 repo_name: {{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}
 repo_url: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}
 
+{% if cookiecutter.mkdocs_theme == "material" -%}
 theme:
   name: material
   palette:
@@ -31,9 +32,27 @@ theme:
     - search.share
     - content.code.copy
     - content.code.annotate
+{%- elif cookiecutter.mkdocs_theme == "readthedocs" -%}
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - python
+{%- elif cookiecutter.mkdocs_theme == "mkdocs" -%}
+theme:
+  name: mkdocs
+{%- elif cookiecutter.mkdocs_theme == "bootstrap" -%}
+theme:
+  name: bootstrap4
+{%- elif cookiecutter.mkdocs_theme == "windmill" -%}
+theme:
+  name: windmill-dark
+{%- endif %}
 
 plugins:
   - search
+{%- if cookiecutter.mkdocs_theme == "material" %}
   - autorefs
   - mkdocstrings:
       handlers:
@@ -62,7 +81,27 @@ plugins:
   - literate-nav:
       nav_file: SUMMARY.md
   - section-index
+{% else -%}
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: true
+            show_bases: true
+            show_root_heading: true
+            show_object_full_path: true
+            show_category_heading: true
+            show_if_no_docstring: true
+            inherited_members: true
+            members_order: source
+            separate_signature: true
+            unwrap_annotated: true
+            filters: ["!^_"]
+            merge_init_into_class: true
+{% endif %}
 
+{% if cookiecutter.mkdocs_theme == "material" -%}
 nav:
   - Home: index.md
   - Getting Started:
@@ -75,7 +114,20 @@ nav:
   - API Reference: reference/
   - Contributing: contributing.md
   - Changelog: changelog.md
+{%- else -%}
+nav:
+  - Home: index.md
+  - Installation: getting-started/installation.md
+  - Quick Start: getting-started/quickstart.md
+  - Configuration: getting-started/configuration.md
+  - CLI Usage: user-guide/cli.md
+  - Examples: user-guide/examples.md
+  - API Reference: reference/
+  - Contributing: contributing.md
+  - Changelog: changelog.md
+{%- endif %}
 
+{% if cookiecutter.mkdocs_theme == "material" -%}
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -94,6 +146,15 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+{%- else -%}
+markdown_extensions:
+  - codehilite
+  - admonition
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+{%- endif %}
 
 extra:
   version:
