@@ -10,9 +10,10 @@ command-line interface, optional settings using
 [pydantic-settings][pydantic-settings] and logging using my favorite
 logger, [loguru][loguru]. Development activities like testing, code
 quality checks, and publishing to PyPI are all baked in and ready to
-go thanks to [Poe The Poet][poe]. Best of all, I've added all sorts of
-templates and base files to help provide a great GitHub experience for
-you and people that interact with your project repository.
+go thanks to [Poe The Poet][poe]. Professional documentation with
+[MkDocs][mkdocs] automatically deploys to GitHub Pages. Best of all, I've
+added all sorts of templates and base files to help provide a great GitHub
+experience for you and people that interact with your project repository.
 
 ## Build Features
 
@@ -25,6 +26,7 @@ you and people that interact with your project repository.
 - Automatically initializes a git repository with a main branch.
 - Automatically creates an initial git commit.
 - Optionally creates an upstream repository and pushes (GitHub only, requires [gh][gh]).
+- Automatically enables GitHub Pages for MkDocs documentation deployment.
 
 ## So Many Package Features
 
@@ -35,6 +37,8 @@ you and people that interact with your project repository.
   - Preconfigured with a `self` subcommand like all the cool kids.
 - Logging handled by [loguru][loguru] with optional logging to a file.
 - Package is also callable via `python -m <package>` magic.
+- Professional documentation with [MkDocs][mkdocs] and Material Design theme.
+- Automatic API documentation generation from docstrings.
 
 
 ### Quality Of Life Features
@@ -43,6 +47,7 @@ you and people that interact with your project repository.
   - Generate HTML code coverage reports.
   - Run code quality checks using `mypy`, `ruff`, and `ty`.
   - Publish to PyPI via GitHub Actions with `poe publish`.
+  - Serve, build, and deploy documentation with `poe docs-*` tasks.
 - Development tool options integrated into pyproject.toml.
 
 ### GitHub Integrations
@@ -51,6 +56,8 @@ you and people that interact with your project repository.
   - Project dependencies.
   - Project GitHub action dependencies (these never age out right?).
 - Operating System and Python version test matrices.
+- Automated documentation deployment to GitHub Pages via GitHub Actions.
+- MkDocs workflow with Material theme, search, and API documentation.
 
 ### Miscellaneous
 - Configured to use [direnv][direnv] to automatically activate & deactivate venvs.
@@ -193,10 +200,59 @@ Configured tasks:
   publish               [Publish] Minor release.
   clean                 [Clean] Remove testing, build and code quality artifacts.
   tree                  [Misc] List project files in tree format.
+  docs-serve            [Documentation] Serve documentation locally for development.
+  docs-build            [Documentation] Build documentation for production.
+  docs-deploy           [Documentation] Deploy documentation to GitHub Pages.
 ```
 
 These are the tasks that I like. Feel free to hack them up however it
 suits you best. It won't hurt my feelings at all.
+
+## Documentation with MkDocs
+
+Generated projects include a complete documentation setup using [MkDocs][mkdocs] with the [Material theme][mkdocs-material]:
+
+### Features
+- **Material Design theme** with dark/light mode toggle
+- **Auto-generated API documentation** from your code's docstrings
+- **Search functionality** with highlighting
+- **Automated deployment** to GitHub Pages via GitHub Actions
+- **Professional structure** with getting started, user guide, and API reference
+
+### Usage
+```console
+# Serve documentation locally during development
+poe docs-serve
+
+# Build documentation for production
+poe docs-build
+
+# Deploy documentation to GitHub Pages (manual)
+poe docs-deploy
+```
+
+### Automatic Deployment
+When you push to the main branch, GitHub Actions automatically:
+1. Builds your MkDocs documentation
+2. Deploys it to GitHub Pages at `https://username.github.io/project-name/`
+
+### Documentation Structure
+```
+docs/
+├── index.md                    # Main documentation homepage
+├── getting-started/
+│   ├── installation.md         # Installation instructions
+│   ├── quickstart.md          # Quick start guide
+│   └── configuration.md       # Configuration options
+├── user-guide/
+│   ├── cli.md                 # CLI usage guide
+│   └── examples.md            # Usage examples
+├── contributing.md            # Contribution guidelines
+├── changelog.md               # Project changelog
+└── gen_ref_pages.py          # Auto-generates API reference
+```
+
+The documentation is automatically customized with your project name, GitHub username, and other template values.
 
 ## Example Development Workflow
 
@@ -304,6 +360,8 @@ some email, open an issue, or just make something cool (and let me know!).
 [typer]: https://typer.tiangolo.com
 [loguru]: https://loguru.readthedocs.io/en/stable/
 [pydantic-settings]: https://docs.pydantic.dev/latest/api/pydantic_settings/
+[mkdocs]: https://www.mkdocs.org/
+[mkdocs-material]: https://squidfunk.github.io/mkdocs-material/
 [semantic-version]: https://semver.org
 [dependabot]: https://docs.github.com/en/code-security/dependabot
 [trove-classifiers]: https://pypi.org/classifiers/
