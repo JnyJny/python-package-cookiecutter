@@ -334,15 +334,14 @@ templates][github-templates]. You should edit them to reflect your
 projects needs and personality. You may want to uncomment and edit
 issue links in `config.yaml` if it suits your needs.
 
-### .github/workflows/release.yml
+### .github/workflows/release.yaml
 
-The `release.yaml` workflow defines a matrix of operating systems and
-Python versions to test against. Tests are run when a [semantic
-versioning][semantic-version] tag or a tag with the suffix "-test" is
-pushed to a branch. If and when the requested tests complete
-successfully, the package will be built and published to PyPI, unless
-the triggering tag has a "-test" suffix in which case the workflow
-skips publishing.
+The `release.yaml` workflow runs a fast test subset to validate core 
+functionality when a [semantic versioning][semantic-version] tag is 
+pushed. If tests pass successfully, it automatically creates a GitHub 
+release with generated release notes and changelog integration. This 
+ensures the cookiecutter template repository itself maintains quality 
+and provides automated release management.
 
 Tests are designed to be run against matrices of Operating System and
 Python version values. The matrices can be a list with a single item

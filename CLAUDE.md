@@ -88,9 +88,12 @@ Generated projects include comprehensive GitHub automation:
 
 **Workflows:**
 - `release.yaml` - Multi-stage CI/CD pipeline with matrix testing and PyPI publishing via trusted publishers
-- `github-release.yml` - Automatic GitHub release creation with changelog generation
+- `github-release.yml` - Automatic GitHub release creation with changelog generation  
 - `docs.yml` - GitHub Pages deployment for MkDocs documentation
 - `dependabot.yaml` - Automated dependency updates for Python packages and GitHub Actions
+
+**Cookiecutter Repository Workflows:**
+- `release.yaml` - Test validation and automatic GitHub release creation with changelog generation
 
 **Issue & PR Templates:**
 - Bug report template with structured fields
