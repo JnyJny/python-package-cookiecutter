@@ -94,7 +94,6 @@ Generated projects include comprehensive GitHub automation:
 
 **Cookiecutter Repository Workflows:**
 - `release.yaml` - Test validation and automatic GitHub release creation with changelog generation
-- `dependabot-automerge.yml` - Automatic dependency update merging with safety checks
 
 **Issue & PR Templates:**
 - Bug report template with structured fields
@@ -159,13 +158,6 @@ When testing or modifying GitHub workflows:
 3. Verify Dependabot configuration with different `github_username` values
 4. Test release workflows with semantic version tags (`v1.0.0`, `v1.0.0-test`)
 5. Validate issue/PR templates render correctly with cookiecutter variables
-
-### Dependabot Auto-Merge
-The repository includes automatic dependency update merging:
-- **Automatically merged**: Patch and minor updates that pass all tests
-- **Manual review required**: Major version updates and critical dependencies
-- **Safety checks**: Fast test suite, code quality, and security audits
-- **Configuration**: See `DEPENDABOT_SETUP.md` for repository settings requirements
 
 ### Release Process
 
