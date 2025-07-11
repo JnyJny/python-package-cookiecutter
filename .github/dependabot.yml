@@ -7,15 +7,20 @@ updates:
       interval: "daily"
       time: "08:00"
       timezone: "America/Chicago"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "deps"
       include: "scope"
     labels:
       - "dependencies"
       - "python"
+      - "automerge"
     reviewers:
       - "JnyJny"
+    # Allow all dependency types but auto-merge will filter by semver
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
     
   # Check for GitHub Action updates weekly
   - package-ecosystem: "github-actions"
@@ -32,5 +37,6 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+      - "automerge"
     reviewers:
       - "JnyJny"
