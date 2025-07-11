@@ -9,7 +9,17 @@ This is a Cookiecutter template for creating Python packages with modern tooling
 ## Key Commands
 
 ### Testing the Template
-- `pytest` - Run tests for the cookiecutter template itself
+- `pytest` - Run comprehensive test suite covering multiple aspects:
+  - Template configuration validation (`test_cookiecutter_json.py`)
+  - Project generation with all configuration combinations (`test_generate_projects.py`)
+  - Generated project poe tasks functionality (`test_poe_tasks.py`)
+  - CLI integration and behavior (`test_cli_integration.py`)
+  - Build processes and packaging (`test_build_validation.py`)
+  - Configuration matrix testing (`test_configuration_matrix.py`)
+  - Cross-platform compatibility (`test_cross_platform.py`)
+  - Edge cases and error handling (`test_edge_cases.py`)
+  - End-to-end integration workflows (`test_integration.py`)
+  - Default project baseline validation (`test_default_project.py`)
 - `poe ruff` - Run ruff check and format on template code
 - `poe test` - Run pytest (alias for pytest)
 
@@ -21,6 +31,14 @@ This is a Cookiecutter template for creating Python packages with modern tooling
 - `poe release_patch` - Bump patch version, commit, tag, and push
 - `poe release_minor` - Bump minor version, commit, tag, and push  
 - `poe release_major` - Bump major version, commit, tag, and push
+
+### Generated Project Commands
+Generated projects include additional poe tasks:
+- `poe changelog` - Generate changelog since last tag
+- `poe release-notes` - Generate release notes file from changelog
+- `poe publish_patch` - Publish patch release (triggers GitHub workflows)
+- `poe publish_minor` - Publish minor release (triggers GitHub workflows)
+- `poe publish_major` - Publish major release (triggers GitHub workflows)
 
 ### Development Setup
 - `uv sync` - Install dependencies and sync virtual environment
@@ -44,7 +62,12 @@ The template creates Python packages with:
 - Optional pydantic-settings for configuration
 - Loguru for logging
 - Comprehensive poe tasks for development workflow
-- GitHub workflows for testing and publishing
+- Complete GitHub automation suite including:
+  - CI/CD workflows for testing and PyPI publishing
+  - Automatic GitHub release generation with changelogs
+  - GitHub Pages documentation deployment
+  - Dependabot for automated dependency updates
+  - Issue and PR templates
 
 ### Hook System
 Post-generation hooks automatically:
@@ -56,13 +79,54 @@ Post-generation hooks automatically:
 6. Create initial commit
 7. Optionally create GitHub repository and push
 
+### GitHub Automation Features
+
+Generated projects include comprehensive GitHub automation:
+
+**Workflows:**
+- `release.yaml` - Multi-stage CI/CD pipeline with matrix testing and PyPI publishing via trusted publishers
+- `github-release.yml` - Automatic GitHub release creation with changelog generation
+- `docs.yml` - GitHub Pages deployment for MkDocs documentation
+- `dependabot.yaml` - Automated dependency updates for Python packages and GitHub Actions
+
+**Issue & PR Templates:**
+- Bug report template with structured fields
+- Feature request template
+- Question template for support
+- Pull request template with summary and test plan sections
+
+**Release Management:**
+- CHANGELOG.md following Keep a Changelog format
+- Automated release notes generation from git commits
+- Semantic versioning with tag-triggered releases
+- Support for test releases with `-test` suffix tags
+
 ## Template Testing Strategy
 
-Tests validate the template by:
-- Checking cookiecutter.json structure and values
-- Generating projects with various configuration combinations
-- Running tests within generated projects
-- Verifying all poe tasks work in generated projects
+The comprehensive test suite validates multiple aspects of the template:
+
+### Template Configuration & Structure
+- `cookiecutter.json` validation for proper structure and values
+- File hierarchy generation across all configuration combinations
+- Template rendering with different variable combinations
+
+### Generated Project Functionality
+- **Build & Packaging**: Wheel/sdist creation, installation, metadata validation
+- **CLI Integration**: Help systems, error handling, version commands, debug functionality
+- **Development Tools**: All poe tasks execution (test, lint, type-check, build)
+- **Cross-Platform**: Path handling, line endings, permissions, Unicode support
+
+### Workflow Integration
+- **End-to-End Cycles**: Complete development workflows from test to build
+- **Hook System**: Post-generation scripts (git init, venv creation, dependency sync)
+- **GitHub Automation**: Workflow syntax validation, Dependabot configuration
+- **Edge Cases**: Error conditions, boundary scenarios, invalid configurations
+
+### Testing Infrastructure
+- **Parametrized Testing**: Systematic coverage of configuration matrices
+- **Subprocess Execution**: Real command behavior validation
+- **File System Validation**: Structure and content verification
+- **Performance Markers**: Separation of fast/slow tests for CI optimization
 
 ## Common Workflows
 
@@ -79,3 +143,19 @@ Update both:
 
 ### Testing Generated Projects
 The `poe bake` command creates a test project that can be used to verify template functionality without going through the full cookiecutter prompts.
+
+### Working with GitHub Automation
+When testing or modifying GitHub workflows:
+1. Use `poe bake` to generate a test project with GitHub integration enabled
+2. Test workflow changes in the generated project before updating the template
+3. Verify Dependabot configuration with different `github_username` values
+4. Test release workflows with semantic version tags (`v1.0.0`, `v1.0.0-test`)
+5. Validate issue/PR templates render correctly with cookiecutter variables
+
+### Release Process for Generated Projects
+Generated projects follow this release workflow:
+1. Update code and commit changes
+2. Run `poe changelog` to preview changes since last tag (in generated project)
+3. Run `poe release-notes` to generate release notes (in generated project)
+4. Use `poe publish_patch/minor/major` to trigger automated release (in generated project)
+5. GitHub Actions handle testing, PyPI publishing, and GitHub release creation
