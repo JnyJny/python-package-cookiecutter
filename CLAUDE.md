@@ -9,7 +9,7 @@ This is a Cookiecutter template for creating Python packages with modern tooling
 ## Key Commands
 
 ### Testing the Template
-- `pytest` - Run comprehensive test suite covering multiple aspects:
+- `pytest` - Run full test suite (103 tests, ~5-15 minutes):
   - Template configuration validation (`test_cookiecutter_json.py`)
   - Project generation with all configuration combinations (`test_generate_projects.py`)
   - Generated project poe tasks functionality (`test_poe_tasks.py`)
@@ -20,6 +20,7 @@ This is a Cookiecutter template for creating Python packages with modern tooling
   - Edge cases and error handling (`test_edge_cases.py`)
   - End-to-end integration workflows (`test_integration.py`)
   - Default project baseline validation (`test_default_project.py`)
+- `poe test-fast` - Run fast test subset (26 tests, ~35 seconds) for release validation
 - `poe ruff` - Run ruff check and format on template code
 - `poe test` - Run pytest (alias for pytest)
 
@@ -129,6 +130,7 @@ The comprehensive test suite validates multiple aspects of the template:
 - **Subprocess Execution**: Real command behavior validation
 - **File System Validation**: Structure and content verification
 - **Performance Markers**: Separation of fast/slow tests for CI optimization
+- **Test Subsets**: Fast subset (26 tests, 35s) for releases; full suite (103 tests, 5-15m) for comprehensive validation
 
 ## Common Workflows
 
@@ -158,10 +160,11 @@ When testing or modifying GitHub workflows:
 
 **For the Cookiecutter Template Repository:**
 1. Update code and commit changes
-2. Run `poe changelog` to preview changes since last tag
-3. Run `poe release-notes` to generate release notes
-4. Use `poe release_patch/minor/major` to bump version, commit, tag, and push
-5. GitHub Actions automatically create GitHub release with generated notes
+2. Run `poe test-fast` to validate core functionality (optional, but recommended)
+3. Run `poe changelog` to preview changes since last tag
+4. Run `poe release-notes` to generate release notes
+5. Use `poe release_patch/minor/major` to bump version, commit, tag, and push
+6. GitHub Actions automatically run fast test suite and create GitHub release (only if tests pass)
 
 **For Generated Projects:**
 Generated projects follow this release workflow:

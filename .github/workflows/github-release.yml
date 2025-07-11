@@ -10,9 +10,35 @@ permissions:
   pull-requests: read
 
 jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Create Bogus Git Configuration
+        env:
+          GITHUB_NAME: "NOBODY"
+          GITHUB_EMAIL: "NOBODY@NOWHERE.EXAMPLE.COM"
+        run: |
+          git config --global user.name "$GITHUB_NAME"
+          git config --global user.email "$GITHUB_EMAIL"
+
+      - name: Run Fast Test Suite
+        run: |
+          uv run pytest -m 'not slow and not integration and not cross_platform' --ignore=tests/test_configuration_matrix.py --ignore=tests/test_generate_projects.py tests/
+
   release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
+    needs: test
     
     steps:
       - name: Checkout

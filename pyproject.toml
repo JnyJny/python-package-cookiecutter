@@ -20,6 +20,9 @@ dev = [
 test.cmd = "pytest"
 test.help = "Test cookiecutter package."
 
+test-fast.cmd = "pytest -m 'not slow and not integration and not cross_platform' --ignore=tests/test_configuration_matrix.py --ignore=tests/test_generate_projects.py tests/"
+test-fast.help = "Run fast subset of tests for release validation."
+
 ruff_check.cmd = "ruff check hooks tests"
 ruff_check.help = "ruff check on hooks and tests."
 
