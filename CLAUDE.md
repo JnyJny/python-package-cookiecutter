@@ -28,9 +28,11 @@ This is a Cookiecutter template for creating Python packages with modern tooling
 - `poe clean` - Remove generated test project and GitHub repo
 
 ### Release Management
-- `poe release_patch` - Bump patch version, commit, tag, and push
-- `poe release_minor` - Bump minor version, commit, tag, and push  
-- `poe release_major` - Bump major version, commit, tag, and push
+- `poe changelog` - Generate changelog since last tag
+- `poe release-notes` - Generate release notes file from changelog
+- `poe release_patch` - Bump patch version, commit, tag, and push (triggers GitHub release)
+- `poe release_minor` - Bump minor version, commit, tag, and push (triggers GitHub release)
+- `poe release_major` - Bump major version, commit, tag, and push (triggers GitHub release)
 
 ### Generated Project Commands
 Generated projects include additional poe tasks:
@@ -152,7 +154,16 @@ When testing or modifying GitHub workflows:
 4. Test release workflows with semantic version tags (`v1.0.0`, `v1.0.0-test`)
 5. Validate issue/PR templates render correctly with cookiecutter variables
 
-### Release Process for Generated Projects
+### Release Process
+
+**For the Cookiecutter Template Repository:**
+1. Update code and commit changes
+2. Run `poe changelog` to preview changes since last tag
+3. Run `poe release-notes` to generate release notes
+4. Use `poe release_patch/minor/major` to bump version, commit, tag, and push
+5. GitHub Actions automatically create GitHub release with generated notes
+
+**For Generated Projects:**
 Generated projects follow this release workflow:
 1. Update code and commit changes
 2. Run `poe changelog` to preview changes since last tag (in generated project)

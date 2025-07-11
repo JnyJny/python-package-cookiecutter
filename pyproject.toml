@@ -48,6 +48,13 @@ _push_tags = "git push --tags"
 
 _update_pyproject = ["_add", "_commit", "_tag", "_push_tags", "_push"]
 
+# Release management tasks
+changelog.shell = "git log --pretty=format:'- %s (%h)' $(git describe --tags --abbrev=0 2>/dev/null || echo 'HEAD')..HEAD"
+changelog.help = "[Release] Generate changelog since last tag."
+
+release-notes.shell = "echo '## Release Notes' > RELEASE_NOTES.md && echo '' >> RELEASE_NOTES.md && git log --pretty=format:'- %s (%h)' $(git describe --tags --abbrev=0 2>/dev/null || echo 'HEAD')..HEAD >> RELEASE_NOTES.md"
+release-notes.help = "[Release] Generate release notes file."
+
 release_patch.sequence = [ "_patch_bump", "_update_pyproject"]
 release_patch.help = "Publish patch release."
 
