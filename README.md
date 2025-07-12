@@ -70,8 +70,8 @@ people that interact with your project repository.
 ## Prerequisites
 
 ### User Accounts
-- GitHub account _optional_ but recommended
-- PyPI account _optional_ but recommended
+- GitHub account _optional_ but recommended.
+- PyPI account _optional_ but recommended.
 
 ### Tools You Need To Make This Work
 
@@ -105,7 +105,7 @@ After answering the `cookiecutter` prompts, you should see the
 following:
 
 ```console
-✨ Your new project is ready to use! ✨
+✨ Your new project <PACKAGE_NAME> is ready to use! ✨
 $ 
 ```
 
@@ -148,7 +148,7 @@ $ poe tree
 ├── pyproject.toml
 ├── README.md
 ├── src
-│   └── thing
+│   └── <YOUR_PACKAGE_NAME_HERE>
 │       ├── __init__.py
 │       ├── __main__.py
 │       ├── self_subcommand.py
@@ -234,23 +234,23 @@ Generated projects include a complete documentation setup using
 ### Theme Options
 Choose from five MkDocs themes during project generation:
 
-- **Material** - Modern Material Design with dark/light mode, advanced navigation
-- **Read the Docs** - Classic documentation style, clean and familiar
-- **MkDocs** - Default lightweight theme, simple and fast
-- **Bootstrap** - Responsive Bootstrap-based theme, mobile-friendly
-- **Windmill** - Clean minimal theme, distraction-free reading
+- **Material** - Modern Material Design with dark/light mode, advanced navigation.
+- **Read the Docs** - Classic documentation style, clean and familiar.
+- **MkDocs** - Default lightweight theme, simple and fast.
+- **Bootstrap** - Responsive Bootstrap-based theme, mobile-friendly.
+- **Windmill** - Clean minimal theme, distraction-free reading.
 
 ### Features
-- **Auto-generated API documentation** from your code's docstrings
-- **Search functionality** with highlighting
-- **Automated deployment** to GitHub Pages via GitHub Actions
-- **Professional structure** with getting started, user guide, and API reference
-- **Theme-optimized configuration** with appropriate plugins and extensions
+- **Auto-generated API documentation** from your code's docstrings.
+- **Search functionality** with highlighting.
+- **Automated deployment** to GitHub Pages via GitHub Actions.
+- **Professional structure** with getting started, user guide, and API reference.
+- **Theme-optimized configuration** with appropriate plugins and extensions.
 
 ### Automatic Deployment
 When you push to the main branch, GitHub Actions automatically:
-1. Builds your MkDocs documentation
-2. Deploys it to GitHub Pages at `https://username.github.io/project-name/`
+1. Builds your MkDocs documentation.
+2. Deploys it to GitHub Pages at `https://username.github.io/project-name/`.
 
 ### Documentation Structure
 ```
