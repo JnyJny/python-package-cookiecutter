@@ -38,7 +38,7 @@ people that interact with your project repository.
   - Preconfigured with a `self` subcommand like all the cool kids.
 - Logging handled by [loguru][loguru] with optional logging to a file.
 - Package is also callable via `python -m <package>` magic.
-- Professional documentation with [MkDocs][mkdocs] with a selection of themes.
+- Package documentation built with [MkDocs][mkdocs].
 - Automatic API documentation generation from docstrings.
 
 
@@ -226,13 +226,13 @@ suits you best. It won't hurt my feelings at all.
 ## Documentation with MkDocs
 
 Generated projects include a complete documentation setup using
-[MkDocs][mkdocs] with your choice of professional themes:
+[MkDocs][mkdocs] with your choice of themes:
 
 ### Theme Options
-Choose from 5 professional MkDocs themes during project generation:
+Choose from five MkDocs themes during project generation:
 
 - **Material** - Modern Material Design with dark/light mode, advanced navigation
-- **Read the Docs** - Classic documentation style, clean and familiar  
+- **Read the Docs** - Classic documentation style, clean and familiar
 - **MkDocs** - Default lightweight theme, simple and fast
 - **Bootstrap** - Responsive Bootstrap-based theme, mobile-friendly
 - **Windmill** - Clean minimal theme, distraction-free reading
@@ -336,12 +336,9 @@ issue links in `config.yaml` if it suits your needs.
 
 ### .github/workflows/release.yaml
 
-The `release.yaml` workflow runs a fast test subset to validate core 
-functionality when a [semantic versioning][semantic-version] tag is 
-pushed. If tests pass successfully, it automatically creates a GitHub 
-release with generated release notes and changelog integration. This 
-ensures the cookiecutter template repository itself maintains quality 
-and provides automated release management.
+The `release.yaml` workflow runs pytest to validate core functionality
+when a [semantic versioning][semantic-version] tag is pushed. If tests
+pass successfully, it automatically creates a PyPi release.
 
 Tests are designed to be run against matrices of Operating System and
 Python version values. The matrices can be a list with a single item
