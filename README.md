@@ -20,11 +20,12 @@ people that interact with your project repository.
 
 **Quick Start:**
 ```console
-# Install cookiecutter
+# With pip
 pip install cookiecutter
-
-# Generate your project
 cookiecutter gh:JnyJny/python-package-cookiecutter
+
+# Or with uvx (no install needed)
+uvx cookiecutter gh:JnyJny/python-package-cookiecutter
 
 # Start developing
 cd your-new-project
