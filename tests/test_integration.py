@@ -21,13 +21,13 @@ class TestWorkflowIntegration:
     ) -> None:
         """Test complete development workflow from generation to build."""
         tmp_path = tmp_path_factory.mktemp("full_dev_cycle")
-        
+
         context = {
             "create_github_repo": False,
             "use_pydantic_settings": True,
             "log_to_file": True,
         }
-        
+
         # Generate project
         project_path = bake(
             template=str(template_root),
@@ -35,9 +35,9 @@ class TestWorkflowIntegration:
             extra_context=context,
             output_dir=tmp_path,
         )
-        
+
         project_path = Path(project_path)
-        
+
         # Test development workflow sequence
         workflow_steps = [
             (["uv", "run", "pytest"], "Tests should pass"),
@@ -46,16 +46,14 @@ class TestWorkflowIntegration:
             (["uv", "run", "poe", "ty"], "Alternative type checker should pass"),
             (["uv", "build"], "Package should build successfully"),
         ]
-        
+
         for cmd, description in workflow_steps:
             result = subprocess.run(
-                cmd,
-                cwd=project_path,
-                capture_output=True,
-                text=True,
-                timeout=120
+                cmd, cwd=project_path, capture_output=True, text=True, timeout=120
             )
-            assert result.returncode == 0, f"{description}. Command failed: {' '.join(cmd)}\nStderr: {result.stderr}"
+            assert result.returncode == 0, (
+                f"{description}. Command failed: {' '.join(cmd)}\nStderr: {result.stderr}"
+            )
 
     def test_cli_workflow_integration(
         self,
@@ -65,48 +63,53 @@ class TestWorkflowIntegration:
     ) -> None:
         """Test CLI functionality integration."""
         tmp_path = tmp_path_factory.mktemp("cli_integration")
-        
+
         context = {
             "create_github_repo": False,
             "cli_name": "testcli",
             "package_name": "testpackage",
         }
-        
+
         project_path = bake(
             template=str(template_root),
             no_input=True,
             extra_context=context,
             output_dir=tmp_path,
         )
-        
+
         # Test CLI installation and usage
         project_path = Path(project_path)
-        
+
         # Install package in development mode
         result = subprocess.run(
             ["uv", "pip", "install", "-e", "."],
             cwd=project_path,
             capture_output=True,
-            text=True
+            text=True,
         )
         assert result.returncode == 0, f"Package installation failed: {result.stderr}"
-        
+
         # Test CLI commands
         cli_tests = [
             (["uv", "run", "testcli", "--help"], "CLI help should work"),
             (["uv", "run", "testcli", "--debug", "--help"], "Debug mode should work"),
-            (["uv", "run", "testcli", "self", "--help"], "Self subcommand help should work"),
-            (["uv", "run", "testcli", "self", "version"], "Version command should work"),
+            (
+                ["uv", "run", "testcli", "self", "--help"],
+                "Self subcommand help should work",
+            ),
+            (
+                ["uv", "run", "testcli", "self", "version"],
+                "Version command should work",
+            ),
         ]
-        
+
         for cmd, description in cli_tests:
             result = subprocess.run(
-                cmd,
-                cwd=project_path,
-                capture_output=True,
-                text=True
+                cmd, cwd=project_path, capture_output=True, text=True
             )
-            assert result.returncode == 0, f"{description}. Command: {' '.join(cmd)}\nStderr: {result.stderr}"
+            assert result.returncode == 0, (
+                f"{description}. Command: {' '.join(cmd)}\nStderr: {result.stderr}"
+            )
 
     def test_settings_integration(
         self,
@@ -115,22 +118,22 @@ class TestWorkflowIntegration:
     ) -> None:
         """Test pydantic-settings integration works end-to-end."""
         tmp_path = tmp_path_factory.mktemp("settings_integration")
-        
+
         context = {
             "create_github_repo": False,
             "use_pydantic_settings": True,
             "package_name": "settingstest",
         }
-        
+
         project_path = bake(
             template=str(template_root),
             no_input=True,
             extra_context=context,
             output_dir=tmp_path,
         )
-        
+
         project_path = Path(project_path)
-        
+
         # Test that settings can be imported and used
         test_script = project_path / "test_settings.py"
         test_script.write_text("""
@@ -144,12 +147,12 @@ settings = Settings()
 assert hasattr(settings, 'debug')
 print("Settings integration test passed")
 """)
-        
+
         result = subprocess.run(
             ["uv", "run", "python", "test_settings.py"],
             cwd=project_path,
             capture_output=True,
-            text=True
+            text=True,
         )
         assert result.returncode == 0, f"Settings integration failed: {result.stderr}"
         assert "Settings integration test passed" in result.stdout
@@ -164,10 +167,10 @@ print("Settings integration test passed")
             ["uv", "run", "python", "-m", "thing", "--debug", "self", "version"],
             cwd=generated_template_path,
             capture_output=True,
-            text=True
+            text=True,
         )
         assert result.returncode == 0, f"Logging test failed: {result.stderr}"
-        
+
         # Check if log file was created (based on default template settings)
         log_file = generated_template_path / "thing.log"
         if log_file.exists():
@@ -180,54 +183,52 @@ print("Settings integration test passed")
     ) -> None:
         """Test that generated packages can be installed and used."""
         tmp_path = tmp_path_factory.mktemp("install_test")
-        
+
         context = {
             "create_github_repo": False,
             "package_name": "installtest",
             "cli_name": "installtest-cli",
         }
-        
+
         project_path = bake(
             template=str(template_root),
             no_input=True,
             extra_context=context,
             output_dir=tmp_path,
         )
-        
+
         project_path = Path(project_path)
-        
+
         # Build the package
         result = subprocess.run(
-            ["uv", "build"],
-            cwd=project_path,
-            capture_output=True,
-            text=True
+            ["uv", "build"], cwd=project_path, capture_output=True, text=True
         )
         assert result.returncode == 0, f"Package build failed: {result.stderr}"
-        
+
         # Test that wheel can be installed
         wheel_files = list((project_path / "dist").glob("*.whl"))
         assert len(wheel_files) > 0, "No wheel file found"
-        
+
         # Create a test environment and install
         test_env = tmp_path / "test_env"
         result = subprocess.run(
-            ["uv", "venv", str(test_env)],
-            capture_output=True,
-            text=True
+            ["uv", "venv", str(test_env)], capture_output=True, text=True
         )
-        assert result.returncode == 0, f"Test environment creation failed: {result.stderr}"
-        
+        assert result.returncode == 0, (
+            f"Test environment creation failed: {result.stderr}"
+        )
+
         # Install the package
         # Need to inherit PATH and other env vars for uv to work
         import os
+
         env = os.environ.copy()
         env["VIRTUAL_ENV"] = str(test_env)
-        
+
         result = subprocess.run(
             ["uv", "pip", "install", str(wheel_files[0])],
             env=env,
             capture_output=True,
-            text=True
+            text=True,
         )
         assert result.returncode == 0, f"Package installation failed: {result.stderr}"

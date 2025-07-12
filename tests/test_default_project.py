@@ -12,7 +12,5 @@ def test_default_project(
 ) -> None:
     """Tests the existence of content in the generated template."""
     assert check_project_contents(
-        generated_template_path, 
-        cookiecutter_package_name, 
-        cookiecutter_extra_context
+        generated_template_path, cookiecutter_package_name, cookiecutter_extra_context
     )

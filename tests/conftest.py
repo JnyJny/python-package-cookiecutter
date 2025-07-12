@@ -38,37 +38,39 @@ BASE_SRC = ["__init__.py", "__main__.py", "self_subcommand.py"]
 def generate_expected_manifest(cookiecutter_context: dict) -> list[tuple[str, str]]:
     """Generate expected file manifest based on cookiecutter context."""
     manifest = []
-    
+
     # Files created by hooks
     hook_files = {".git", ".venv", "uv.lock"}
-    
+
     # Add base files that don't depend on hooks
     for test_type, path in BASE_MANIFEST:
         if path not in hook_files:
             manifest.append((test_type, path))
-    
-    # LICENSE file is always included (even for no-license, it's an Unlicense)
-    manifest.append(("is_file", "LICENSE"))
-    
+
+    if cookiecutter_context.get("license", "no-license") != "no-license":
+        manifest.append(("is_file", "LICENSE"))
+
     # Add files created by hooks if we expect them to have run
     if cookiecutter_context.get("_hooks_ran", True):
-        manifest.extend([
-            ("is_dir", ".git"),
-            ("is_dir", ".venv"),
-            ("is_file", "uv.lock"),
-        ])
-    
+        manifest.extend(
+            [
+                ("is_dir", ".git"),
+                ("is_dir", ".venv"),
+                ("is_file", "uv.lock"),
+            ]
+        )
+
     return manifest
 
 
 def generate_expected_src_files(cookiecutter_context: dict) -> list[str]:
     """Generate expected source files based on cookiecutter context."""
     src_files = BASE_SRC.copy()
-    
+
     # Add settings.py if pydantic-settings is enabled
     if cookiecutter_context.get("use_pydantic_settings", True):
         src_files.append("settings.py")
-    
+
     return src_files
 
 
