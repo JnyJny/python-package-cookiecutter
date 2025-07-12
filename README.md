@@ -54,11 +54,13 @@ people that interact with your project repository.
 ### GitHub Integrations
 - Generic GitHub Issue and Pull Request templates.
 - The [dependabot][dependabot] checks:
-  - Project dependencies.
-  - Project GitHub action dependencies (these never age out right?).
+  - project dependencies daily.
+  - project GitHub action dependencies weekly.
 - Operating System and Python version test matrices.
 - Automated documentation deployment to GitHub Pages via GitHub Actions.
 - MkDocs workflow with Material theme, search, and API documentation.
+- Automatic GitHub release generation with release notes.
+
 
 ### Miscellaneous
 - Configured to use [direnv][direnv] to automatically activate & deactivate venvs.
@@ -168,7 +170,8 @@ If you have [direnv][direnv] installed, your project's virtual
 environment will be activated when you enter the project directory or
 sub-directories. You can activate the project virtual environment
 manually without `direnv` using `source .venv/bin/activate`, but it's
-less cool.
+less cool. If you liked `poetry shell` this feature will appeal to
+you.
 
 Once your venv is activated, all the development tools are available
 for use without having to use `uv run` to preface the command. Check
