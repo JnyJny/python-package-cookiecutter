@@ -10,6 +10,21 @@
 
 > {{ cookiecutter.project_short_description }}
 
+## TL;DR
+
+**Quick Start:**
+```console
+# Install
+pip install {{ cookiecutter.package_name }}
+
+# Run
+{{ cookiecutter.cli_name }} --help
+```
+
+**What it does:** {{ cookiecutter.project_short_description }}
+
+**Key features:** Modern Python CLI with type checking, testing, docs, and automated releases.
+
 <!-- project description -->
 
 ## Features
