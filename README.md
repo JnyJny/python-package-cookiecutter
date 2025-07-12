@@ -344,6 +344,19 @@ Tests are designed to be run against matrices of Operating System and
 Python version values. The matrices can be a list with a single item
 or a list of multiple items.
 
+### .github/workflows/docs.yaml
+
+The `docs.yaml` workflow will deploy your documentation to
+https://username.github.io/package-name when a new tag is pushed to
+the main branch. Depending on your needs, you may want to deploy the
+documentation somewhere else.
+
+### .github/workflows/github-release.yaml
+
+The `github-release.yaml` workflow will update CHANGELOG.md in the
+project root directory and automatically generate a GitHub release
+with release notes taken from the project's git history.
+
 ## The End
 
 If you've read this far, [you have my gratitude][gratitude]. Send me
