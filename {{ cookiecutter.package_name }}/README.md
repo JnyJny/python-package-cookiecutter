@@ -87,12 +87,12 @@ This project uses automated release management with GitHub Actions:
 - `poe release-notes` - Generate release notes file
 
 #### Automatic Releases
-When you push a version tag (e.g., `v1.0.0`), GitHub Actions will:
-1. Run tests across all supported Python versions
-2. Build the package
-3. Publish to PyPI (if tests pass)
-4. Create a GitHub release with auto-generated notes
-5. Upload built artifacts to the release
+When you push a version tag (e.g., `v1.0.0`), the unified GitHub Actions workflow will:
+1. **Test** - Run tests across all supported Python versions and OS combinations
+2. **Publish** - Build and publish to PyPI (only if tests pass)
+3. **GitHub Release** - Create GitHub release with auto-generated notes and artifacts (only if PyPI publish succeeds)
+
+This ensures a complete release pipeline where each step depends on the previous step's success.
 
 #### MkDocs Documentation
 - `poe docs-serve` - Serve documentation locally
