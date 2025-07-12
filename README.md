@@ -16,6 +16,25 @@ automatically configured to deploy to GitHub Pages using
 base files to help provide a great GitHub experience for you and
 people that interact with your project repository.
 
+## TL;DR
+
+**Quick Start:**
+```console
+# Install cookiecutter
+pip install cookiecutter
+
+# Generate your project
+cookiecutter gh:JnyJny/python-package-cookiecutter
+
+# Start developing
+cd your-new-project
+poe --help
+```
+
+**What it creates:** A modern Python package with CLI, type checking, testing, docs, and automated PyPI/GitHub releases.
+
+**Key benefits:** Zero-config setup, industry best practices, automated workflows, and comprehensive tooling out of the box.
+
 ## Build Features
 
 - Choose from a [plethora][plethora] of Open Source licenses.
