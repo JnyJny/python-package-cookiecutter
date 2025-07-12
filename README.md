@@ -341,7 +341,8 @@ issue links in `config.yaml` if it suits your needs.
 
 The `release.yaml` workflow runs pytest to validate core functionality
 when a [semantic versioning][semantic-version] tag is pushed. If tests
-pass successfully, it automatically creates a PyPi release.
+pass successfully, it automatically creates a PyPi release and a
+GitHub release.
 
 Tests are designed to be run against matrices of Operating System and
 Python version values. The matrices can be a list with a single item
@@ -354,11 +355,6 @@ https://username.github.io/package-name when a new tag is pushed to
 the main branch. Depending on your needs, you may want to deploy the
 documentation somewhere else.
 
-### .github/workflows/github-release.yaml
-
-The `github-release.yaml` workflow will update CHANGELOG.md in the
-project root directory and automatically generate a GitHub release
-with release notes taken from the project's git history.
 
 ## The End
 
