@@ -58,7 +58,7 @@ people that interact with your project repository.
   - project GitHub action dependencies weekly.
 - Operating System and Python version test matrices.
 - Automated documentation deployment to GitHub Pages via GitHub Actions.
-- MkDocs workflow with Material theme, search, and API documentation.
+- Themed MkDocs workflow with search and API documentation.
 - Automatic GitHub release generation with release notes.
 
 
