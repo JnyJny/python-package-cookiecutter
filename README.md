@@ -16,25 +16,25 @@ automatically configured to deploy to GitHub Pages using
 base files to help provide a great GitHub experience for you and
 people that interact with your project repository.
 
-## TL;DR
+## TL;DR - Create Your New Project
 
-**Quick Start:**
+### With uvx 
+
 ```console
-# With pip
+uvx cookiecutter gh:JnyJny/python-package-cookiecutter
+```
+
+### With pip
+```console
 pip install cookiecutter
 cookiecutter gh:JnyJny/python-package-cookiecutter
+```
 
-# Or with uvx (no install needed)
-uvx cookiecutter gh:JnyJny/python-package-cookiecutter
-
-# Start developing
+### Get To Work!
+```
 cd your-new-project
 poe --help
 ```
-
-**What it creates:** A modern Python package with CLI, type checking, testing, docs, and automated PyPI/GitHub releases.
-
-**Key benefits:** Zero-config setup, industry best practices, automated workflows, and comprehensive tooling out of the box.
 
 ## Build Features
 
