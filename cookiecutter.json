@@ -57,7 +57,7 @@
 	"macos-latest, windows-latest",
 	"ubuntu-latest, macos-latest, windows-latest"
     ],
-
+    "_github_enable_pages": true,
     "__prompts__": {
 	"name": "Your full name",
 	"year": "What year is it",

@@ -14,7 +14,12 @@ from loguru import logger
 
 
 def _logger_setup() -> None:
-    """Setup logger for post-generation tasks."""
+    """Configure logger for post-generation tasks.
+
+    Add two custom log levels: REQUIRED and OPTIONAL.
+    REQUIRED is used for mandatory tools and checks, while OPTIONAL
+    is used for optional tools and checks.
+    """
     logger.remove()
     logger.add(
         sys.stdout,
@@ -75,7 +80,11 @@ def post_gen_project() -> int:
         "--source=.",
         "--remote=upstream",
     )
+    # {% else %}
+    gh_repo_create = lambda *args, **kwargs: None
+    # {% endif %}
 
+    # {% if cookiecutter._github_enable_pages %}
     gh_pages_enable = sh.gh.api.bake(
         "--silent",
         f"repos/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}/pages",
@@ -85,7 +94,6 @@ def post_gen_project() -> int:
         "build_type=workflow",
     )
     # {% else %}
-    gh_repo_create = lambda *args, **kwargs: None
     gh_pages_enable = lambda *args, **kwargs: None
     # {% endif %}
 

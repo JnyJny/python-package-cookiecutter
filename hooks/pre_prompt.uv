@@ -14,8 +14,8 @@ presence of required tools and available Python versions.
 import json
 import sys
 from contextlib import suppress
-from pathlib import Path
 from functools import partial
+from pathlib import Path
 
 import sh
 from loguru import logger
@@ -23,7 +23,12 @@ from packaging.version import Version
 
 
 def _logger_setup() -> None:
-    """Setup logger for post-generation tasks."""
+    """Configure logger for pre-prompt tasks.
+
+    Add two custom log levels: REQUIRED and OPTIONAL.
+    REQUIRED is used for mandatory tools and checks, while OPTIONAL
+    is used for optional tools and checks.
+    """
     logger.remove()
     logger.add(
         sys.stdout,
@@ -114,10 +119,13 @@ def pre_prompt(config_file: str | Path | None = None) -> int:
         sh.gh("--version")
     except sh.CommandNotFound:
         logger.optional("gh is not available, disabling GitHub prompts.")
-        del cookiecutter["create_github_repo"]
-        del cookiecutter["make_github_repo_private"]
-        del cookiecutter["__prompts__"]["create_github_repo"]
-        del cookiecutter["__prompts__"]["make_github_repo_private"]
+        for item in [
+            "_github_enabled_pages",
+            "create_github_repo",
+            "make_github_repo_private",
+        ]:
+            cookiecutter.pop(item, None)
+            cookiecutter["__prompts__"].pop(item, None)
 
     cookiecutter |= discovered
 
