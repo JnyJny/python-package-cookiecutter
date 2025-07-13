@@ -243,6 +243,7 @@ class TestBuildValidation:
         self,
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
+        cookiecutter_extra_context: dict,
     ) -> None:
         """Test building with different build backends."""
         backends_to_test = ["uv", "hatch"]
@@ -250,16 +251,15 @@ class TestBuildValidation:
         for backend in backends_to_test:
             tmp_path = tmp_path_factory.mktemp(f"build_{backend}")
 
-            context = {
+            cookiecutter_extra_context |= {
                 "build_backend": backend,
-                "create_github_repo": False,
                 "package_name": f"build_test_{backend}",
             }
 
             project_path = bake(
                 template=str(template_root),
                 no_input=True,
-                extra_context=context,
+                extra_context=cookiecutter_extra_context,
                 output_dir=tmp_path,
             )
 

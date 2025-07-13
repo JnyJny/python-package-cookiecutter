@@ -13,19 +13,19 @@ def test_no_license_project(
     tmp_path_factory: pytest.TempPathFactory,
     template_root: Path,
     cookiecutter_package_name: str,
+    cookiecutter_extra_context: dict,
 ) -> None:
     """Test that projects with no-license still include an Unlicense file."""
     tmp_path = tmp_path_factory.mktemp("no_license_project")
 
-    context = {
+    cookiecutter_extra_context |= {
         "license": "no-license",
-        "create_github_repo": False,
     }
 
     project_path = bake(
         template=str(template_root),
         no_input=True,
-        extra_context=context,
+        extra_context=cookiecutter_extra_context,
         output_dir=tmp_path,
     )
 
@@ -38,20 +38,20 @@ def test_no_pydantic_settings_project(
     tmp_path_factory: pytest.TempPathFactory,
     template_root: Path,
     cookiecutter_package_name: str,
+    cookiecutter_extra_context: dict,
 ) -> None:
     """Test that projects without pydantic-settings don't include settings.py."""
     tmp_path = tmp_path_factory.mktemp("no_pydantic_project")
 
-    context = {
+    cookiecutter_extra_context |= {
         "use_pydantic_settings": False,
-        "create_github_repo": False,
     }
 
     # Generate without hooks to avoid ruff issues in test templates
     project_path = bake(
         template=str(template_root),
         no_input=True,
-        extra_context=context,
+        extra_context=cookiecutter_extra_context,
         output_dir=tmp_path,
         skip_if_file_exists=True,
         accept_hooks=False,  # Skip hooks for this test
@@ -66,7 +66,7 @@ def test_no_pydantic_settings_project(
     )
 
     # Check project structure (but skip .git and .venv since hooks didn't run)
-    basic_context = context.copy()
+    basic_context = cookiecutter_extra_context.copy()
     basic_context["_hooks_ran"] = False
     assert check_project_contents(
         project_path, cookiecutter_package_name, basic_context
