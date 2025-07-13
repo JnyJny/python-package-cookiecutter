@@ -301,7 +301,7 @@ wheels = [
 
 [[package]]
 name = "python-package-cookiecutter"
-version = "1.7.8"
+version = "1.7.9"
 source = { virtual = "." }
 
 [package.dev-dependencies]
