@@ -142,6 +142,7 @@ def cookiecutter_extra_context() -> dict:
     """Return a dictionary with common test context settings."""
     return {
         "create_github_repo": False,
+        "_github_enable_pages": False,
         "_testing": True,  # Flag to indicate we're running tests
     }
 
