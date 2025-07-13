@@ -1,7 +1,7 @@
 [project]
 name = "{{cookiecutter.package_name}}"
 version = "{{cookiecutter.project_version}}"
-description = "{{cookiecutter.project_short_description.rstrip()}}{% if cookiecutter.project_short_description.rstrip() and cookiecutter.project_short_description.rstrip()[-1] not in '.!?:;' %}.{% endif %}"
+description = "{{cookiecutter.project_short_description}}"
 readme = "README.md"
 {% if cookiecutter.license != 'no-license' -%}
 license = "{{ cookiecutter.license }}"
@@ -201,7 +201,9 @@ lint.ignore = [
   "FBT003",
   # missing-trailing-period (D400)
   "D400",
-  # blind-except (BLE001)
+  # first-line-ends-in-period (D415)
+  "D415",
+  # blank-except (BLE001)
   "BLE001"
  ]
 

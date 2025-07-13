@@ -1,6 +1,6 @@
 """{{ cookiecutter.package_name }}.
 
-{{cookiecutter.project_short_description.rstrip()}}{% if cookiecutter.project_short_description.rstrip() and cookiecutter.project_short_description.rstrip()[-1] not in '.!?:;' %}.{% endif %}
+{{ cookiecutter.project_short_description }}
 """
 
 from loguru import logger
