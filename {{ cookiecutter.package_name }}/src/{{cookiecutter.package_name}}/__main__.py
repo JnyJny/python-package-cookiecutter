@@ -1,6 +1,6 @@
 """{{ cookiecutter.cli_name }} CLI implementation.
 
-{{ cookiecutter.project_short_description }}
+{{cookiecutter.project_short_description.rstrip()}}{% if cookiecutter.project_short_description.rstrip() and cookiecutter.project_short_description.rstrip()[-1] not in '.!?:;' %}.{% endif %}
 """
 
 import sys
@@ -32,7 +32,7 @@ def global_callback(
         help="Enable debugging output.",
     ),
 ) -> None:
-    """{{ cookiecutter.project_short_description }}"""
+    """{{cookiecutter.project_short_description.rstrip()}}{% if cookiecutter.project_short_description.rstrip() and cookiecutter.project_short_description.rstrip()[-1] not in '.!?:;' %}.{% endif %}"""
     # {%- if cookiecutter.use_pydantic_settings %}
     ctx.obj = Settings()
     debug = debug or ctx.obj.debug

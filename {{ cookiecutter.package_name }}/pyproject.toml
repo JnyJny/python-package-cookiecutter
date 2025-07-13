@@ -1,7 +1,7 @@
 [project]
 name = "{{cookiecutter.package_name}}"
 version = "{{cookiecutter.project_version}}"
-description = "{{cookiecutter.project_short_description}}"
+description = "{{cookiecutter.project_short_description.rstrip()}}{% if cookiecutter.project_short_description.rstrip() and cookiecutter.project_short_description.rstrip()[-1] not in '.!?:;' %}.{% endif %}"
 readme = "README.md"
 {% if cookiecutter.license != 'no-license' -%}
 license = "{{ cookiecutter.license }}"

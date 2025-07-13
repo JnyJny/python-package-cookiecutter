@@ -7,11 +7,17 @@
 
 import sys
 from functools import partial
+
 from loguru import logger
 
 
 def _logger_setup() -> None:
-    """Setup logger for post-generation tasks."""
+    """Configure logger for pre-generation tasks.
+
+    Add two custom log levels: REQUIRED and OPTIONAL.
+    REQUIRED is used for mandatory tools and checks, while OPTIONAL
+    is used for optional tools and checks.
+    """
     logger.remove()
     logger.add(
         sys.stdout,
