@@ -27,6 +27,7 @@ jobs:
         env:
           GITHUB_NAME: "NOBODY"
           GITHUB_EMAIL: "NOBODY@NOWHERE.EXAMPLE.COM"
+          GH_TOKEN: ${{ github.token }}          
         run: |
           git config --global user.name "$GITHUB_NAME"
           git config --global user.email "$GITHUB_EMAIL"
