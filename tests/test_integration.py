@@ -2,7 +2,6 @@
 
 import os
 import subprocess
-import time
 from pathlib import Path
 
 import pytest
@@ -49,7 +48,12 @@ class TestWorkflowIntegration:
 
         for cmd, description in workflow_steps:
             result = subprocess.run(
-                cmd, cwd=project_path, capture_output=True, text=True, timeout=120
+                cmd,
+                cwd=project_path,
+                capture_output=True,
+                text=True,
+                timeout=120,
+                check=False,
             )
             assert result.returncode == 0, (
                 f"{description}. Command failed: {' '.join(cmd)}\nStderr: {result.stderr}"
@@ -86,6 +90,7 @@ class TestWorkflowIntegration:
             cwd=project_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Package installation failed: {result.stderr}"
 
@@ -105,7 +110,7 @@ class TestWorkflowIntegration:
 
         for cmd, description in cli_tests:
             result = subprocess.run(
-                cmd, cwd=project_path, capture_output=True, text=True
+                cmd, cwd=project_path, capture_output=True, text=True, check=False
             )
             assert result.returncode == 0, (
                 f"{description}. Command: {' '.join(cmd)}\nStderr: {result.stderr}"
@@ -153,6 +158,7 @@ print("Settings integration test passed")
             cwd=project_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Settings integration failed: {result.stderr}"
         assert "Settings integration test passed" in result.stdout
@@ -168,6 +174,7 @@ print("Settings integration test passed")
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Logging test failed: {result.stderr}"
 
@@ -201,7 +208,11 @@ print("Settings integration test passed")
 
         # Build the package
         result = subprocess.run(
-            ["uv", "build"], cwd=project_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=project_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Package build failed: {result.stderr}"
 
@@ -212,7 +223,7 @@ print("Settings integration test passed")
         # Create a test environment and install
         test_env = tmp_path / "test_env"
         result = subprocess.run(
-            ["uv", "venv", str(test_env)], capture_output=True, text=True
+            ["uv", "venv", str(test_env)], capture_output=True, text=True, check=False
         )
         assert result.returncode == 0, (
             f"Test environment creation failed: {result.stderr}"
@@ -220,7 +231,6 @@ print("Settings integration test passed")
 
         # Install the package
         # Need to inherit PATH and other env vars for uv to work
-        import os
 
         env = os.environ.copy()
         env["VIRTUAL_ENV"] = str(test_env)
@@ -230,5 +240,6 @@ print("Settings integration test passed")
             env=env,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Package installation failed: {result.stderr}"

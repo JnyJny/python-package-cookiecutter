@@ -130,6 +130,7 @@ class TestCrossPlatformCompatibility:
                 capture_output=True,
                 text=True,
                 env=env,
+                check=False,
             )
             assert result.returncode == 0, (
                 f"CLI failed with env vars {env_vars}: {result.stderr}"
@@ -189,6 +190,7 @@ class TestCrossPlatformCompatibility:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, "Basic shell commands should work"
 
@@ -204,6 +206,7 @@ class TestCrossPlatformCompatibility:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, "Basic Windows commands should work"
 
@@ -235,6 +238,7 @@ class TestCrossPlatformCompatibility:
                 cwd=project_path,
                 capture_output=True,
                 text=True,
+                check=False,
             )
             assert result.returncode == 0, f"Unicode path test failed: {result.stderr}"
 
@@ -275,6 +279,7 @@ class TestCrossPlatformCompatibility:
                 cwd=project_path,
                 capture_output=True,
                 text=True,
+                check=False,
             )
             assert result.returncode == 0, f"Long path test failed: {result.stderr}"
 
@@ -328,6 +333,7 @@ class TestCrossPlatformCompatibility:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
 
         # If lock file exists and is up to date, this should succeed
@@ -339,6 +345,7 @@ class TestCrossPlatformCompatibility:
                 cwd=generated_template_path,
                 capture_output=True,
                 text=True,
+                check=False,
             )
             assert result.returncode == 0, (
                 f"Dependency resolution failed: {result.stderr}"

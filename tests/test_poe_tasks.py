@@ -47,6 +47,7 @@ def test_poe_tasks_execute(generated_template_path: Path) -> None:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Task '{task}' failed: {result.stderr}"
 
@@ -58,6 +59,7 @@ def test_poe_test_task(generated_template_path: Path) -> None:
         cwd=generated_template_path,
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, f"poe test failed: {result.stderr}"
     assert "passed" in result.stdout, "Tests should pass in generated project"
@@ -71,6 +73,7 @@ def test_poe_ruff_tasks(generated_template_path: Path) -> None:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Task '{task}' failed: {result.stderr}"
 
@@ -83,6 +86,7 @@ def test_poe_type_checking_tasks(generated_template_path: Path) -> None:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Task '{task}' failed: {result.stderr}"
 
@@ -94,6 +98,7 @@ def test_poe_check_task(generated_template_path: Path) -> None:
         cwd=generated_template_path,
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, f"poe check failed: {result.stderr}"
 
@@ -106,6 +111,7 @@ def test_poe_qc_task(generated_template_path: Path) -> None:
         cwd=generated_template_path,
         capture_output=True,
         text=True,
-        timeout=120,  # 2 minutes timeout
+        timeout=120,
+        check=False,  # 2 minutes timeout
     )
     assert result.returncode == 0, f"poe qc failed: {result.stderr}"

@@ -1,9 +1,7 @@
 """Advanced CLI integration tests for generated projects."""
 
-import json
 import os
 import subprocess
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -32,7 +30,11 @@ class TestCLIIntegration:
 
         for cmd, description in cli_tests:
             result = subprocess.run(
-                cmd, cwd=generated_template_path, capture_output=True, text=True
+                cmd,
+                cwd=generated_template_path,
+                capture_output=True,
+                text=True,
+                check=False,
             )
             assert result.returncode == 0, f"Failed {description}: {result.stderr}"
 
@@ -66,7 +68,11 @@ class TestCLIIntegration:
 
         for cmd, expected_exit_code, description in error_tests:
             result = subprocess.run(
-                cmd, cwd=generated_template_path, capture_output=True, text=True
+                cmd,
+                cwd=generated_template_path,
+                capture_output=True,
+                text=True,
+                check=False,
             )
             # Allow some flexibility in exit codes (different versions may use different codes)
             assert result.returncode != 0, (
@@ -84,6 +90,7 @@ class TestCLIIntegration:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Debug command failed: {result.stderr}"
 
@@ -96,6 +103,7 @@ class TestCLIIntegration:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Debug help failed: {result.stderr}"
         assert "Usage:" in result.stdout
@@ -111,6 +119,7 @@ class TestCLIIntegration:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result_module.returncode == 0
 
@@ -120,6 +129,7 @@ class TestCLIIntegration:
             cwd=generated_template_path,
             capture_output=True,
             text=True,
+            check=False,
         )
         # This might fail if not installed, which is OK
         if result_script.returncode == 0:
@@ -137,7 +147,6 @@ class TestCLIIntegration:
             pytest.skip("Pydantic settings not enabled")
 
         # Test with environment variable
-        import os
 
         env = os.environ.copy()
         env["THING_DEBUG"] = "true"
@@ -147,5 +156,6 @@ class TestCLIIntegration:
             capture_output=True,
             text=True,
             env=env,
+            check=False,
         )
         assert result.returncode == 0, f"CLI with env var failed: {result.stderr}"

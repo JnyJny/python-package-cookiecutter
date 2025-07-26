@@ -1,32 +1,79 @@
-# Publishing to PyPI
+# GitHub Actions Workflows
 
-The release.yml workflow in this directory depends on you having
-already setup a project on the [Python Package Index][pypi] and [added
-a trusted publisher][trusted-publisher]. The workflow depends on an
-environment named "pypi" which must agree with the environment named
-when adding the trusted publisher. It doesn't have to be named `pypi`
-it just needs to match in both places. Additionally, the project name
-on PyPI should match `cookiecutter.package_name` or modify release.yml
-to ensure `environment.url` matches the PyPI project URL.
+This directory contains GitHub Actions workflows for automated testing, building, publishing, and documentation deployment.
 
-## Testing
+## Workflows Overview
 
-The release workflow has two stages:
-- test
-- publish
+### release.yaml - Test, Publish and Release
 
-The test stage utilizes the `matrix` feature to test against a variety
-of operating systems and python versions. This is likely more testing
-than you might require, reduce the `os` and `python_versions` lists
-to suit your needs.
+A comprehensive CI/CD pipeline with the following stages:
+1. **get-python-versions** - Dynamically extract Python test versions from `pyproject.toml`
+2. **test** - Run tests across multiple OS and Python versions
+3. **build** - Build package artifacts
+4. **publish** - Publish to PyPI
+5. **github-release** - Create GitHub release with auto-generated changelog
+6. **deploy-docs** - Trigger documentation deployment
 
-Tests are initiated when a tag formatted as a [semantic
-version][semantic-version] is detected or with the suffix `-test` is
-detected.
+### docs.yml - Deploy Documentation
 
-The publish stage depends on all the tests finishing successfully
-before continuing. The package will be built in a Linux container
-and uses [uv][uv] for the build and is published to PyPI on success.
+Builds and deploys MkDocs documentation to GitHub Pages, triggered by:
+- Repository dispatch events from release workflow
+- Manual workflow dispatch
+
+## Publishing to PyPI
+
+The release workflow depends on you having already setup a project on the [Python Package Index][pypi] and [added a trusted publisher][trusted-publisher]. The workflow depends on an environment named "pypi" which must agree with the environment named when adding the trusted publisher. Additionally, the project name on PyPI should match `cookiecutter.package_name` or modify release.yaml to ensure `environment.url` matches the PyPI project URL.
+
+## Testing Configuration
+
+### Dynamic Python Version Detection
+
+The workflow automatically detects Python test versions from your `pyproject.toml`:
+
+```toml
+[tool.{{ cookiecutter.package_name }}.ci]
+test-python-versions = ["3.11", "3.12", "3.13"]
+```
+
+If not found, falls back to cookiecutter template defaults.
+
+### Matrix Testing
+
+The test stage utilizes the `matrix` feature to test against:
+- Multiple operating systems (configurable via cookiecutter)
+- Multiple Python versions (dynamic or fallback)
+
+Reduce the `os` and `python_versions` lists in cookiecutter.json to suit your needs.
+
+### Triggers
+
+Tests are initiated when:
+- A tag formatted as a [semantic version][semantic-version] is detected
+- A tag with `-test` suffix is detected (for testing releases)
+- Manual workflow dispatch
+
+## Build and Deployment Process
+
+1. **Testing**: All tests must pass before proceeding
+2. **Build**: Package is built using [uv][uv] and artifacts are stored
+3. **Publish**: Artifacts are published to PyPI using trusted publishing
+4. **Release**: GitHub release is created with auto-generated changelog
+5. **Documentation**: Docs deployment is triggered automatically
+
+## Changelog and Release Notes
+
+The workflow includes automatic changelog generation using:
+- **BobAnkh/auto-generate-changelog** action for structured changelog updates
+- **Git log analysis** for commit-based release notes
+- **CHANGELOG.md integration** when available
+
+## Documentation Deployment
+
+The docs workflow:
+- **Auto-enables GitHub Pages** if not already configured
+- **Builds MkDocs documentation** with strict mode
+- **Deploys to GitHub Pages** using artifact upload/download pattern
+- **Triggered automatically** after successful releases via repository dispatch
 
 ## Tricksy Jinja Formatting
 

@@ -86,6 +86,7 @@ def test_generated_project_imports_work(generated_template_path: Path) -> None:
         cwd=generated_template_path,
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, f"Module imports failed: {result.stderr}"
 
@@ -97,6 +98,7 @@ def test_generated_project_cli_runs(generated_template_path: Path) -> None:
         cwd=generated_template_path,
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, f"CLI execution failed: {result.stderr}"
     assert "Usage:" in result.stdout, "CLI help should show usage information"
@@ -109,6 +111,7 @@ def test_generated_project_cli_version(generated_template_path: Path) -> None:
         cwd=generated_template_path,
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, f"CLI version command failed: {result.stderr}"
     assert "0.1.0" in result.stdout, "Version command should output project version"
@@ -117,7 +120,11 @@ def test_generated_project_cli_version(generated_template_path: Path) -> None:
 def test_generated_project_can_be_built(generated_template_path: Path) -> None:
     """Test that generated project can be built as a package."""
     result = subprocess.run(
-        ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+        ["uv", "build"],
+        cwd=generated_template_path,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     assert result.returncode == 0, f"Package build failed: {result.stderr}"
 
@@ -143,6 +150,7 @@ def test_generated_project_handles_debug_flag(generated_template_path: Path) -> 
         cwd=generated_template_path,
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, f"CLI with debug flag failed: {result.stderr}"
 

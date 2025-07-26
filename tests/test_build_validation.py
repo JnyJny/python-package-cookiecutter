@@ -19,7 +19,11 @@ class TestBuildValidation:
     ) -> None:
         """Test that package builds without errors."""
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Package build failed: {result.stderr}"
 
@@ -38,7 +42,11 @@ class TestBuildValidation:
         """Test that built wheel has correct structure."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Build failed: {result.stderr}"
 
@@ -85,7 +93,11 @@ class TestBuildValidation:
         """Test that built source distribution has correct structure."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Build failed: {result.stderr}"
 
@@ -123,7 +135,11 @@ class TestBuildValidation:
         """Test that package metadata is valid."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Build failed: {result.stderr}"
 
@@ -158,7 +174,11 @@ class TestBuildValidation:
         """Test that built wheel can be installed and used."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Build failed: {result.stderr}"
 
@@ -166,7 +186,10 @@ class TestBuildValidation:
         test_env = tmp_path_factory.mktemp("install_test")
 
         result = subprocess.run(
-            ["uv", "venv", str(test_env / "venv")], capture_output=True, text=True
+            ["uv", "venv", str(test_env / "venv")],
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, (
             f"Virtual environment creation failed: {result.stderr}"
@@ -184,6 +207,7 @@ class TestBuildValidation:
             env=env,
             capture_output=True,
             text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Wheel installation failed: {result.stderr}"
 
@@ -197,6 +221,7 @@ class TestBuildValidation:
                 [str(venv_python), "-c", "import thing; print('Import successful')"],
                 capture_output=True,
                 text=True,
+                check=False,
             )
             assert result.returncode == 0, (
                 f"Installed package import failed: {result.stderr}"
@@ -210,7 +235,11 @@ class TestBuildValidation:
         """Test that builds are reproducible."""
         # Build once
         result1 = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result1.returncode == 0, f"First build failed: {result1.stderr}"
 
@@ -222,7 +251,11 @@ class TestBuildValidation:
         subprocess.run(["rm", "-rf", str(dist_dir)], check=True)
 
         result2 = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result2.returncode == 0, f"Second build failed: {result2.stderr}"
 
@@ -265,7 +298,11 @@ class TestBuildValidation:
 
             # Test build
             result = subprocess.run(
-                ["uv", "build"], cwd=project_path, capture_output=True, text=True
+                ["uv", "build"],
+                cwd=project_path,
+                capture_output=True,
+                text=True,
+                check=False,
             )
             assert result.returncode == 0, (
                 f"Build with {backend} backend failed: {result.stderr}"
@@ -286,7 +323,11 @@ class TestBuildValidation:
         """Test that built packages are reasonably sized."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Build failed: {result.stderr}"
 
@@ -330,7 +371,11 @@ class TestBuildValidation:
 
         # Build in clean state
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Clean build failed: {result.stderr}"
 
@@ -357,7 +402,11 @@ class TestBuildValidation:
 
         # Build and check wheel metadata version
         result = subprocess.run(
-            ["uv", "build"], cwd=generated_template_path, capture_output=True, text=True
+            ["uv", "build"],
+            cwd=generated_template_path,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, f"Build failed: {result.stderr}"
 
