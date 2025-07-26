@@ -86,14 +86,13 @@ Post-generation hooks automatically:
 
 Generated projects include comprehensive GitHub automation:
 
-**Workflows:**
-- `release.yaml` - Multi-stage CI/CD pipeline with matrix testing and PyPI publishing via trusted publishers
-- `github-release.yml` - Automatic GitHub release creation with changelog generation  
-- `docs.yml` - GitHub Pages deployment for MkDocs documentation
+**Generated Project Workflows:**
+- `release.yaml` - Multi-stage CI/CD pipeline with dynamic Python version detection, build artifacts, PyPI publishing via trusted publishers, and automated docs deployment
+- `docs.yml` - GitHub Pages deployment for MkDocs documentation with auto-enablement and repository dispatch triggers
 - `dependabot.yaml` - Automated dependency updates for Python packages and GitHub Actions
 
-**Cookiecutter Repository Workflows:**
-- `release.yaml` - Test validation and automatic GitHub release creation with changelog generation
+**Template Repository Workflows:**
+- `.github/workflows/release.yaml` - Template testing across Python versions and automatic GitHub release creation with changelog generation (no PyPI publishing)
 
 **Issue & PR Templates:**
 - Bug report template with structured fields
@@ -163,11 +162,15 @@ When testing or modifying GitHub workflows:
 
 **For the Cookiecutter Template Repository:**
 1. Update code and commit changes
-2. Run `poe test-fast` to validate core functionality (optional, but recommended)
+2. Run `poe test_fast` to validate core functionality (optional, but recommended)
 3. Run `poe changelog` to preview changes since last tag
 4. Run `poe release-notes` to generate release notes
 5. Use `poe release_patch/minor/major` to bump version, commit, tag, and push
-6. GitHub Actions automatically run fast test suite and create GitHub release (only if tests pass)
+6. GitHub Actions automatically:
+   - Test template across Python 3.11, 3.12, 3.13
+   - Update CHANGELOG.md with auto-generated changelog
+   - Create GitHub release with commit-based release notes
+   - No PyPI publishing (template is not a package)
 
 **For Generated Projects:**
 Generated projects follow this release workflow:
@@ -175,4 +178,11 @@ Generated projects follow this release workflow:
 2. Run `poe changelog` to preview changes since last tag (in generated project)
 3. Run `poe release-notes` to generate release notes (in generated project)
 4. Use `poe publish_patch/minor/major` to trigger automated release (in generated project)
-5. GitHub Actions handle testing, PyPI publishing, and GitHub release creation
+5. GitHub Actions automatically:
+   - Extract Python test versions from pyproject.toml with fallback to defaults
+   - Test across multiple OS and Python versions
+   - Build package artifacts
+   - Publish to PyPI via trusted publishing
+   - Update CHANGELOG.md with auto-generated changelog
+   - Create GitHub release with commit-based release notes
+   - Trigger documentation deployment to GitHub Pages
