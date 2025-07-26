@@ -41,8 +41,7 @@ class TestWorkflowIntegration:
         workflow_steps = [
             (["uv", "run", "pytest"], "Tests should pass"),
             (["uv", "run", "poe", "ruff"], "Code should be properly formatted"),
-            (["uv", "run", "poe", "mypy"], "Type checking should pass"),
-            (["uv", "run", "poe", "ty"], "Alternative type checker should pass"),
+            (["uv", "run", "poe", "ty"], "Type checking should pass"),
             (["uv", "build"], "Package should build successfully"),
         ]
 

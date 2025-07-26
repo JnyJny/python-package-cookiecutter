@@ -14,7 +14,6 @@ def test_poe_tasks_exist(generated_template_path: Path) -> None:
     content = pyproject_path.read_text()
     expected_tasks = [
         "coverage",
-        "mypy",
         "ty",
         "ruff-check",
         "ruff-format",
@@ -80,7 +79,7 @@ def test_poe_ruff_tasks(generated_template_path: Path) -> None:
 
 def test_poe_type_checking_tasks(generated_template_path: Path) -> None:
     """Test that type checking tasks work in generated project."""
-    for task in ["mypy", "ty"]:
+    for task in ["ty"]:
         result = subprocess.run(
             ["uv", "run", "poe", task],
             cwd=generated_template_path,

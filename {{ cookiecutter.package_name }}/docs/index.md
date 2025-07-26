@@ -28,7 +28,7 @@ Then run the CLI:
 {% if cookiecutter.use_pydantic_settings -%}
 - Configuration management with Pydantic Settings
 {% endif -%}
-- Type checking with mypy
+- Type checking with ty
 - Code quality tools (ruff, pytest)
 - Automated testing and CI/CD
 

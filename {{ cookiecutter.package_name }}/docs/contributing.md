@@ -36,8 +36,7 @@ uv run poe check
 
 # Or run individual tools
 uv run poe ruff      # Linting and formatting
-uv run poe mypy      # Type checking
-uv run poe ty        # Additional type checking
+uv run poe ty        # Type checking
 ```
 
 ### Testing

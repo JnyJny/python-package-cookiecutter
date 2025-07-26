@@ -66,7 +66,7 @@ poe --help
 - [Poe the Poet][poe] tasks integrated into pyproject.toml:
   - Test with pytest, tests started for you!
   - Generate HTML code coverage reports.
-  - Run code quality checks using `mypy`, `ruff`, and `ty`.
+  - Run code quality checks using `ruff` and `ty`.
   - Publish to PyPI via GitHub Actions with `poe publish`.
   - Serve, build, and deploy documentation with `poe docs-*` tasks.
 - Development tool options integrated into pyproject.toml.
@@ -224,7 +224,6 @@ Global options:
 
 Configured tasks:
   coverage              [Code Quality] Open generated coverage report in a browser.
-  mypy                  [Code Quality] Run mypy type checker on source.
   ty                    [Code Quality] Run ty type checker on source.
   ruff-check            [Code Quality] Run ruff check on source.
   ruff-format           [Code Quality] Run ruff format on source.

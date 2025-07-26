@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 {% if cookiecutter.use_pydantic_settings -%}
 - Configuration management with Pydantic Settings
 {% endif -%}
-- Type checking with mypy
+- Type checking with ty
 - Code quality tools (ruff, pytest)
 - Comprehensive documentation with MkDocs
 

@@ -53,7 +53,6 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
-    "mypy",
     "poethepoet",
     "pytest",
     "pytest-cov",
@@ -86,9 +85,6 @@ _open_report = "open htmlcov/index.html"
 coverage.sequence = [ "_generate_coverage", "_open_report"]
 coverage.help = "[Code Quality] Open generated coverage report in a browser."
 
-mypy.cmd = "mypy --config-file pyproject.toml src/{{ cookiecutter.package_name }}"
-mypy.help = "[Code Quality] Run mypy type checker on source."
-
 ty.cmd = "ty check src/{{ cookiecutter.package_name }}"
 ty.help = "[Code Quality] Run ty type checker on source."
 
@@ -101,13 +97,13 @@ ruff-format.help = "[Code Quality] Run ruff format on source."
 ruff.sequence = ["ruff-check", "ruff-format"]
 ruff.help = "[Code Quality] Run Ruff check and format on source."
 
-check.sequence = [ "ruff", "ty", "mypy" ]
+check.sequence = [ "ruff", "ty" ]
 check.help = "[Code Quality] Run all code quality tools on source."
 
 test.cmd = "pytest"
 test.help = "[Code Quality] Runs testing suites using pytest."
 
-qc.sequence = [ "test", "ruff", "mypy", "ty" ]
+qc.sequence = [ "test", "ruff", "ty" ]
 qc.help = "[Code Quality] Run all code quality tasks."
 
 # Publish tasks
@@ -217,19 +213,6 @@ lint.ignore = [
 ]
 
 [tool.ty]
-
-[mypy]
-
-[mypy-loguru]
-ignore_missing_imports = true
-
-[mypy-typer]
-ignore_missing_imports = true
-
-{% if cookiecutter.use_pydantic_settings -%}
-[mypy-pydantic_settings]
-ignore_missing_imports = true
-{% endif -%}
 
 [tool.{{ cookiecutter.package_name }}.ci]
 test-python-versions = {{ cookiecutter.python_testing_matrix }}
