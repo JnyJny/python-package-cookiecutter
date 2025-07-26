@@ -59,6 +59,7 @@ dev = [
     "pytest-cov",
     "ruff",
     "ty",
+    "toml-cli",
 ]
 docs = [
     "mkdocs",
