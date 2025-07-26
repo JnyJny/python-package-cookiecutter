@@ -1,44 +1,55 @@
-name: Create GitHub Release
+name: Test and Release Template
 
 on:
   push:
+    branches:
+      - main
     tags:
+      - 'v*-test'
       - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
+  id-token: write
   pull-requests: read
 
 jobs:
   test:
-    name: Run Tests
+    name: Test Template
     runs-on: ubuntu-latest
-    
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install uv
+      - name: Install uv and set Python version
         uses: astral-sh/setup-uv@v6
-        with:
-          python-version: "3.13"
+        with:          
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
 
-      - name: Create Bogus Git Configuration
-        env:
-          GITHUB_NAME: "NOBODY"
-          GITHUB_EMAIL: "NOBODY@NOWHERE.EXAMPLE.COM"
-        run: |
-          git config --global user.name "$GITHUB_NAME"
-          git config --global user.email "$GITHUB_EMAIL"
+      - name: Install dependencies
+        run: uv sync
 
-      - name: Run Fast Test Suite
-        run: |
-          uv run pytest -m 'not slow and not integration and not cross_platform' --ignore=tests/test_configuration_matrix.py --ignore=tests/test_generate_projects.py tests/
+      - name: Run fast test suite
+        run: uv run poe test_fast
 
-  release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
+  github-release:
+    name: Create GitHub Release & Update Changelog
     needs: test
+    if: |
+      github.ref_type == 'tag' &&
+      startsWith(github.ref, 'refs/tags/v') &&
+      !endsWith(github.ref, '-test') &&
+      success()
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
@@ -46,38 +57,48 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
+      - name: Auto-generate Changelog
+        uses: BobAnkh/auto-generate-changelog@v1.2.5
         with:
-          python-version: "3.13"
+          REPO_NAME: 'JnyJny/python-package-cookiecutter'
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PATH: 'CHANGELOG.md'
+          COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
+          TYPE: 'feat:Feature,bug:Bug Fixes,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
 
       - name: Generate release notes
         id: release_notes
         run: |
+          set -euo pipefail
+          
           # Get the tag name
           TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "Generating release notes for tag: $TAG_NAME"
           
           # Get the previous tag
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 ${TAG_NAME}^ 2>/dev/null || echo "")
-          
-          # Generate changelog
-          if [[ -n "$PREVIOUS_TAG" ]]; then
+          if PREVIOUS_TAG=$(git describe --tags --abbrev=0 ${TAG_NAME}^ 2>/dev/null); then
+            echo "Previous tag found: $PREVIOUS_TAG"
             echo "## Changes since $PREVIOUS_TAG" >> release_notes.md
             echo "" >> release_notes.md
             git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${TAG_NAME} >> release_notes.md
           else
+            echo "No previous tag found, generating initial release notes"
             echo "## Initial Release" >> release_notes.md
             echo "" >> release_notes.md
-            echo "- Initial release of python-package-cookiecutter" >> release_notes.md
+            echo "- Initial release of python-package-cookiecutter template" >> release_notes.md
           fi
           
           # Check if there's a CHANGELOG.md file
           if [[ -f "CHANGELOG.md" ]]; then
+            echo "Adding CHANGELOG.md reference"
             echo "" >> release_notes.md
             echo "## Full Changelog" >> release_notes.md
             echo "" >> release_notes.md
             echo "See [CHANGELOG.md](CHANGELOG.md) for complete release notes." >> release_notes.md
           fi
+          
+          echo "Generated release notes:"
+          cat release_notes.md
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
