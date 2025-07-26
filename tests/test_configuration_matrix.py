@@ -64,6 +64,7 @@ class TestConfigurationMatrix:
                 capture_output=True,
                 text=True,
                 timeout=60,
+                check=False,
             )
             assert result.returncode == 0, (
                 f"Build failed for {build_backend}: {result.stderr}"
@@ -325,6 +326,7 @@ class TestConfigurationMatrix:
             capture_output=True,
             text=True,
             timeout=60,
+            check=False,
         )
         assert result.returncode == 0, (
             f"Tests failed in maximal config: {result.stderr}"

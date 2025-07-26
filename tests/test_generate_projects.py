@@ -1,9 +1,9 @@
 """ """
 
-import pytest
-from pathlib import Path
 import json
+from pathlib import Path
 
+import pytest
 from cookiecutter.main import cookiecutter as bake
 
 from .conftest import check_project_contents
