@@ -15,8 +15,30 @@ permissions:
   pull-requests: read
 
 jobs:
+  get-python-versions:
+    name: Get Python test versions from pyproject.toml
+    runs-on: ubuntu-latest
+    outputs:
+      python-versions: {% raw %}${{ steps.extract.outputs.versions }}{% endraw %}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Extract Python test versions
+        id: extract
+        run: |
+          # Try to extract test versions from pyproject.toml, fallback to default if missing
+          if versions=$(uv run toml get --toml-path pyproject.toml tool.{{ cookiecutter.package_name }}.ci.test-python-versions 2>/dev/null); then
+            echo "Using Python versions from pyproject.toml: $versions"
+            echo "versions=$versions" >> $GITHUB_OUTPUT
+          else
+            echo "No test-python-versions found in pyproject.toml, using default versions"
+            echo 'versions={{ cookiecutter.python_testing_matrix }}' >> $GITHUB_OUTPUT
+          fi
+
   test:
     name: Test
+    needs: get-python-versions
 {%- raw %}
     runs-on: ${{ matrix.os }}
 {%- endraw %}
@@ -24,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ {{ cookiecutter.os_testing_matrix }} ]
-        python-version: {{ cookiecutter.python_testing_matrix }}
+        python-version: {% raw %}${{ fromJSON(needs.get-python-versions.outputs.python-versions) }}{% endraw %}
 
     steps:
       - uses: actions/checkout@v4
@@ -35,15 +57,44 @@ jobs:
 {%- raw %}          
           python-version: ${{ matrix.python-version }}
 {%- endraw %}
+          enable-cache: true
+
 {% raw %}
       - name: Run tests - ${{ matrix.python-version }} - ${{ matrix.os }}
 {%- endraw %}        
         run: |
           uv run --all-extras pytest
 
-  publish:
-    name: Build & Publish
+  build:
+    name: Build Package
     needs: test
+    if: |
+      github.ref_type == 'tag' &&
+      startsWith(github.ref, 'refs/tags/v') &&
+      !endsWith(github.ref, '-test') &&
+      success()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Build package
+        run: |
+          uv build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist/
+          retention-days: 1  # Minimum allowed, but artifacts are only needed within same workflow
+
+  publish:
+    name: Publish to PyPI
+    needs: build
     if: |
       github.ref_type == 'tag' &&
       startsWith(github.ref, 'refs/tags/v') &&
@@ -55,23 +106,18 @@ jobs:
       url: https://pypi.org/project/{{ cookiecutter.package_name }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install uv and set Python version.
-        uses: astral-sh/setup-uv@v6
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          python-version: {{ cookiecutter.python_version_min }}
-
-      - name: Build package.
-        run: |
-          uv build
+          name: dist-files
+          path: dist/
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
   github-release:
-    name: Create GitHub Release
-    needs: publish
+    name: Create GitHub Release & Update Changelog
+    needs: build
     if: |
       github.ref_type == 'tag' &&
       startsWith(github.ref, 'refs/tags/v') &&
@@ -85,30 +131,38 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          python-version: {{ cookiecutter.python_version_min }}
+          name: dist-files
+          path: dist/
 
-      - name: Build package
-        run: |
-          uv build
+      - name: Auto-generate Changelog
+        uses: BobAnkh/auto-generate-changelog@v1.2.5
+        with:
+          REPO_NAME: '{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}'
+          ACCESS_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          PATH: 'CHANGELOG.md'
+          COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
+          TYPE: 'feat:Feature,bug:Bug Fixes,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
 
       - name: Generate release notes
         id: release_notes
         run: |
+          set -euo pipefail
+          
           # Get the tag name
           TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "Generating release notes for tag: $TAG_NAME"
           
           # Get the previous tag
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 ${TAG_NAME}^ 2>/dev/null || echo "")
-          
-          # Generate changelog
-          if [[ -n "$PREVIOUS_TAG" ]]; then
+          if PREVIOUS_TAG=$(git describe --tags --abbrev=0 ${TAG_NAME}^ 2>/dev/null); then
+            echo "Previous tag found: $PREVIOUS_TAG"
             echo "## Changes since $PREVIOUS_TAG" >> release_notes.md
             echo "" >> release_notes.md
             git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${TAG_NAME} >> release_notes.md
           else
+            echo "No previous tag found, generating initial release notes"
             echo "## Initial Release" >> release_notes.md
             echo "" >> release_notes.md
             echo "- Initial release of {{ cookiecutter.package_name }}" >> release_notes.md
@@ -116,11 +170,15 @@ jobs:
           
           # Check if there's a CHANGELOG.md file
           if [[ -f "CHANGELOG.md" ]]; then
+            echo "Adding CHANGELOG.md reference"
             echo "" >> release_notes.md
             echo "## Full Changelog" >> release_notes.md
             echo "" >> release_notes.md
             echo "See [CHANGELOG.md](CHANGELOG.md) for complete release notes." >> release_notes.md
           fi
+          
+          echo "Generated release notes:"
+          cat release_notes.md
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
@@ -131,5 +189,23 @@ jobs:
           prerelease: false
           generateReleaseNotes: true
           token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+
+  deploy-docs:
+    name: Deploy Documentation
+    needs: [publish, github-release]
+    if: |
+      github.ref_type == 'tag' &&
+      startsWith(github.ref, 'refs/tags/v') &&
+      !endsWith(github.ref, '-test') &&
+      success()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger docs deployment
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          event-type: release-complete
+          client-payload: '{"ref": "{% raw %}${{ github.ref }}{% endraw %}", "sha": "{% raw %}${{ github.sha }}{% endraw %}"}'
 
 
