@@ -19,7 +19,7 @@ class TestConfigurationMatrix:
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
         build_backend: str,
-        use_pydantic_settings: bool,
+        use_pydantic_settings: bool,  # noqa: FBT001
     ) -> None:
         """Test different build backend and settings combinations."""
         tmp_path = tmp_path_factory.mktemp(
@@ -30,7 +30,7 @@ class TestConfigurationMatrix:
             "build_backend": build_backend,
             "use_pydantic_settings": use_pydantic_settings,
             "create_github_repo": False,
-            "package_name": f"test_{build_backend}_{str(use_pydantic_settings).lower()}",
+            "package_name": f"test_{build_backend}_{use_pydantic_settings.lower()!s}",
         }
 
         # Skip hooks when pydantic settings disabled to avoid ruff issues
@@ -59,7 +59,7 @@ class TestConfigurationMatrix:
         # Test that the project builds with the specified backend (only if hooks ran)
         if use_pydantic_settings:  # Only test build if hooks ran properly
             result = subprocess.run(
-                ["uv", "build"],
+                ["uv", "build"],  # noqa: S607
                 cwd=project_path,
                 capture_output=True,
                 text=True,
@@ -82,17 +82,18 @@ class TestConfigurationMatrix:
         self,
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
-        license: str,
+        license_name: str,
     ) -> None:
         """Test different license configurations."""
-        tmp_path = tmp_path_factory.mktemp(
-            f"license_{license.replace('-', '_').replace('.', '_')}"
-        )
+        tt = str.maketrans({"-": "_", ".": "_", " ": "_"})
+
+        pkgname = f"license_test_{license_name.lower().translate(tt)}"
+        tmp_path = tmp_path_factory.mktemp(pkgname)
 
         context = {
-            "license": license,
+            "license": license_name,
             "create_github_repo": False,
-            "package_name": f"license_test_{license.lower().replace('-', '_').replace('.', '_')}",
+            "package_name": pkgname,
         }
 
         project_path = bake(
@@ -134,19 +135,18 @@ class TestConfigurationMatrix:
         self,
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
-        log_to_file: bool,
-        use_pydantic_settings: bool,
+        log_to_file: bool,  # noqa: FBT001
+        use_pydantic_settings: bool,  # noqa: FBT001
     ) -> None:
         """Test different feature flag combinations."""
-        tmp_path = tmp_path_factory.mktemp(
-            f"features_{log_to_file}_{use_pydantic_settings}"
-        )
+        pkg_name = f"features_{log_to_file!s}_{use_pydantic_settings!s}"
+        tmp_path = tmp_path_factory.mktemp(pkg_name)
 
         context = {
             "log_to_file": log_to_file,
             "use_pydantic_settings": use_pydantic_settings,
             "create_github_repo": False,
-            "package_name": f"features_{str(log_to_file).lower()}_{str(use_pydantic_settings).lower()}",
+            "package_name": pkg_name,
         }
 
         # Skip hooks to avoid ruff issues when settings are disabled
@@ -321,7 +321,7 @@ class TestConfigurationMatrix:
 
         # Test that maximal project builds and tests pass
         result = subprocess.run(
-            ["uv", "run", "pytest", "-v"],
+            ["uv", "run", "pytest", "-v"],  # noqa: S607
             cwd=project_path,
             capture_output=True,
             text=True,

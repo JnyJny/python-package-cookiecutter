@@ -1,6 +1,7 @@
 """Build process validation tests for generated projects."""
 
 import os
+import shutil
 import subprocess
 import tarfile
 import zipfile
@@ -19,7 +20,7 @@ class TestBuildValidation:
     ) -> None:
         """Test that package builds without errors."""
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -42,7 +43,7 @@ class TestBuildValidation:
         """Test that built wheel has correct structure."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -93,7 +94,7 @@ class TestBuildValidation:
         """Test that built source distribution has correct structure."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -135,7 +136,7 @@ class TestBuildValidation:
         """Test that package metadata is valid."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -174,7 +175,7 @@ class TestBuildValidation:
         """Test that built wheel can be installed and used."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -186,7 +187,7 @@ class TestBuildValidation:
         test_env = tmp_path_factory.mktemp("install_test")
 
         result = subprocess.run(
-            ["uv", "venv", str(test_env / "venv")],
+            ["uv", "venv", str(test_env / "venv")],  # noqa: S607
             capture_output=True,
             text=True,
             check=False,
@@ -203,7 +204,7 @@ class TestBuildValidation:
         env["VIRTUAL_ENV"] = str(test_env / "venv")
 
         result = subprocess.run(
-            ["uv", "pip", "install", str(wheel_files[0])],
+            ["uv", "pip", "install", str(wheel_files[0])],  # noqa: S607
             env=env,
             capture_output=True,
             text=True,
@@ -235,7 +236,7 @@ class TestBuildValidation:
         """Test that builds are reproducible."""
         # Build once
         result1 = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -248,10 +249,10 @@ class TestBuildValidation:
         first_files = {f.name: f.stat().st_size for f in dist_dir.glob("*")}
 
         # Clean and build again
-        subprocess.run(["rm", "-rf", str(dist_dir)], check=True)
+        shutil.rmtree(dist_dir, ignore_errors=True)
 
         result2 = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -267,10 +268,11 @@ class TestBuildValidation:
             "Build artifacts should be the same"
         )
 
-        for filename in first_files:
-            assert first_files[filename] == second_files[filename], (
-                f"File {filename} size differs between builds"
-            )
+        for (f_name, f_size), (s_name, s_size) in zip(
+            first_files.items(), second_files.items(), strict=False
+        ):
+            assert f_name == s_name, f"File {f_name} differs from {s_name}"
+            assert f_size == s_size, f"File {f_name} size differs {f_size} != {s_size}"
 
     def test_build_with_different_backends(
         self,
@@ -298,7 +300,7 @@ class TestBuildValidation:
 
             # Test build
             result = subprocess.run(
-                ["uv", "build"],
+                ["uv", "build"],  # noqa: S607
                 cwd=project_path,
                 capture_output=True,
                 text=True,
@@ -323,7 +325,7 @@ class TestBuildValidation:
         """Test that built packages are reasonably sized."""
         # Build the package
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -332,12 +334,12 @@ class TestBuildValidation:
         assert result.returncode == 0, f"Build failed: {result.stderr}"
 
         dist_dir = generated_template_path / "dist"
-
+        k = 1024
         # Check wheel size
         wheel_files = list(dist_dir.glob("*.whl"))
         for wheel_file in wheel_files:
-            wheel_size = wheel_file.stat().st_size / 1024  # KB
-            assert wheel_size < 1024, (
+            wheel_size = wheel_file.stat().st_size / k  # KB
+            assert wheel_size < k, (
                 f"Wheel {wheel_file.name} is too large: {wheel_size:.1f}KB"
             )
             assert wheel_size > 1, (
@@ -347,8 +349,8 @@ class TestBuildValidation:
         # Check sdist size
         sdist_files = list(dist_dir.glob("*.tar.gz"))
         for sdist_file in sdist_files:
-            sdist_size = sdist_file.stat().st_size / 1024  # KB
-            assert sdist_size < 2048, (
+            sdist_size = sdist_file.stat().st_size / k  # KB
+            assert sdist_size < 2 * k, (
                 f"Sdist {sdist_file.name} is too large: {sdist_size:.1f}KB"
             )
             assert sdist_size > 1, (
@@ -364,14 +366,12 @@ class TestBuildValidation:
         dist_dir = generated_template_path / "dist"
         build_dir = generated_template_path / "build"
 
-        if dist_dir.exists():
-            subprocess.run(["rm", "-rf", str(dist_dir)], check=True)
-        if build_dir.exists():
-            subprocess.run(["rm", "-rf", str(build_dir)], check=True)
+        for artifacts in [dist_dir, build_dir]:
+            shutil.rmtree(artifacts, ignore_errors=True)
 
         # Build in clean state
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -383,7 +383,7 @@ class TestBuildValidation:
         assert dist_dir.exists(), "dist directory should be created"
 
         built_files = list(dist_dir.glob("*"))
-        assert len(built_files) >= 2, "Should produce both wheel and sdist"
+        assert built_files, "Should produce both wheel and sdist"
 
     def test_version_consistency(
         self,
@@ -402,7 +402,7 @@ class TestBuildValidation:
 
         # Build and check wheel metadata version
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,

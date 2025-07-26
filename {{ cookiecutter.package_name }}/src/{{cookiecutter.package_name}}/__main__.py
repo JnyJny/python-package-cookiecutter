@@ -9,6 +9,7 @@ import typer
 from loguru import logger
 
 from .self_subcommand import cli as self_cli
+
 # {%- if cookiecutter.use_pydantic_settings %}
 from .settings import Settings
 # {%- endif %}

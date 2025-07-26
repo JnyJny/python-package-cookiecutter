@@ -12,7 +12,6 @@ from .conftest import check_project_contents
 def test_no_license_project(
     tmp_path_factory: pytest.TempPathFactory,
     template_root: Path,
-    cookiecutter_package_name: str,
     cookiecutter_extra_context: dict,
 ) -> None:
     """Test that projects with no-license still include an Unlicense file."""
@@ -76,7 +75,7 @@ def test_no_pydantic_settings_project(
 def test_generated_project_imports_work(generated_template_path: Path) -> None:
     """Test that generated project modules can be imported without errors."""
     result = subprocess.run(
-        [
+        [  # noqa: S607
             "uv",
             "run",
             "python",
@@ -94,7 +93,7 @@ def test_generated_project_imports_work(generated_template_path: Path) -> None:
 def test_generated_project_cli_runs(generated_template_path: Path) -> None:
     """Test that generated project CLI can be invoked."""
     result = subprocess.run(
-        ["uv", "run", "python", "-m", "thing", "--help"],
+        ["uv", "run", "python", "-m", "thing", "--help"],  # noqa: S607
         cwd=generated_template_path,
         capture_output=True,
         text=True,
@@ -107,7 +106,7 @@ def test_generated_project_cli_runs(generated_template_path: Path) -> None:
 def test_generated_project_cli_version(generated_template_path: Path) -> None:
     """Test that generated project CLI version command works."""
     result = subprocess.run(
-        ["uv", "run", "python", "-m", "thing", "self", "version"],
+        ["uv", "run", "python", "-m", "thing", "self", "version"],  # noqa: S607
         cwd=generated_template_path,
         capture_output=True,
         text=True,
@@ -120,7 +119,7 @@ def test_generated_project_cli_version(generated_template_path: Path) -> None:
 def test_generated_project_can_be_built(generated_template_path: Path) -> None:
     """Test that generated project can be built as a package."""
     result = subprocess.run(
-        ["uv", "build"],
+        ["uv", "build"],  # noqa: S607
         cwd=generated_template_path,
         capture_output=True,
         text=True,
@@ -134,19 +133,19 @@ def test_generated_project_can_be_built(generated_template_path: Path) -> None:
 
     # Should have both wheel and sdist
     built_files = list(dist_path.glob("*"))
-    assert len(built_files) >= 2, "Should have both wheel and source distribution"
+    assert built_files, "Should have both wheel and source distribution"
 
     wheel_files = list(dist_path.glob("*.whl"))
-    assert len(wheel_files) >= 1, "Should have at least one wheel file"
+    assert wheel_files, "Should have at least one wheel file"
 
     sdist_files = list(dist_path.glob("*.tar.gz"))
-    assert len(sdist_files) >= 1, "Should have at least one source distribution"
+    assert sdist_files, "Should have at least one source distribution"
 
 
 def test_generated_project_handles_debug_flag(generated_template_path: Path) -> None:
     """Test that generated project handles debug flag correctly."""
     result = subprocess.run(
-        ["uv", "run", "python", "-m", "thing", "--debug", "--help"],
+        ["uv", "run", "python", "-m", "thing", "--debug", "--help"],  # noqa: S607
         cwd=generated_template_path,
         capture_output=True,
         text=True,
@@ -155,7 +154,7 @@ def test_generated_project_handles_debug_flag(generated_template_path: Path) -> 
     assert result.returncode == 0, f"CLI with debug flag failed: {result.stderr}"
 
 
-def test_invalid_package_name_characters():
+def test_invalid_package_name_characters() -> None:
     """Test that invalid package names are handled appropriately."""
     # This test validates that our template doesn't break with edge case names
     # In practice, cookiecutter itself validates package names

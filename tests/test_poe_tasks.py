@@ -42,7 +42,7 @@ def test_poe_tasks_execute(generated_template_path: Path) -> None:
 
     for task in safe_tasks:
         result = subprocess.run(
-            ["uv", "run", "poe", task],
+            ["uv", "run", "poe", task],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -54,7 +54,7 @@ def test_poe_tasks_execute(generated_template_path: Path) -> None:
 def test_poe_test_task(generated_template_path: Path) -> None:
     """Test that the poe test task works in generated project."""
     result = subprocess.run(
-        ["uv", "run", "poe", "test"],
+        ["uv", "run", "poe", "test"],  # noqa: S607
         cwd=generated_template_path,
         capture_output=True,
         text=True,
@@ -68,7 +68,7 @@ def test_poe_ruff_tasks(generated_template_path: Path) -> None:
     """Test that ruff tasks work in generated project."""
     for task in ["ruff-check", "ruff-format", "ruff"]:
         result = subprocess.run(
-            ["uv", "run", "poe", task],
+            ["uv", "run", "poe", task],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -81,7 +81,7 @@ def test_poe_type_checking_tasks(generated_template_path: Path) -> None:
     """Test that type checking tasks work in generated project."""
     for task in ["ty"]:
         result = subprocess.run(
-            ["uv", "run", "poe", task],
+            ["uv", "run", "poe", task],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -93,7 +93,7 @@ def test_poe_type_checking_tasks(generated_template_path: Path) -> None:
 def test_poe_check_task(generated_template_path: Path) -> None:
     """Test that the comprehensive check task works."""
     result = subprocess.run(
-        ["uv", "run", "poe", "check"],
+        ["uv", "run", "poe", "check"],  # noqa: S607
         cwd=generated_template_path,
         capture_output=True,
         text=True,
@@ -106,7 +106,7 @@ def test_poe_check_task(generated_template_path: Path) -> None:
 def test_poe_qc_task(generated_template_path: Path) -> None:
     """Test that the quality control task works (marked as slow)."""
     result = subprocess.run(
-        ["uv", "run", "poe", "qc"],
+        ["uv", "run", "poe", "qc"],  # noqa: S607
         cwd=generated_template_path,
         capture_output=True,
         text=True,

@@ -1,4 +1,4 @@
-""" """
+"""Generate Projects and Test the Results."""
 
 import json
 from pathlib import Path
@@ -16,8 +16,7 @@ EXTRAS = []
 for key, value in contents.items():
     if not isinstance(value, list) or key.startswith("_"):
         continue
-    for item in value:
-        EXTRAS.append({key: item})
+    EXTRAS.extend([{key: item} for item in value])
 
 
 @pytest.mark.parametrize("extra", EXTRAS)
@@ -28,6 +27,7 @@ def test_generate_project(
     cookiecutter_extra_context: dict,
     cookiecutter_package_name: str,
 ) -> None:
+    """Generate a project using the cookiecutter template and check its contents."""
     tmp_path = tmp_path_factory.mktemp("generated_project")
 
     project_path = bake(
@@ -38,4 +38,5 @@ def test_generate_project(
     )
 
     context = extra | cookiecutter_extra_context
+
     assert check_project_contents(project_path, cookiecutter_package_name, context)

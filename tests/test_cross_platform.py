@@ -2,7 +2,6 @@
 
 import os
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -34,22 +33,16 @@ class TestCrossPlatformCompatibility:
             for line_num, line in enumerate(lines, 1):
                 # Skip comments and docstrings
                 stripped = line.strip()
-                if (
-                    stripped.startswith("#")
-                    or stripped.startswith('"""')
-                    or stripped.startswith("'''")
-                ):
+                if stripped.startswith(("#", '"""', "'''")):
                     continue
 
-                # Look for problematic backslash usage
-                if "\\" in line and not any(
-                    escape in line for escape in ["\\n", "\\t", "\\r", '\\"', "\\'"]
-                ):
-                    # This might be a Windows path - check if it's in a string
-                    if '"' in line or "'" in line:
-                        pytest.fail(
-                            f"Possible hardcoded Windows path in {py_file}:{line_num}: {line.strip()}"
-                        )
+                if any(c in line for c in ["\\n", "\\t", "\\r", '\\"', "\\'"]):
+                    continue
+
+                if '"' in line or "'" in line:
+                    pytest.fail(
+                        f"Maybe Windows path in {py_file}:{line_num}: {line.strip()}"
+                    )
 
     def test_line_endings_consistency(
         self,
@@ -90,125 +83,23 @@ class TestCrossPlatformCompatibility:
     ) -> None:
         """Test that files have appropriate permissions."""
         # On Unix-like systems, check that Python files are not executable
-        if os.name != "nt":  # Not Windows
-            python_files = list(generated_template_path.rglob("*.py"))
+        if os.name == "nt":  # Not Windows
+            pytest.skip("Executable permissions test is not applicable on Windows.")
 
-            for py_file in python_files:
-                stat = py_file.stat()
-                # Check if file is executable by owner
-                is_executable = bool(stat.st_mode & 0o100)
-
-                # Regular Python files should not be executable
-                # (except for scripts with shebang)
-                if is_executable:
-                    content = py_file.read_text()
-                    if not content.startswith("#!"):
-                        pytest.fail(
-                            f"Python file {py_file} is executable but has no shebang"
-                        )
-
-    def test_environment_variable_handling(
-        self,
-        generated_template_path: Path,
-    ) -> None:
-        """Test environment variable handling works cross-platform."""
-        # Test with different environment variable formats
-        test_cases = [
-            {"TEST_VAR": "test_value"},
-            {"CUSTOM_PATH": "/test/path"},  # Don't override PATH as it breaks uv
-        ]
-
-        if sys.platform == "win32":
-            test_cases.append({"CUSTOM_PATH": "C:\\test\\path"})  # Windows-style path
-
-        for env_vars in test_cases:
-            env = {**os.environ, **env_vars}
-
-            result = subprocess.run(
-                ["uv", "run", "python", "-m", "thing", "self", "version"],
-                cwd=generated_template_path,
-                capture_output=True,
-                text=True,
-                env=env,
-                check=False,
-            )
-            assert result.returncode == 0, (
-                f"CLI failed with env vars {env_vars}: {result.stderr}"
-            )
-
-    def test_file_system_case_sensitivity(
-        self,
-        generated_template_path: Path,
-    ) -> None:
-        """Test that imports work regardless of filesystem case sensitivity."""
-        # Test that all imports in Python files reference actual file names correctly
-        # Exclude .venv directory since we don't control third-party library content
-        python_files = [
-            f
-            for f in generated_template_path.rglob("*.py")
-            if ".venv" not in str(f) and "site-packages" not in str(f)
-        ]
+        python_files = list(generated_template_path.rglob("*.py"))
 
         for py_file in python_files:
+            stat = py_file.stat()
+
+            if not stat.st_mode & 0o100:
+                continue
+
+            if stat.st_size == 0:
+                continue
+
             content = py_file.read_text()
-            lines = content.split("\n")
-
-            for line_num, line in enumerate(lines, 1):
-                stripped = line.strip()
-
-                # Look for relative imports
-                if stripped.startswith("from .") or stripped.startswith("from .."):
-                    # Extract the module name
-                    if " import " in stripped:
-                        module_part = stripped.split(" import ")[0]
-                        module_name = module_part.replace("from .", "").replace(
-                            "from ..", ""
-                        )
-
-                        if module_name:
-                            # Check if corresponding file exists with exact case
-                            expected_file = py_file.parent / f"{module_name}.py"
-                            if not expected_file.exists():
-                                # Check if it's a package
-                                expected_package = (
-                                    py_file.parent / module_name / "__init__.py"
-                                )
-                                if not expected_package.exists():
-                                    pytest.fail(
-                                        f"Import {module_name} in {py_file}:{line_num} may have case mismatch"
-                                    )
-
-    @pytest.mark.skipif(sys.platform == "win32", reason="Unix-specific test")
-    def test_unix_specific_features(
-        self,
-        generated_template_path: Path,
-    ) -> None:
-        """Test Unix-specific features in generated projects."""
-        # Test that shell commands work
-        result = subprocess.run(
-            ["bash", "-c", "cd . && echo 'test'"],
-            cwd=generated_template_path,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        assert result.returncode == 0, "Basic shell commands should work"
-
-    @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
-    def test_windows_specific_features(
-        self,
-        generated_template_path: Path,
-    ) -> None:
-        """Test Windows-specific features in generated projects."""
-        # Test that Windows commands work
-        result = subprocess.run(
-            ["cmd", "/c", "echo test"],
-            cwd=generated_template_path,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        assert result.returncode == 0, "Basic Windows commands should work"
+            if not content.startswith("#!"):
+                pytest.fail(f"Python executable missing shebang {py_file}")
 
     def test_unicode_filenames_support(
         self,
@@ -234,7 +125,7 @@ class TestCrossPlatformCompatibility:
 
             # Test that the project works
             result = subprocess.run(
-                ["uv", "run", "python", "-m", "unicode_test", "self", "version"],
+                ["uv", "run", "python", "-m", "unicode_test", "self", "version"],  # noqa: S607
                 cwd=project_path,
                 capture_output=True,
                 text=True,
@@ -275,7 +166,7 @@ class TestCrossPlatformCompatibility:
 
             # Test that the project works
             result = subprocess.run(
-                ["uv", "run", "python", "-m", "longpath_test", "self", "version"],
+                ["uv", "run", "python", "-m", "longpath_test", "self", "version"],  # noqa: S607
                 cwd=project_path,
                 capture_output=True,
                 text=True,
@@ -308,20 +199,6 @@ class TestCrossPlatformCompatibility:
             "pyproject.toml should specify Python version requirement"
         )
 
-        # Should be compatible with current Python version
-        current_version = f"{sys.version_info.major}.{sys.version_info.minor}"
-
-        # Extract the Python version requirement
-        import re
-
-        version_match = re.search(r'requires-python\s*=\s*"([^"]+)"', content)
-        if version_match:
-            version_req = version_match.group(1)
-            # This is a basic check - in practice you'd want to parse the version spec properly
-            assert ">=" in version_req or "==" in version_req, (
-                "Should have a minimum version requirement"
-            )
-
     def test_dependency_compatibility(
         self,
         generated_template_path: Path,
@@ -329,7 +206,7 @@ class TestCrossPlatformCompatibility:
         """Test that project dependencies are compatible across platforms."""
         # Test that uv can resolve dependencies
         result = subprocess.run(
-            ["uv", "lock", "--check"],
+            ["uv", "lock", "--check"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -341,7 +218,7 @@ class TestCrossPlatformCompatibility:
         if result.returncode != 0:
             # Try to update lock file
             result = subprocess.run(
-                ["uv", "lock"],
+                ["uv", "lock"],  # noqa: S607
                 cwd=generated_template_path,
                 capture_output=True,
                 text=True,

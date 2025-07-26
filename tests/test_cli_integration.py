@@ -52,21 +52,19 @@ class TestCLIIntegration:
             # Invalid subcommand
             (
                 ["uv", "run", "python", "-m", "thing", "nonexistent"],
-                2,
                 "invalid subcommand",
             ),
             # Invalid options
             (
                 ["uv", "run", "python", "-m", "thing", "--invalid-option"],
-                2,
                 "invalid option",
             ),
             # No arguments when required
-            (["uv", "run", "python", "-m", "thing"], 2, "no arguments"),
-            (["uv", "run", "python", "-m", "thing", "self"], 2, "self no arguments"),
+            (["uv", "run", "python", "-m", "thing"], "no arguments"),
+            (["uv", "run", "python", "-m", "thing", "self"], "self no arguments"),
         ]
 
-        for cmd, expected_exit_code, description in error_tests:
+        for cmd, description in error_tests:
             result = subprocess.run(
                 cmd,
                 cwd=generated_template_path,
@@ -74,7 +72,7 @@ class TestCLIIntegration:
                 text=True,
                 check=False,
             )
-            # Allow some flexibility in exit codes (different versions may use different codes)
+
             assert result.returncode != 0, (
                 f"Expected failure for {description} but got success"
             )
@@ -86,7 +84,7 @@ class TestCLIIntegration:
         """Test debug functionality and logging."""
         # Test debug flag
         result = subprocess.run(
-            ["uv", "run", "python", "-m", "thing", "--debug", "self", "version"],
+            ["uv", "run", "python", "-m", "thing", "--debug", "self", "version"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -99,7 +97,7 @@ class TestCLIIntegration:
 
         # Test that debug mode can be combined with other flags
         result = subprocess.run(
-            ["uv", "run", "python", "-m", "thing", "-D", "--help"],
+            ["uv", "run", "python", "-m", "thing", "-D", "--help"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -115,7 +113,7 @@ class TestCLIIntegration:
         """Test CLI can be invoked both as module and script."""
         # Test as module
         result_module = subprocess.run(
-            ["uv", "run", "python", "-m", "thing", "self", "version"],
+            ["uv", "run", "python", "-m", "thing", "self", "version"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -125,7 +123,7 @@ class TestCLIIntegration:
 
         # Test as installed script (if available)
         result_script = subprocess.run(
-            ["uv", "run", "thing", "self", "version"],
+            ["uv", "run", "thing", "self", "version"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -151,7 +149,7 @@ class TestCLIIntegration:
         env = os.environ.copy()
         env["THING_DEBUG"] = "true"
         result = subprocess.run(
-            ["uv", "run", "python", "-m", "thing", "self", "version"],
+            ["uv", "run", "python", "-m", "thing", "self", "version"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
