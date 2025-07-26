@@ -22,15 +22,15 @@ class TestConfigurationMatrix:
         use_pydantic_settings: bool,  # noqa: FBT001
     ) -> None:
         """Test different build backend and settings combinations."""
-        tmp_path = tmp_path_factory.mktemp(
-            f"build_{build_backend}_{use_pydantic_settings}"
-        )
+        pkg_name = f"build_{build_backend}_{use_pydantic_settings}".lower()
+
+        tmp_path = tmp_path_factory.mktemp(pkg_name)
 
         context = {
             "build_backend": build_backend,
             "use_pydantic_settings": use_pydantic_settings,
             "create_github_repo": False,
-            "package_name": f"test_{build_backend}_{use_pydantic_settings.lower()!s}",
+            "package_name": pkg_name,
         }
 
         # Skip hooks when pydantic settings disabled to avoid ruff issues
@@ -77,7 +77,10 @@ class TestConfigurationMatrix:
         else:
             assert "hatchling" in pyproject_content
 
-    @pytest.mark.parametrize("license", ["MIT", "Apache-2.0", "GPL-3.0", "no-license"])
+    @pytest.mark.parametrize(
+        "license_name",
+        ["MIT", "Apache-2.0", "GPL-3.0", "no-license"],
+    )
     def test_license_variations(
         self,
         tmp_path_factory: pytest.TempPathFactory,
@@ -87,7 +90,7 @@ class TestConfigurationMatrix:
         """Test different license configurations."""
         tt = str.maketrans({"-": "_", ".": "_", " ": "_"})
 
-        pkgname = f"license_test_{license_name.lower().translate(tt)}"
+        pkgname = f"license_test_{license_name.translate(tt)}".lower()
         tmp_path = tmp_path_factory.mktemp(pkgname)
 
         context = {
@@ -139,7 +142,7 @@ class TestConfigurationMatrix:
         use_pydantic_settings: bool,  # noqa: FBT001
     ) -> None:
         """Test different feature flag combinations."""
-        pkg_name = f"features_{log_to_file!s}_{use_pydantic_settings!s}"
+        pkg_name = f"features_{log_to_file!s}_{use_pydantic_settings!s}".lower()
         tmp_path = tmp_path_factory.mktemp(pkg_name)
 
         context = {
