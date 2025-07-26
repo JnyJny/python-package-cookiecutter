@@ -229,3 +229,6 @@ ignore_missing_imports = true
 [mypy-pydantic_settings]
 ignore_missing_imports = true
 {% endif -%}
+
+[tool.{{ cookiecutter.package_name }}.ci]
+test-python-versions = {{ cookiecutter.python_testing_matrix }}
