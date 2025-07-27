@@ -18,6 +18,26 @@ automatically configured to deploy to GitHub Pages using
 base files to help provide a great GitHub experience for you and
 people that interact with your project repository.
 
+## Table of Contents
+
+- [Why Use This Template?](#why-use-this-template)
+- [Quick Start](#quick-start)
+- [Prerequisites](#prerequisites)
+- [Project Setup Process](#project-setup-process)
+- [Package Features](#package-features)
+  - [Code Features](#code-features)
+  - [Quality of Life Features](#quality-of-life-features)
+  - [GitHub Integrations](#github-integrations)
+- [Documentation with MkDocs](#documentation-with-mkdocs)
+- [Development Workflows](#development-workflows)
+  - [Example Development Workflow](#example-development-workflow)
+  - [GitHub Actions Workflow](#github-actions-workflow)
+- [Default Poe Tasks](#default-poe-tasks)
+- [Things You Will Want to Change](#things-you-will-want-to-change)
+- [Example Package Tree](#example-package-tree)
+
+---
+
 ## Why Use This Template?
 
 ### **Zero Configuration Required**
@@ -71,24 +91,6 @@ poe publish_patch   # Release to PyPI
 
 **That's it!** Your package is now live on PyPI with documentation deployed to 
 GitHub Pages.
-
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Project Setup Process](#project-setup-process)
-- [Package Features](#package-features)
-  - [Code Features](#code-features)
-  - [Quality of Life Features](#quality-of-life-features)
-  - [GitHub Integrations](#github-integrations)
-- [Documentation with MkDocs](#documentation-with-mkdocs)
-- [Development Workflows](#development-workflows)
-  - [Example Development Workflow](#example-development-workflow)
-  - [GitHub Actions Workflow](#github-actions-workflow)
-- [Default Poe Tasks](#default-poe-tasks)
-- [Things You Will Want to Change](#things-you-will-want-to-change)
-- [Example Package Tree](#example-package-tree)
-
----
 
 ## Prerequisites
 
