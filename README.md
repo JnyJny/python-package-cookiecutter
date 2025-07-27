@@ -81,6 +81,49 @@ poe --help
 - Themed MkDocs workflow with search and API documentation.
 - Automatic GitHub release generation with release notes.
 
+#### GitHub Actions Workflow
+
+The template includes a comprehensive CI/CD pipeline triggered by semantic version tags:
+
+```mermaid
+flowchart TD
+    Tag[Tag v1.2.3 pushed] --> Extract[Get Python Versions<br/>from pyproject.toml]
+    Extract --> Test[Test Matrix<br/>OS × Python versions]
+    
+    Test --> |All tests pass| Build[Build Package<br/>uv build]
+    Test --> |Tests fail| Fail[❌ Workflow fails]
+    
+    Build --> Upload[Upload Artifacts<br/>dist/]
+    
+    Upload --> Publish[Publish to PyPI<br/>Trusted Publishing]
+    Upload --> Release[Create GitHub Release<br/>Auto-generated notes]
+    
+    Publish --> |Success| DocsTrigger[Trigger Docs Deployment]
+    Release --> |Success| DocsTrigger
+    
+    DocsTrigger --> DocsDispatch[Repository Dispatch<br/>release-complete]
+    DocsDispatch --> EnablePages[Enable GitHub Pages<br/>if needed]
+    EnablePages --> DocsBuild[Build MkDocs<br/>Documentation]
+    DocsBuild --> DocsDeploy[Deploy to<br/>GitHub Pages]
+    
+    style Tag fill:#e1f5fe
+    style Test fill:#fff3e0
+    style Build fill:#f3e5f5
+    style Publish fill:#e8f5e8
+    style Release fill:#e8f5e8
+    style DocsDeploy fill:#fff8e1
+    style Fail fill:#ffebee
+```
+
+**Workflow Features:**
+- **Dynamic Python Testing**: Automatically detects Python versions from `pyproject.toml`
+- **Matrix Testing**: Tests across multiple OS and Python combinations
+- **Trusted Publishing**: Secure PyPI publishing without API tokens
+- **Artifact Management**: Efficient sharing of build artifacts between jobs
+- **Auto-generated Releases**: Intelligent changelog and release notes generation
+- **Documentation Deployment**: Automatic MkDocs deployment to GitHub Pages
+- **Conditional Execution**: Only releases on proper semantic version tags
+
 
 ### Miscellaneous
 - Configured to use [direnv][direnv] to automatically activate & deactivate venvs.
@@ -296,19 +339,45 @@ This is roughly how I write code and how I would use the generated package.
 
 ```mermaid
 flowchart TD
-    Create((Create Project)) --> Edit[Edit Files]
-    Edit --> |Add Bugs| Commit((Commit))
-    Edit --> |Remove Bugs| Commit
-    Commit -->|Not Done| Edit
-    Commit --> |Breaking Features| Major[poe publish_major]
-    Commit --> |Non-breaking Features| Minor[poe publish_minor]
-    Commit --> |Bug Fixes| Patch[poe publish_patch]
-    Major --> workflow[.github/workflows/release.yaml]
-    Minor --> workflow
-    Patch --> workflow
-    workflow --> test[test package with pytest]
-    test --> |succcess| publish[uv publishes project to PyPI]
+    Create[Create Project<br/>cookiecutter template] --> Setup[Initial Setup<br/>uv sync, git init]
+    Setup --> Edit[Edit Code<br/>Add features, fix bugs]
+    
+    Edit --> QC[Quality Control<br/>poe qc]
+    QC --> |Issues found| Fix[Fix Issues]
+    Fix --> QC
+    QC --> |All checks pass| Commit[Git Commit<br/>Local changes]
+    
+    Commit --> Ready{Ready for<br/>Release?}
+    Ready --> |No| Edit
+    Ready --> |Yes| Version{Release Type?}
+    
+    Version --> |Bug Fixes| Patch[poe publish_patch<br/>v1.0.1]
+    Version --> |New Features| Minor[poe publish_minor<br/>v1.1.0] 
+    Version --> |Breaking Changes| Major[poe publish_major<br/>v2.0.0]
+    
+    Patch --> Tag[Create Git Tag<br/>Push to GitHub]
+    Minor --> Tag
+    Major --> Tag
+    
+    Tag --> CI[GitHub Actions<br/>CI/CD Pipeline]
+    CI --> Success[✅ Published to PyPI<br/>📚 Docs Deployed<br/>🎉 GitHub Release]
+    
+    Success --> Edit
+    
+    style Create fill:#e1f5fe
+    style QC fill:#fff3e0
+    style Fix fill:#ffebee
+    style Commit fill:#f3e5f5
+    style Tag fill:#e8f5e8
+    style Success fill:#e8f5e8
 ```
+
+**Workflow Features:**
+- **Quality First**: Built-in quality control with `poe qc` runs all checks
+- **Semantic Versioning**: Clear patch/minor/major release workflow
+- **Automated Publishing**: Push tags trigger complete CI/CD pipeline
+- **Integrated Testing**: Quality checks before every commit
+- **Documentation**: Auto-generated docs with every release
 
 ## Things You Will Want to Change
 
