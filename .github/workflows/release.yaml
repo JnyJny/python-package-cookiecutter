@@ -2,10 +2,7 @@ name: Test and Release Template
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - 'v*-test'
       - 'v[0-9]+.[0-9]+.[0-9]+'
   pull_request:
     branches:
