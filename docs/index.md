@@ -78,7 +78,7 @@ your-package/
 
 ## License
 
-This template is released under the MIT License. Generated projects use the license you choose during template creation.
+This template is released under the Apache License 2.0. Generated projects use the license you choose during template creation.
 
 ---
 
