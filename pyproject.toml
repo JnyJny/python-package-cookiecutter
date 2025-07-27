@@ -15,6 +15,11 @@ dev = [
     "sphinx>=8.2.3",
     "toml-cli",
 ]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.0",
+    "pymdown-extensions>=10.0.0",
+]
 
 [tool.poe.tasks]
 
@@ -85,6 +90,17 @@ _remove_gh_repo = "gh repo delete thing --yes"
 
 clean.sequence = ["_remove_tmp", "_remove_gh_repo" ]
 clean.help = "Cleanup project."
+
+# Documentation tasks
+
+docs-serve.cmd = "mkdocs serve"
+docs-serve.help = "[Docs] Serve docs locally for development."
+
+docs-build.cmd = "mkdocs build"
+docs-build.help = "[Docs] Build docs for production."
+
+docs-deploy.cmd = "mkdocs gh-deploy --force"
+docs-deploy.help = "[Docs] Deploy docs to GitHub Pages."
 
 # Misc
 
