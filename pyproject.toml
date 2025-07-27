@@ -15,6 +15,9 @@ dev = [
     "sphinx>=8.2.3",
     "toml-cli",
 ]
+docs = [
+    "mkdocs>=1.6.1",
+]
 
 [tool.poe.tasks]
 
@@ -85,6 +88,17 @@ _remove_gh_repo = "gh repo delete thing --yes"
 
 clean.sequence = ["_remove_tmp", "_remove_gh_repo" ]
 clean.help = "Cleanup project."
+
+# Documentation tasks
+
+docs-serve.cmd = "mkdocs serve"
+docs-serve.help = "[Documentation] Serve documentation locally for development."
+
+docs-build.cmd = "mkdocs build"
+docs-build.help = "[Documentation] Build documentation for production."
+
+docs-deploy.cmd = "mkdocs gh-deploy --force"
+docs-deploy.help = "[Documentation] Deploy documentation to GitHub Pages."
 
 # Misc
 

@@ -1,0 +1,62 @@
+site_name: Python Package Cookiecutter Template
+site_description: A comprehensive cookiecutter template for modern Python packages
+site_url: https://jnyjny.github.io/python-package-cookiecutter/
+repo_url: https://github.com/JnyJny/python-package-cookiecutter
+repo_name: JnyJny/python-package-cookiecutter
+
+docs_dir: docs
+site_dir: site
+
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - Quick Start: quickstart.md
+  - Template Guide: template-guide.md
+  - Customization: customization.md
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
