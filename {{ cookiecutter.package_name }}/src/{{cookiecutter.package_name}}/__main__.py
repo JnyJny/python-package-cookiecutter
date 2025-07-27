@@ -25,7 +25,7 @@ cli.add_typer(
 
 @cli.callback(invoke_without_command=True, no_args_is_help=True)
 def global_callback(
-    ctx: typer.Context,
+    ctx: typer.Context,         # noqa: ARG001
     debug: bool = typer.Option(
         False,
         "--debug",

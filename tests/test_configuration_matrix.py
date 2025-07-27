@@ -90,13 +90,13 @@ class TestConfigurationMatrix:
         """Test different license configurations."""
         tt = str.maketrans({"-": "_", ".": "_", " ": "_"})
 
-        pkgname = f"license_test_{license_name.translate(tt)}".lower()
-        tmp_path = tmp_path_factory.mktemp(pkgname)
+        pkg_name = f"license_test_{license_name.translate(tt)}".lower()
+        tmp_path = tmp_path_factory.mktemp(pkg_name)
 
         context = {
             "license": license_name,
             "create_github_repo": False,
-            "package_name": pkgname,
+            "package_name": pkg_name,
         }
 
         project_path = bake(
@@ -111,7 +111,7 @@ class TestConfigurationMatrix:
         # Verify LICENSE file exists and contains expected content
         license_file = project_path / "LICENSE"
 
-        if license == "no-license":
+        if license_name == "no-license":
             assert not license_file.exists(), "no-license: LICENSE should not exist."
             pytest.skip("No LICENSE file expected for no-license configuration")
 
@@ -120,17 +120,18 @@ class TestConfigurationMatrix:
         license_content = license_file.read_text()
 
         # Verify license-specific content
-        if license == "MIT":
-            assert "MIT License" in license_content
-        elif license == "Apache-2.0":
-            assert "Apache License" in license_content
-        elif license == "GPL-3.0":
-            assert "GNU GENERAL PUBLIC LICENSE" in license_content
+        match license_name:
+            case "MIT":
+                assert "MIT License" in license_content
+            case "Apache-2.0":
+                assert "Apache License" in license_content
+            case "GPL-3.0":
+                assert "GNU GENERAL PUBLIC LICENSE" in license_content
 
         # Verify pyproject.toml license field
         pyproject_content = (project_path / "pyproject.toml").read_text()
-        if license != "no-license":
-            assert f'license = "{license}"' in pyproject_content
+        if license_name != "no-license":
+            assert f'license = "{license_name}"' in pyproject_content
 
     @pytest.mark.parametrize("log_to_file", [True, False])
     @pytest.mark.parametrize("use_pydantic_settings", [True, False])
