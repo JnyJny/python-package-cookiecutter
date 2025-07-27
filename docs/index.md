@@ -74,7 +74,7 @@ your-package/
 
 - **Issues**: Report bugs or request features on [GitHub Issues](https://github.com/JnyJny/python-package-cookiecutter/issues)
 - **Discussions**: Ask questions on [GitHub Discussions](https://github.com/JnyJny/python-package-cookiecutter/discussions)
-- **Contributing**: See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines
+- **Contributing**: See the project's CONTRIBUTING.md for contribution guidelines
 
 ## License
 

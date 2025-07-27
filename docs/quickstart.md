@@ -194,7 +194,7 @@ poe publish_patch
 
 - **[Template User Guide](template-guide.md)** - Detailed feature documentation
 - **[Customization Guide](customization.md)** - Modify your project
-- **[GitHub Workflows](workflows.md)** - Understanding the CI/CD pipeline
+- **GitHub Workflows** - See template-guide.md for CI/CD pipeline details
 
 ## Troubleshooting
 

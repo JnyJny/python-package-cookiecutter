@@ -345,5 +345,3 @@ For PyPI publishing to work, configure trusted publishing:
 ## Next Steps
 
 - **[Customization Guide](customization.md)** - How to modify your generated project
-- **[Advanced Features](advanced.md)** - Power user features and tips
-- **[Contributing](../CONTRIBUTING.md)** - Contributing to the template itself
