@@ -131,6 +131,6 @@ markers = [
 ]
 
 [tool.python-package-cookiecutter.ci]
-test-python-versions = ["3.11", "3.12", "3.13"]
+test-python-versions = ["3.13"]
 
 
