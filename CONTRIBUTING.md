@@ -44,7 +44,46 @@ poe clean
 
 ## Documentation
 
-_TBD_
+Documentation is built using [MkDocs](https://www.mkdocs.org/) with the Material theme and deployed to GitHub Pages.
+
+### Local Development
+
+```console
+# Serve docs locally with live reload
+poe docs-serve
+
+# Build docs for production
+poe docs-build
+
+# Deploy docs to GitHub Pages (maintainers only)
+poe docs-deploy
+```
+
+### Documentation Structure
+
+- `docs/index.md` - Main documentation hub with navigation
+- `docs/overview.md` - Template features and benefits
+- `docs/quickstart.md` - Getting started guide
+- `docs/template-guide.md` - Detailed feature documentation
+- `docs/customization.md` - Post-creation modification guide
+- `mkdocs.yml` - MkDocs configuration
+
+### Writing Guidelines
+
+- Keep lines under 90 columns
+- Use end links format instead of embedded URLs
+- Focus on concrete benefits over marketing language
+- Include code examples where helpful
+- Cross-reference related sections
+- Test all code examples before committing
+
+### Documentation Deployment
+
+Documentation auto-deploys to GitHub Pages when:
+1. Changes are merged to `main` branch
+2. A new release is created
+
+The deployment workflow builds the docs and publishes them to the `gh-pages` branch.
 
 ## Releases
 
