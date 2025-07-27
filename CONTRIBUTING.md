@@ -21,14 +21,14 @@ Thank you for your contributions to this project!
 ```console
 git clone https://github.com/JnyJny/python-package-cookiecutter
 cd python-package-cookiecutter
-uv sync
+uv sync --all-groups
 ```
 
 ## Testing the Cookiecutter Template
 
 ```console
-pytest
 poe ruff
+pytest
 ```
 
 ## Testing the Generated Project
@@ -37,14 +37,14 @@ poe ruff
 poe bake
 pushd tmp/thing
 pytest
-poe ruff
 popd
 poe clean
 ```
 
 ## Documentation
 
-Documentation is built using [MkDocs](https://www.mkdocs.org/) with the Material theme and deployed to GitHub Pages.
+Documentation is built using [MkDocs](https://www.mkdocs.org/) with
+the Material theme and deployed to GitHub Pages.
 
 ### Local Development
 
@@ -70,9 +70,8 @@ poe docs-deploy
 
 ### Writing Guidelines
 
-- Keep lines under 90 columns
+- Keep markdown lines under 90 columns
 - Use end links format instead of embedded URLs
-- Focus on concrete benefits over marketing language
 - Include code examples where helpful
 - Cross-reference related sections
 - Test all code examples before committing
