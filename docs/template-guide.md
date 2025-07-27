@@ -57,7 +57,7 @@ Every package includes a fully functional CLI built with Typer:
 - **Main CLI**: Accessible via `python -m your_package` or `your_package`
 - **Built-in Commands**: Version, help, and self-diagnostics
 - **Extensible**: Easy to add new commands and subcommands
-- **Rich Output**: Beautiful help text and error messages
+- **Rich Output**: Formatted help text and error messages
 
 #### Configuration Management
 Optional Pydantic Settings integration:
@@ -134,7 +134,7 @@ poe tree            # Show project structure
 #### Quality Assurance
 Comprehensive code quality tools:
 
-- **Ruff**: Lightning-fast linting and formatting
+- **Ruff**: Fast linting and formatting
 - **ty**: Type checking for Python
 - **pytest**: Testing framework with fixtures
 - **Coverage**: Code coverage reporting
@@ -158,7 +158,7 @@ Two main GitHub Actions workflows:
 3. **Deploy**: Publishes to GitHub Pages
 
 #### Issue Templates
-Professional GitHub issue templates:
+Structured GitHub issue templates:
 
 - **Bug Report**: Structured bug reporting with environment details
 - **Feature Request**: Template for suggesting new features
@@ -290,7 +290,7 @@ The workflow automatically detects and uses these versions.
 #### Build Backend Selection
 Choose between build backends:
 
-- **uv** (default): Fast, modern dependency resolution
+- **uv** (default): Fast dependency resolution
 - **hatch**: Traditional, well-established build system
 
 ## GitHub Actions Workflow Details
