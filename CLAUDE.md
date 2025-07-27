@@ -1,178 +1,39 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Cookiecutter template for modern Python packages with CLI, testing, and GitHub automation.
 
-## Project Overview
+## Commands
 
-This is a Cookiecutter template for creating Python packages with modern tooling. It generates opinionated Python projects with CLI interfaces, type checking, testing, and GitHub integration.
+**Testing**: `pytest` (103 tests, 5-15m) | `poe test_fast` (26 tests, 35s) | `poe ruff`  
+**Development**: `poe bake` (test project) | `poe clean` (cleanup) | `uv sync`  
+**Release**: `poe release_patch/minor/major` (template) | `poe publish_patch/minor/major` (generated projects)
 
-## Key Commands
+## Structure
 
-### Testing the Template
-- `pytest` - Run full test suite (103 tests, ~5-15 minutes):
-  - Template configuration validation (`test_cookiecutter_json.py`)
-  - Project generation with all configuration combinations (`test_generate_projects.py`)
-  - Generated project poe tasks functionality (`test_poe_tasks.py`)
-  - CLI integration and behavior (`test_cli_integration.py`)
-  - Build processes and packaging (`test_build_validation.py`)
-  - Configuration matrix testing (`test_configuration_matrix.py`)
-  - Cross-platform compatibility (`test_cross_platform.py`)
-  - Edge cases and error handling (`test_edge_cases.py`)
-  - End-to-end integration workflows (`test_integration.py`)
-  - Default project baseline validation (`test_default_project.py`)
-- `poe test-fast` - Run fast test subset (26 tests, ~35 seconds) for release validation
-- `poe ruff` - Run ruff check and format on template code
-- `poe test` - Run pytest (alias for pytest)
+**Template**: `cookiecutter.json` (config) | `hooks/` (setup scripts) | `{{ cookiecutter.package_name }}/` (template) | `tests/`  
+**Generated**: `src/` layout | Typer CLI | pydantic-settings | Loguru | poe tasks | GitHub automation  
+**Hooks**: Auto-install Python, create venv, sync deps, init git, optional GitHub repo
 
-### Testing Generated Projects
-- `poe bake` - Generate a test project in `./tmp/thing` using default values
-- `poe clean` - Remove generated test project and GitHub repo
+## GitHub Workflows
 
-### Release Management
-- `poe changelog` - Generate changelog since last tag
-- `poe release-notes` - Generate release notes file from changelog
-- `poe release_patch` - Bump patch version, commit, tag, and push (triggers GitHub release)
-- `poe release_minor` - Bump minor version, commit, tag, and push (triggers GitHub release)
-- `poe release_major` - Bump major version, commit, tag, and push (triggers GitHub release)
+**Generated Projects**: `release.yaml` (test, build, PyPI, docs) | `docs.yml` (GitHub Pages) | `dependabot.yaml`  
+**Template Repo**: `release.yaml` (test, GitHub releases, no PyPI)  
+**Features**: Dynamic Python versions, auto-changelog, trusted publishing, repository dispatch
 
-### Generated Project Commands
-Generated projects include additional poe tasks:
-- `poe changelog` - Generate changelog since last tag
-- `poe release-notes` - Generate release notes file from changelog
-- `poe publish_patch` - Publish patch release (triggers GitHub workflows)
-- `poe publish_minor` - Publish minor release (triggers GitHub workflows)
-- `poe publish_major` - Publish major release (triggers GitHub workflows)
+## Testing
 
-### Development Setup
-- `uv sync` - Install dependencies and sync virtual environment
-- `uv run pytest` - Run tests with uv
-- `uv run ruff check` - Run ruff checks
+**Coverage**: Config validation | Project generation | CLI integration | Build/packaging | Cross-platform | Workflows  
+**Infrastructure**: Parametrized tests | Subprocess validation | Fast subset (26 tests) | Full suite (103 tests)
 
-## Architecture
+## Workflows
 
-### Template Structure
-- `cookiecutter.json` - Configuration with prompts and defaults for template generation
-- `hooks/` - Pre/post generation scripts that run during cookiecutter execution
-  - `pre_gen_project.uv` - Runs before template generation (currently no-op)
-  - `post_gen_project.uv` - Runs after generation: installs Python, creates venv, syncs deps, initializes git, optionally creates GitHub repo
-- `{{ cookiecutter.package_name }}/` - The actual template directory that gets rendered
-- `tests/` - Tests for the cookiecutter template functionality
+**Template Changes**: Modify `{{ cookiecutter.package_name }}/` → Add tests → `poe bake` → `poe ruff`  
+**Dependencies**: Update both root and template `pyproject.toml`  
+**GitHub Testing**: `poe bake` → Test workflows in generated project → Validate with different configs
 
-### Generated Project Structure
-The template creates Python packages with:
-- `src/` layout with package in `src/{{ cookiecutter.package_name }}/`
-- Typer-based CLI with self-subcommands
-- Optional pydantic-settings for configuration
-- Loguru for logging
-- Comprehensive poe tasks for development workflow
-- Complete GitHub automation suite including:
-  - CI/CD workflows for testing and PyPI publishing
-  - Automatic GitHub release generation with changelogs
-  - GitHub Pages documentation deployment
-  - Dependabot for automated dependency updates
-  - Issue and PR templates
+## Releases
 
-### Hook System
-Post-generation hooks automatically:
-1. Install requested Python version with uv
-2. Create virtual environment
-3. Sync dependencies
-4. Run ruff formatting
-5. Initialize git repository
-6. Create initial commit
-7. Optionally create GitHub repository and push
+**Template**: `poe release_patch/minor/major` → Auto-test + GitHub release (no PyPI)  
+**Generated Projects**: `poe publish_patch/minor/major` → Auto-test + PyPI + GitHub release + docs
 
-### GitHub Automation Features
-
-Generated projects include comprehensive GitHub automation:
-
-**Workflows:**
-- `release.yaml` - Multi-stage CI/CD pipeline with matrix testing and PyPI publishing via trusted publishers
-- `github-release.yml` - Automatic GitHub release creation with changelog generation  
-- `docs.yml` - GitHub Pages deployment for MkDocs documentation
-- `dependabot.yaml` - Automated dependency updates for Python packages and GitHub Actions
-
-**Cookiecutter Repository Workflows:**
-- `release.yaml` - Test validation and automatic GitHub release creation with changelog generation
-
-**Issue & PR Templates:**
-- Bug report template with structured fields
-- Feature request template
-- Question template for support
-- Pull request template with summary and test plan sections
-
-**Release Management:**
-- CHANGELOG.md following Keep a Changelog format
-- Automated release notes generation from git commits
-- Semantic versioning with tag-triggered releases
-- Support for test releases with `-test` suffix tags
-
-## Template Testing Strategy
-
-The comprehensive test suite validates multiple aspects of the template:
-
-### Template Configuration & Structure
-- `cookiecutter.json` validation for proper structure and values
-- File hierarchy generation across all configuration combinations
-- Template rendering with different variable combinations
-
-### Generated Project Functionality
-- **Build & Packaging**: Wheel/sdist creation, installation, metadata validation
-- **CLI Integration**: Help systems, error handling, version commands, debug functionality
-- **Development Tools**: All poe tasks execution (test, lint, type-check, build)
-- **Cross-Platform**: Path handling, line endings, permissions, Unicode support
-
-### Workflow Integration
-- **End-to-End Cycles**: Complete development workflows from test to build
-- **Hook System**: Post-generation scripts (git init, venv creation, dependency sync)
-- **GitHub Automation**: Workflow syntax validation, Dependabot configuration
-- **Edge Cases**: Error conditions, boundary scenarios, invalid configurations
-
-### Testing Infrastructure
-- **Parametrized Testing**: Systematic coverage of configuration matrices
-- **Subprocess Execution**: Real command behavior validation
-- **File System Validation**: Structure and content verification
-- **Performance Markers**: Separation of fast/slow tests for CI optimization
-- **Test Subsets**: Fast subset (26 tests, 35s) for releases; full suite (103 tests, 5-15m) for comprehensive validation
-
-## Common Workflows
-
-### Adding New Template Features
-1. Modify template files in `{{ cookiecutter.package_name }}/`
-2. Add corresponding tests in `tests/`
-3. Test with `poe bake` and verify generated project works
-4. Run `poe ruff` to ensure code quality
-
-### Updating Dependencies
-Update both:
-- Root `pyproject.toml` for template development dependencies
-- `{{ cookiecutter.package_name }}/pyproject.toml` for generated project dependencies
-
-### Testing Generated Projects
-The `poe bake` command creates a test project that can be used to verify template functionality without going through the full cookiecutter prompts.
-
-### Working with GitHub Automation
-When testing or modifying GitHub workflows:
-1. Use `poe bake` to generate a test project with GitHub integration enabled
-2. Test workflow changes in the generated project before updating the template
-3. Verify Dependabot configuration with different `github_username` values
-4. Test release workflows with semantic version tags (`v1.0.0`, `v1.0.0-test`)
-5. Validate issue/PR templates render correctly with cookiecutter variables
-
-### Release Process
-
-**For the Cookiecutter Template Repository:**
-1. Update code and commit changes
-2. Run `poe test-fast` to validate core functionality (optional, but recommended)
-3. Run `poe changelog` to preview changes since last tag
-4. Run `poe release-notes` to generate release notes
-5. Use `poe release_patch/minor/major` to bump version, commit, tag, and push
-6. GitHub Actions automatically run fast test suite and create GitHub release (only if tests pass)
-
-**For Generated Projects:**
-Generated projects follow this release workflow:
-1. Update code and commit changes
-2. Run `poe changelog` to preview changes since last tag (in generated project)
-3. Run `poe release-notes` to generate release notes (in generated project)
-4. Use `poe publish_patch/minor/major` to trigger automated release (in generated project)
-5. GitHub Actions handle testing, PyPI publishing, and GitHub release creation
+Dynamic Python version config: `[tool.package.ci] test-python-versions = ["3.11", "3.12"]`
