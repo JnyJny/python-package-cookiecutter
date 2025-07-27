@@ -16,7 +16,6 @@ class TestWorkflowIntegration:
         self,
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
-        cookiecutter_package_name: str,
     ) -> None:
         """Test complete development workflow from generation to build."""
         tmp_path = tmp_path_factory.mktemp("full_dev_cycle")
@@ -55,14 +54,13 @@ class TestWorkflowIntegration:
                 check=False,
             )
             assert result.returncode == 0, (
-                f"{description}. Command failed: {' '.join(cmd)}\nStderr: {result.stderr}"
+                f"{description}. Command failed: {cmd}\nStderr: {result.stderr}"
             )
 
     def test_cli_workflow_integration(
         self,
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
-        cookiecutter_package_name: str,
     ) -> None:
         """Test CLI functionality integration."""
         tmp_path = tmp_path_factory.mktemp("cli_integration")
@@ -85,7 +83,7 @@ class TestWorkflowIntegration:
 
         # Install package in development mode
         result = subprocess.run(
-            ["uv", "pip", "install", "-e", "."],
+            ["uv", "pip", "install", "-e", "."],  # noqa: S607
             cwd=project_path,
             capture_output=True,
             text=True,
@@ -153,7 +151,7 @@ print("Settings integration test passed")
 """)
 
         result = subprocess.run(
-            ["uv", "run", "python", "test_settings.py"],
+            ["uv", "run", "python", "test_settings.py"],  # noqa: S607
             cwd=project_path,
             capture_output=True,
             text=True,
@@ -169,7 +167,7 @@ print("Settings integration test passed")
         """Test that logging integration works properly."""
         # Test logging to file when enabled
         result = subprocess.run(
-            ["uv", "run", "python", "-m", "thing", "--debug", "self", "version"],
+            ["uv", "run", "python", "-m", "thing", "--debug", "self", "version"],  # noqa: S607
             cwd=generated_template_path,
             capture_output=True,
             text=True,
@@ -207,7 +205,7 @@ print("Settings integration test passed")
 
         # Build the package
         result = subprocess.run(
-            ["uv", "build"],
+            ["uv", "build"],  # noqa: S607
             cwd=project_path,
             capture_output=True,
             text=True,
@@ -222,7 +220,10 @@ print("Settings integration test passed")
         # Create a test environment and install
         test_env = tmp_path / "test_env"
         result = subprocess.run(
-            ["uv", "venv", str(test_env)], capture_output=True, text=True, check=False
+            ["uv", "venv", str(test_env)],  # noqa: S607
+            capture_output=True,
+            text=True,
+            check=False,
         )
         assert result.returncode == 0, (
             f"Test environment creation failed: {result.stderr}"
@@ -235,7 +236,7 @@ print("Settings integration test passed")
         env["VIRTUAL_ENV"] = str(test_env)
 
         result = subprocess.run(
-            ["uv", "pip", "install", str(wheel_files[0])],
+            ["uv", "pip", "install", str(wheel_files[0])],  # noqa: S607
             env=env,
             capture_output=True,
             text=True,

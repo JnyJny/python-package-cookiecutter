@@ -9,6 +9,7 @@ import typer
 from loguru import logger
 
 from .self_subcommand import cli as self_cli
+
 # {%- if cookiecutter.use_pydantic_settings %}
 from .settings import Settings
 # {%- endif %}
@@ -24,7 +25,7 @@ cli.add_typer(
 
 @cli.callback(invoke_without_command=True, no_args_is_help=True)
 def global_callback(
-    ctx: typer.Context,
+    ctx: typer.Context,         # noqa: ARG001
     debug: bool = typer.Option(
         False,
         "--debug",

@@ -19,18 +19,18 @@ class TestConfigurationMatrix:
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
         build_backend: str,
-        use_pydantic_settings: bool,
+        use_pydantic_settings: bool,  # noqa: FBT001
     ) -> None:
         """Test different build backend and settings combinations."""
-        tmp_path = tmp_path_factory.mktemp(
-            f"build_{build_backend}_{use_pydantic_settings}"
-        )
+        pkg_name = f"build_{build_backend}_{use_pydantic_settings}".lower()
+
+        tmp_path = tmp_path_factory.mktemp(pkg_name)
 
         context = {
             "build_backend": build_backend,
             "use_pydantic_settings": use_pydantic_settings,
             "create_github_repo": False,
-            "package_name": f"test_{build_backend}_{str(use_pydantic_settings).lower()}",
+            "package_name": pkg_name,
         }
 
         # Skip hooks when pydantic settings disabled to avoid ruff issues
@@ -59,7 +59,7 @@ class TestConfigurationMatrix:
         # Test that the project builds with the specified backend (only if hooks ran)
         if use_pydantic_settings:  # Only test build if hooks ran properly
             result = subprocess.run(
-                ["uv", "build"],
+                ["uv", "build"],  # noqa: S607
                 cwd=project_path,
                 capture_output=True,
                 text=True,
@@ -77,22 +77,26 @@ class TestConfigurationMatrix:
         else:
             assert "hatchling" in pyproject_content
 
-    @pytest.mark.parametrize("license", ["MIT", "Apache-2.0", "GPL-3.0", "no-license"])
+    @pytest.mark.parametrize(
+        "license_name",
+        ["MIT", "Apache-2.0", "GPL-3.0", "no-license"],
+    )
     def test_license_variations(
         self,
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
-        license: str,
+        license_name: str,
     ) -> None:
         """Test different license configurations."""
-        tmp_path = tmp_path_factory.mktemp(
-            f"license_{license.replace('-', '_').replace('.', '_')}"
-        )
+        tt = str.maketrans({"-": "_", ".": "_", " ": "_"})
+
+        pkg_name = f"license_test_{license_name.translate(tt)}".lower()
+        tmp_path = tmp_path_factory.mktemp(pkg_name)
 
         context = {
-            "license": license,
+            "license": license_name,
             "create_github_repo": False,
-            "package_name": f"license_test_{license.lower().replace('-', '_').replace('.', '_')}",
+            "package_name": pkg_name,
         }
 
         project_path = bake(
@@ -107,7 +111,7 @@ class TestConfigurationMatrix:
         # Verify LICENSE file exists and contains expected content
         license_file = project_path / "LICENSE"
 
-        if license == "no-license":
+        if license_name == "no-license":
             assert not license_file.exists(), "no-license: LICENSE should not exist."
             pytest.skip("No LICENSE file expected for no-license configuration")
 
@@ -116,17 +120,18 @@ class TestConfigurationMatrix:
         license_content = license_file.read_text()
 
         # Verify license-specific content
-        if license == "MIT":
-            assert "MIT License" in license_content
-        elif license == "Apache-2.0":
-            assert "Apache License" in license_content
-        elif license == "GPL-3.0":
-            assert "GNU GENERAL PUBLIC LICENSE" in license_content
+        match license_name:
+            case "MIT":
+                assert "MIT License" in license_content
+            case "Apache-2.0":
+                assert "Apache License" in license_content
+            case "GPL-3.0":
+                assert "GNU GENERAL PUBLIC LICENSE" in license_content
 
         # Verify pyproject.toml license field
         pyproject_content = (project_path / "pyproject.toml").read_text()
-        if license != "no-license":
-            assert f'license = "{license}"' in pyproject_content
+        if license_name != "no-license":
+            assert f'license = "{license_name}"' in pyproject_content
 
     @pytest.mark.parametrize("log_to_file", [True, False])
     @pytest.mark.parametrize("use_pydantic_settings", [True, False])
@@ -134,19 +139,18 @@ class TestConfigurationMatrix:
         self,
         tmp_path_factory: pytest.TempPathFactory,
         template_root: Path,
-        log_to_file: bool,
-        use_pydantic_settings: bool,
+        log_to_file: bool,  # noqa: FBT001
+        use_pydantic_settings: bool,  # noqa: FBT001
     ) -> None:
         """Test different feature flag combinations."""
-        tmp_path = tmp_path_factory.mktemp(
-            f"features_{log_to_file}_{use_pydantic_settings}"
-        )
+        pkg_name = f"features_{log_to_file!s}_{use_pydantic_settings!s}".lower()
+        tmp_path = tmp_path_factory.mktemp(pkg_name)
 
         context = {
             "log_to_file": log_to_file,
             "use_pydantic_settings": use_pydantic_settings,
             "create_github_repo": False,
-            "package_name": f"features_{str(log_to_file).lower()}_{str(use_pydantic_settings).lower()}",
+            "package_name": pkg_name,
         }
 
         # Skip hooks to avoid ruff issues when settings are disabled
@@ -321,7 +325,7 @@ class TestConfigurationMatrix:
 
         # Test that maximal project builds and tests pass
         result = subprocess.run(
-            ["uv", "run", "pytest", "-v"],
+            ["uv", "run", "pytest", "-v"],  # noqa: S607
             cwd=project_path,
             capture_output=True,
             text=True,
