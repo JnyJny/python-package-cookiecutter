@@ -61,10 +61,10 @@ people that interact with your project repository.
 - **Cross-platform testing** (Linux, macOS, Windows)
 
 ### **Seamless Workflow**
-```mermaid
-flowchart LR
-    Code[Write Code] --> Test[poe qc] --> Release[poe publish] --> Live[Live on PyPI]
-```
+- **Write Code** - Edit your package source files
+- **Quality Control** - Run `poe qc` to check code quality
+- **Release** - Run `poe publish` to version and tag
+- **Live on PyPI** - Automatic publishing via GitHub Actions
 
 ## Quick Start
 
