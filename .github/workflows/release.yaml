@@ -18,13 +18,37 @@ permissions:
   pull-requests: read
 
 jobs:
+  get-python-versions:
+    name: Get Python test versions from pyproject.toml
+    runs-on: ubuntu-latest
+    outputs:
+      python-versions: ${{ steps.extract.outputs.versions }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Install dependencies
+        run: uv sync
+      - name: Extract Python test versions
+        id: extract
+        run: |
+          # Try to extract test versions from pyproject.toml, fallback to default if missing
+          if versions=$(uv run toml get --toml-path pyproject.toml tool.python-package-cookiecutter.ci.test-python-versions 2>/dev/null); then
+            echo "Using Python versions from pyproject.toml: $versions"
+            echo "versions=$versions" >> $GITHUB_OUTPUT
+          else
+            echo "No test-python-versions found in pyproject.toml, using default versions"
+            echo 'versions=["3.11", "3.12", "3.13"]' >> $GITHUB_OUTPUT
+          fi
+
   test:
     name: Test Template
+    needs: get-python-versions
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.11', '3.12', '3.13']
+        python-version: ${{ fromJSON(needs.get-python-versions.outputs.python-versions) }}
 
     steps:
       - uses: actions/checkout@v4

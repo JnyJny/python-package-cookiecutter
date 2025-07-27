@@ -20,7 +20,16 @@ A CI/CD pipeline for the cookiecutter template repository with the following sta
 
 ### Testing
 
-The workflow runs the fast test suite (`poe test_fast`) across Python 3.11, 3.12, and 3.13 to validate that the template generates correctly and all basic functionality works.
+The workflow runs the fast test suite (`poe test_fast`) across multiple Python versions to validate that the template generates correctly and all basic functionality works.
+
+**Dynamic Python Version Detection**: The workflow extracts test versions from `pyproject.toml`:
+
+```toml
+[tool.python-package-cookiecutter.ci]
+test-python-versions = ["3.11", "3.12", "3.13"]
+```
+
+If this configuration is missing, it falls back to the default versions. This provides a single source of truth for Python testing versions.
 
 ### Release Process
 

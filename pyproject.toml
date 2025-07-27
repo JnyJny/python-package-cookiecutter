@@ -13,6 +13,7 @@ dev = [
     "pytest>=8.4.0",
     "ruff>=0.11.13",
     "sphinx>=8.2.3",
+    "toml-cli",
 ]
 
 [tool.poe.tasks]
@@ -128,5 +129,8 @@ markers = [
     "slow: marks tests as slow running tests",
     "cross_platform: marks tests that validate cross-platform compatibility",
 ]
+
+[tool.python-package-cookiecutter.ci]
+test-python-versions = ["3.11", "3.12", "3.13"]
 
 
