@@ -746,7 +746,7 @@ wheels = [
 
 [[package]]
 name = "toml-cli"
-version = "0.8.1"
+version = "0.8.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jmespath" },
@@ -754,9 +754,9 @@ dependencies = [
     { name = "tomlkit" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a0/de/3e59683d678926d878883576ca6737f4fca45f88197590ba41f7620722a7/toml_cli-0.8.1.tar.gz", hash = "sha256:cb97d2fb265d6838db998625b97e45a0831c8ac3ee643e7566539f9473ef5286", size = 24270, upload-time = "2025-07-19T19:36:35.858Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/aa/2d/24de54996541a3355d6a90e08dbe8526771434941e410ef91c5422517e7b/toml_cli-0.8.2.tar.gz", hash = "sha256:ec61fbfe5f0d6f2d6bfd9e1127cad38a797b8685a93589f2e22efd168b0cc866", size = 25295, upload-time = "2025-09-12T19:00:33.307Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7f/fb/44ef7148ed5b55e519c7d205ba4281087fcf947d96a1e6d001ae6c1d4c34/toml_cli-0.8.1-py3-none-any.whl", hash = "sha256:ebd1672e2b512022c4db2ba01658bff17ec9bb868b64ddee29484d1517ce0d98", size = 7414, upload-time = "2025-07-19T19:36:34.866Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/b8/f0b9b880c03a3db8eaff63d76ca751ac7d8e45483fb7a0bb9f8e5c6ce433/toml_cli-0.8.2-py3-none-any.whl", hash = "sha256:7af4679ca04c53ad0f6d300dab26f45a78fedf88e8310305bfe0a8ead37fd000", size = 7432, upload-time = "2025-09-12T19:00:32.282Z" },
 ]
 
 [[package]]
