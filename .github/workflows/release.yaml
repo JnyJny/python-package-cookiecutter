@@ -84,7 +84,7 @@ jobs:
           fetch-depth: 0
 
       - name: Auto-generate Changelog
-        uses: BobAnkh/auto-generate-changelog@v1.2.5
+        uses: BobAnkh/auto-generate-changelog@v1.3.0
         with:
           REPO_NAME: 'JnyJny/python-package-cookiecutter'
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
