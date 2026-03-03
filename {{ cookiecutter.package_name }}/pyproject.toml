@@ -91,11 +91,11 @@ ty.help = "[Code Quality] Run ty type checker on source."
 ruff-check.cmd = "ruff check src tests"
 ruff-check.help = "[Code Quality] Run ruff check on source."
 
-ruff-format.cmd = "ruff format src tests"
-ruff-format.help = "[Code Quality] Run ruff format on source."
+ruff-format.cmd = "uv format"
+ruff-format.help = "[Code Quality] Run uv format (ruff) on source."
 
 ruff.sequence = ["ruff-check", "ruff-format"]
-ruff.help = "[Code Quality] Run Ruff check and format on source."
+ruff.help = "[Code Quality] Run Ruff check and uv format on source."
 
 check.sequence = [ "ruff", "ty" ]
 check.help = "[Code Quality] Run all code quality tools on source."
@@ -209,7 +209,17 @@ lint.ignore = [
   # assert (S101)
   "S101",
   # subprocess-without-shell-equals-true (S603)
-  "S603"
+  "S603",
+  # magic-value-comparison (PLR2004)
+  "PLR2004",
+  # missing-type-function-argument — fixture annotations are noise (ANN001)
+  "ANN001",
+  # missing-return-type — fixture/test return types are noise (ANN201)
+  "ANN201",
+  # missing-type-self (ANN101)
+  "ANN101",
+  # imperative-mood — test docstrings don't need imperative (D401)
+  "D401",
 ]
 
 [tool.ty]
