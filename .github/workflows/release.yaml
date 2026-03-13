@@ -21,7 +21,7 @@ jobs:
     outputs:
       python-versions: ${{ steps.extract.outputs.versions }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install uv
         uses: astral-sh/setup-uv@v7
       - name: Install dependencies
@@ -48,7 +48,7 @@ jobs:
         python-version: ${{ fromJSON(needs.get-python-versions.outputs.python-versions) }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Configure git for tests
         run: |
@@ -79,7 +79,7 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
