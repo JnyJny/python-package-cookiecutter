@@ -53,6 +53,7 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "git-cliff>=2.0.0",
     "poethepoet",
     "pytest",
     "pytest-cov",
@@ -110,6 +111,18 @@ qc.help = "[Code Quality] Run all code quality tasks."
 
 ## update version in pyproject
 
+_preflight.shell = """
+if [ "$(git branch --show-current)" != "main" ]; then
+  echo "ERROR: publish must run from main branch" >&2
+  exit 1
+fi
+if [ -n "$(git status --porcelain)" ]; then
+  echo "ERROR: working tree is dirty" >&2
+  exit 1
+fi
+"""
+_preflight.help = "Verify on main branch with clean working tree."
+
 _patch_bump = "uv version --bump patch"
 _minor_bump = "uv version --bump minor"
 _major_bump = "uv version --bump major"
@@ -127,13 +140,13 @@ _update_pyproject = ["_add", "_commit", "_tag", "_push_tags", "_push"]
 ## Publish patch, minor or major releases
 ## See .github/workflows/release.yaml
 
-publish_patch.sequence = ["_patch_bump", "_update_pyproject"]
+publish_patch.sequence = ["_preflight", "_patch_bump", "_update_pyproject"]
 publish_patch.help = "[Publish] Patch release."
 
-publish_minor.sequence = ["_minor_bump", "_update_pyproject"]
+publish_minor.sequence = ["_preflight", "_minor_bump", "_update_pyproject"]
 publish_minor.help = "[Publish] Minor release."
 
-publish_major.sequence = ["_major_bump", "_update_pyproject"]
+publish_major.sequence = ["_preflight", "_major_bump", "_update_pyproject"]
 publish_major.help = "[Publish] Major release."
 
 publish.ref =  "publish_patch"
@@ -141,11 +154,11 @@ publish.help = "[Publish] Patch release."
 
 # Release tasks
 
-changelog.shell = "git log --pretty=format:'- %s (%h)' $(git describe --tags --abbrev=0 2>/dev/null || echo 'HEAD')..HEAD"
-changelog.help = "[Release] Generate changelog since last tag."
+changelog.cmd = "git cliff"
+changelog.help = "[Release] Generate full changelog to stdout."
 
-release-notes.shell = "echo '## Release Notes' > RELEASE_NOTES.md && echo '' >> RELEASE_NOTES.md && poe changelog >> RELEASE_NOTES.md"
-release-notes.help = "[Release] Generate release notes file."
+release-notes.cmd = "git cliff --latest --strip header"
+release-notes.help = "[Release] Generate release notes for the latest tag."
 
 # Clean
 
