@@ -9,6 +9,7 @@ dependencies = []
 [dependency-groups]
 dev = [
     "cookiecutter>=2.6.0",
+    "git-cliff>=2.0.0",
     "poethepoet>=0.35.0",
     "pytest>=8.4.0",
     "ruff>=0.11.13",
@@ -58,19 +59,31 @@ _push_tags = "git push --tags"
 _update_pyproject = ["_add", "_commit", "_tag", "_push_tags", "_push"]
 
 # Release management tasks
-changelog.shell = "git log --pretty=format:'- %s (%h)' $(git describe --tags --abbrev=0 2>/dev/null || echo 'HEAD')..HEAD"
-changelog.help = "[Release] Generate changelog since last tag."
+changelog.cmd = "git cliff"
+changelog.help = "[Release] Generate full changelog to stdout."
 
-release_notes.shell = "echo '## Release Notes' > RELEASE_NOTES.md && echo '' >> RELEASE_NOTES.md && git log --pretty=format:'- %s (%h)' $(git describe --tags --abbrev=0 2>/dev/null || echo 'HEAD')..HEAD >> RELEASE_NOTES.md"
-release_notes.help = "[Release] Generate release notes file."
+release_notes.cmd = "git cliff --latest --strip header"
+release_notes.help = "[Release] Generate release notes for the latest tag."
 
-release_patch.sequence = [ "_patch_bump", "_update_pyproject"]
+_preflight.shell = """
+if [ "$(git branch --show-current)" != "main" ]; then
+  echo "ERROR: release must run from main branch" >&2
+  exit 1
+fi
+if [ -n "$(git status --porcelain)" ]; then
+  echo "ERROR: working tree is dirty" >&2
+  exit 1
+fi
+"""
+_preflight.help = "Verify on main branch with clean working tree."
+
+release_patch.sequence = [ "_preflight", "_patch_bump", "_update_pyproject"]
 release_patch.help = "Publish patch release."
 
-release_minor.sequence = [ "_minor_bump", "_update_pyproject"]
+release_minor.sequence = [ "_preflight", "_minor_bump", "_update_pyproject"]
 release_minor.help = "Publish minor release."
 
-release_major.sequence = [ "_major_bump", "_update_pyproject"]
+release_major.sequence = [ "_preflight", "_major_bump", "_update_pyproject"]
 release_major.help = "Publish major release."
 
 release.ref = "release_patch"
