@@ -82,9 +82,17 @@ This project uses automated release management with GitHub Actions:
 - `poe publish_minor` - Bump minor version, commit, tag, and push  
 - `poe publish_major` - Bump major version, commit, tag, and push
 
-#### Release Notes
-- `poe changelog` - Generate changelog since last tag
-- `poe release-notes` - Generate release notes file
+#### Changelog with git-cliff
+
+This project uses [git-cliff](https://git-cliff.org) to generate changelogs
+from your commit history. It works best with [conventional commits](https://www.conventionalcommits.org/)
+(`feat:`, `fix:`, `docs:`, `refactor:`, etc.) but will include all commits.
+
+- `poe changelog` - Generate full changelog to stdout
+- `poe release-notes` - Generate release notes for the latest tag only
+
+The `cliff.toml` configuration controls how commits are grouped and formatted.
+Merge commits, dependabot bumps, and CI noise are filtered out automatically.
 
 #### Automatic Releases
 When you push a version tag (e.g., `v1.0.0`), the unified GitHub Actions workflow will:

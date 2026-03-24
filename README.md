@@ -16,6 +16,7 @@ and automated PyPI publishing via GitHub Actions.
 - **CLI Ready** - [Typer](https://typer.tiangolo.com) CLI with help and autocompletion
 - **Fast Dependencies** - [uv](https://docs.astral.sh/uv/) for lightning-fast package management
 - **Quality Tools** - Pre-configured ruff, ty, pytest, and coverage reporting
+- **Automated Changelog** - [git-cliff](https://git-cliff.org) generates changelogs from conventional commits
 - **Documentation** - [MkDocs](https://www.mkdocs.org/) with auto-deployment to GitHub Pages
 - **Flexible** - Optional Pydantic settings, multiple build backends, cross-platform testing
 
@@ -39,6 +40,7 @@ cd your-new-project
 poe --help          # See all available tasks
 poe qc              # Run quality checks
 poe test            # Run tests
+poe changelog       # Generate changelog from commits
 poe publish_patch   # Release to PyPI
 ```
 
